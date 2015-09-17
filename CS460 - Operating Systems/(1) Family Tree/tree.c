@@ -21,13 +21,6 @@ int main(int argc, char* argv[])
 	int *pNumNames = &numNames;
 	char* familyArray[16][16];
 	int rowIndex, colIndex;
-	for(rowIndex = 0; rowIndex < 16; rowIndex++)
-	{
-		for(colIndex = 0; colIndex < 16; colIndex++)
-		{
-			familyArray[rowIndex][colIndex] = "";
-		}
-	}
 	
 	
 	storeNames(argv[1], familyArray, pNumRows, numColsPerRow);
@@ -48,7 +41,6 @@ void storeNames(const char *filename, char* familyArray[16][16], int* numRows, i
 	stringsLeftToRead = fscanf(fp, "%s", currentName);
 	do
 	{
-		printf("New name = %s \n", currentName);
 		if(!insert(currentName, listOfNames, numNames))
 		{
 			numColPerRow[curRow] = curCol;
@@ -61,7 +53,6 @@ void storeNames(const char *filename, char* familyArray[16][16], int* numRows, i
 		}
 		familyArray[curRow][curCol] = malloc(strlen(currentName)+1);
 		strcpy(familyArray[curRow][curCol], currentName);
-		printf("At row = %d , col = %d , currentName = %s \n", curRow, curCol, familyArray[curRow][curCol]);
 		curCol++;
 	} while(fscanf(fp, "%s", currentName) != EOF);
 	numColPerRow[curRow] = curCol;
