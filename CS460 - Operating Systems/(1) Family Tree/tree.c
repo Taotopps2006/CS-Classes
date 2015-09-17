@@ -1,13 +1,54 @@
-#include <stdio.h>
+#include <errno.h>
+// #include <setjmp.h> Included below
+// #include <stdio.h> Included below
 #include <stdlib.h>
-#include <string.h>
 #include <stdbool.h>
+#include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <string.h>
+
+/* Copyright (C) 2009-2015 Francesco Nidito 
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions: 
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. 
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE. 
+ */
+
+#ifndef _TRY_THROW_CATCH_H_
+#define _TRY_THROW_CATCH_H_
+
+#include <stdio.h>
+#include <setjmp.h>
+
+/* For the full documentation and explanation of the code below, please refer to
+ * /~nids/docs/longjump_try_trow_catch.html
+ */
+
+#define TRY do { jmp_buf ex_buf__; switch( setjmp(ex_buf__) ) { case 0: while(1) {
+#define CATCH(x) break; case x:
+// Not needed in this program: #define FINALLY break; } default: {
+#define ETRY break; } } }while(0)
+#define THROW(x) longjmp(ex_buf__, x)
+
+#endif /*!_TRY_THROW_CATCH_H_*/
 
 void storeNames(const char* fileName, char* familyArray[][16], int* numRows, int* numColPerRow);
 void outputData(char* familyArray[][16], int numRows, int numColsPerRow[]);
+bool checkIfAllAreNames(char* familySubArray[16], int numCols);
 bool insert(char* inputString, char *listOfNames[32], int numberOfNames);
 bool alreadyInList(char* inputString, char* listOfNames[32], int numberOfNames);
 int getIndexOfChild(char* childName, char* familyArray[][16], int numRows);
@@ -20,7 +61,14 @@ int main(int argc, char* argv[])
 	int numColsPerRow[16];
 	int *pNumNames = &numNames;
 	char* familyArray[16][16];
-	int rowIndex, colIndex;
+	int curRow, curCol;
+	for(curRow = 0; curRow < 16; curRow++)
+	{
+		for(curCol = 0; curCol < 16; curCol++)
+		{
+			familyArray[curRow][curCol] = malloc(sizeof(char[10])); // None of the names we are testing against have more than 10 characters in them
+		}
+	}
 	
 	
 	storeNames(argv[1], familyArray, pNumRows, numColsPerRow);
@@ -32,32 +80,49 @@ void storeNames(const char *filename, char* familyArray[16][16], int* numRows, i
 {
 	bool stringsLeftToRead;
 	char *listOfNames[32];
-	char currentName[32];
+	char currentLine[256];
 	FILE *fp;
 	int curRow = 0;
-	int curCol = 0;
 	int numNames = 0;
-	fp = fopen(filename, "r");
-	stringsLeftToRead = fscanf(fp, "%s", currentName);
-	do
+	TRY
 	{
-		if(!insert(currentName, listOfNames, numNames))
+		if((fp = fopen(filename, "r")) == NULL)
 		{
-			numColPerRow[curRow] = curCol;
+			THROW(1);
+		}
+		while(fgets(currentLine, 500, fp) != NULL && strcmp(currentLine, "\n") != 0)
+		{
+			numColPerRow[curRow] = sscanf(currentLine, "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s", familyArray[curRow][0],familyArray[curRow][1],familyArray[curRow][2],familyArray[curRow][3],familyArray[curRow][4],familyArray[curRow][5],familyArray[curRow][6],familyArray[curRow][7],familyArray[curRow][8],familyArray[curRow][9],familyArray[curRow][10],familyArray[curRow][11],familyArray[curRow][12],familyArray[curRow][13],familyArray[curRow][14],familyArray[curRow][15]);
+			if(numColPerRow[curRow] == -1)
+			{
+				THROW(1); // Error reading the strings
+			}
+			if(checkIfAllAreNames(familyArray[curRow], numColPerRow[curRow]) == false)
+			{
+				THROW(2); // One or more of the strings were not names (IE, only alphabet characters)
+			}
+			numNames+= numColPerRow[curRow]; 
 			curRow++;
-			curCol = 0;
 		}
-		else
-		{
-			numNames++;
-		}
-		familyArray[curRow][curCol] = malloc(strlen(currentName)+1);
-		strcpy(familyArray[curRow][curCol], currentName);
-		curCol++;
-	} while(fscanf(fp, "%s", currentName) != EOF);
-	numColPerRow[curRow] = curCol;
-	*numRows = curRow+1;
-	fclose(fp);
+		*numRows = curRow+1;
+		fclose(fp);
+	}
+	CATCH(1)
+	{
+		printf("System Error Message: %s\nFailed to open input file. Program terminating.\n", strerror(errno));
+		exit(0);
+	}
+	CATCH(2)
+	{
+		printf("There was an error reading the input file. Program terminating.\n");
+		exit(0);
+	}
+	CATCH(3)
+	{
+		printf("One or more of the names were made up of non-alphabet characters(A-Z,a-z). Program terminating.\n");
+		 exit(0);
+	}
+	ETRY;
 }
 
 void outputData(char* familyArray[][16], int numRows, int numColsPerRow[])
@@ -109,6 +174,23 @@ void outputData(char* familyArray[][16], int numRows, int numColsPerRow[])
 			}
 		}
 	}
+}
+
+bool checkIfAllAreNames(char* familySubArray[16], int numCols)
+{
+	int curCol, curChar, curLength;
+	for(curCol = 0; curCol < numCols; curCol++)
+	{
+		curLength = strlen(familySubArray[curCol]);
+		for(curChar = 0; curChar < curLength; curChar++)
+		{
+			if(isalpha(familySubArray[curCol][curChar]) == 0)
+			{
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 bool insert(char* inputString, char *listOfNames[32], int numberOfNames)
