@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 /* Copyright (C) 2009-2015 Francesco Nidito 
@@ -46,20 +46,21 @@
 
 #endif /*!_TRY_THROW_CATCH_H_*/
 
+ extern int isalpha(int);
+ extern pid_t getppid(void);
+ extern pid_t waitpid(pid_t, int*, int);
+
 void storeNames(const char* fileName, char* familyArray[][16], int* numRows, int* numColPerRow);
 void outputData(char* familyArray[][16], int numRows, int numColsPerRow[]);
 bool checkIfAllAreNames(char* familySubArray[16], int numCols);
-bool insert(char* inputString, char *listOfNames[32], int numberOfNames);
 bool alreadyInList(char* inputString, char* listOfNames[32], int numberOfNames);
 int getIndexOfChild(char* childName, char* familyArray[][16], int numRows);
 
 int main(int argc, char* argv[]) 
 {
 	int numRows = 0;
-	int numNames = 0;
 	int *pNumRows = &numRows;
 	int numColsPerRow[16];
-	int *pNumNames = &numNames;
 	char* familyArray[16][16];
 	int curRow, curCol;
 	for(curRow = 0; curRow < 16; curRow++)
@@ -78,8 +79,6 @@ int main(int argc, char* argv[])
 
 void storeNames(const char *filename, char* familyArray[16][16], int* numRows, int* numColPerRow)
 {
-	bool stringsLeftToRead;
-	char *listOfNames[32];
 	char currentLine[256];
 	FILE *fp;
 	int curRow = 0;
@@ -150,7 +149,7 @@ void outputData(char* familyArray[][16], int numRows, int numColsPerRow[])
 			pid = fork();
 			if(pid > 0)
 			{
-				waitpid(pid, 0, NULL);
+				waitpid(pid, 0, 0);
 				curCol++;
 			}
 			else if(pid == 0)
@@ -191,24 +190,6 @@ bool checkIfAllAreNames(char* familySubArray[16], int numCols)
 		}
 	}
 	return true;
-}
-
-bool insert(char* inputString, char *listOfNames[32], int numberOfNames)
-{
-	if(numberOfNames == 0)
-	{
-		listOfNames[numberOfNames] = malloc(strlen(inputString)+1);
-		strcpy(listOfNames[numberOfNames], inputString);
-		return true;
-	}
-	if(alreadyInList(inputString, listOfNames, numberOfNames))
-	{
-		return false;
-	}
-	listOfNames[numberOfNames] = malloc(strlen(inputString)+1);
-	strcpy(listOfNames[numberOfNames], inputString);
-	return true;
-	
 }
 
 bool alreadyInList(char* inputString, char* listOfNames[32], int numberOfNames)
