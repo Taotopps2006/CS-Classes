@@ -3,12 +3,97 @@
 ConfigurationSettings::ConfigurationSettings()
 {
 	version = "1.0"; // Default version unless otherwised specified
-	numberOfLines = 9;
+}
+
+void ConfigurationSettings::checkValidity(int currentLine, string currentString)
+{
+	string tempString = getSettingFileKey(currentLine);
+	if(currentString.compare(tempString) != 0)
+	{
+		myLog.logError(currentString + " should be " + tempString);
+	}
+}
+
+string ConfigurationSettings::getSettingFileKey(int currentLine)
+{
+	string key;
+	if(version.compare("1.0"))
+	{
+		switch(currentLine)
+		{
+			case 1:
+			{
+				key = "Start Simulator Configuration File";
+				break;
+			}
+			case 2:
+			{
+				key = "Version/Phase";
+				break;
+			}
+			case 3:
+			{
+				key = "File Path";
+				break;
+			}
+			case 4:
+			{
+				key = "Processor cycle time (msec)";
+				break;
+			}
+			case 5:
+			{
+				key = "Monitor display time (msec)";
+				break;
+			}
+			case 6:
+			{
+				key = "Hard drive cycle time (msec)";
+				break;
+			}
+			case 7:
+			{
+				key = "Printer cycle time (msec)";
+				break;
+			}
+			case 8:
+			{
+				key = "Keyboard cycle time (msec)";
+				break;
+			}
+			case 9:
+			{
+				key = "Log";
+				break;
+			}
+			case 10:
+			{
+				key = "Log File Path";
+				break;
+			}
+			case 11:
+			{
+				key = "End Simulator Configuration File";
+				break;
+			}
+		}
+        
+	}
+	else if(version.compare("2.0"))
+	{
+		myLog.logError("Version 2.0 currently not implemented");
+	}
+	else if(version.compare("3.0"))
+	{
+		myLog.logError("Version 3.0 currently not implemented");
+	}
+
+	return key;
 }
 
 void ConfigurationSettings::set(int settingLine, string settingValue)
 {
-	// trim leading spaces
+	// trim leading white spaces
 	size_t startpos = settingValue.find_first_not_of(" \t");
 	if( string::npos != startpos )
 	{
@@ -17,7 +102,7 @@ void ConfigurationSettings::set(int settingLine, string settingValue)
 
 	switch(settingLine)
 	{
-		case 1:
+		case 2:
 		{
 			version = settingValue;
 			break;
@@ -30,17 +115,15 @@ void ConfigurationSettings::set(int settingLine, string settingValue)
 			}
 			else if(version.compare("2.0") == 0)
 			{
-				cout << "Version 2.0 currently not implemented" << endl;
-				exit(0);
+				myLog.logError("Version 2.0 currently not implemented");
 			}
 			else if(version.compare("3.0") == 0)
 			{
-				cout << "Version 3.0 Currently not implemented" << endl;
+				myLog.logError("Version 3.0 Currently not implemented");
 			}
 			else
 			{
-				cout << "Incorrect version number" << " " << settingLine << " "<< version << endl;
-				exit(0);
+				myLog.logError("Incorrect version number "+  version);
 			}
 		}
 	}
@@ -50,37 +133,37 @@ void ConfigurationSettings::setPhaseOne(int settingLine, string settingValue)
 {
 	switch(settingLine)
 	{
-		case 2:
+		case 3:
 		{
 			filePath = settingValue;
 			break;
 		}
-		case 3:
-		{
-			processorCycleTime = atoi(settingValue.c_str());
-			break;
-		}
 		case 4:
 		{
-			monitorDisplayTime = atoi(settingValue.c_str());
+			processCycleTime = atoi(settingValue.c_str());
 			break;
 		}
 		case 5:
 		{
-			hardDriveCycleTime = atoi(settingValue.c_str());
+			monitorDisplayTime = atoi(settingValue.c_str());
 			break;
 		}
 		case 6:
 		{
-			printerCycleTime = atoi(settingValue.c_str());
+			hardDriveCycleTime = atoi(settingValue.c_str());
 			break;
 		}
 		case 7:
 		{
-			keyboardCycleTime = atoi(settingValue.c_str());
+			printerCycleTime = atoi(settingValue.c_str());
 			break;
 		}
 		case 8:
+		{
+			keyboardCycleTime = atoi(settingValue.c_str());
+			break;
+		}
+		case 9:
 		{
 			if(settingValue.compare("Log to Both") == 0 || settingValue.compare("Log to Monitor") == 0 || settingValue.compare("Log to File") == 0)
 			{
@@ -88,20 +171,18 @@ void ConfigurationSettings::setPhaseOne(int settingLine, string settingValue)
 			}
 			else
 			{
-				cout << "Incorrect log type" << " " << settingValue<< endl;
-				exit(0);
+				myLog.logError("Incorrect myLog type " + settingValue);
 			}
 			break;
 		}
-		case 9:
+		case 10:
 		{
 			logFilePath = settingValue;
 			break;
 		}
 		default:
 		{
-			cout << "Error, too many lines in this configuration file" << settingLine << " " << settingValue << endl;
-			exit(0);
+			myLog.logError("Error, too many lines in this configuration file");
 		}
 	}
 }
@@ -110,7 +191,7 @@ void ConfigurationSettings::outputSettingsToConsole()
 {
 	cout << "Version: " << version << endl;
 	cout << "filePath: " << filePath << endl;
-	cout << "processorCycleTime: " << processorCycleTime << endl;
+	cout << "processCycleTime: " << processCycleTime << endl;
 	cout << "monitorDisplayTime: " << monitorDisplayTime << endl;
 	cout << "hardDriveCycleTime: " << hardDriveCycleTime << endl;
 	cout << "printerCycleTime: " << printerCycleTime << endl;
@@ -118,13 +199,3 @@ void ConfigurationSettings::outputSettingsToConsole()
 	cout << "logType: " << logType << endl;
 	cout << "logFilePath: " << logFilePath << endl;
 }
-
-string version;
-	string filePath;
-	int processorCycleTime;
-	int monitorDisplayTime;
-	int hardDriveCycleTime;
-	int printerCycleTime;
-	int keyboardCycleTime;
-	string logType;
-	string logFilePath;
