@@ -51,6 +51,7 @@ Logger myLog;
 int main( int argc, char * argv[ ] ) 
 {
     OperatingSystem os;
+    myLog.timer.start();
     if(argc != 2)
     {
         cout << "Incorrect number of command line parameters. Only need name of file" << endl;
@@ -58,7 +59,8 @@ int main( int argc, char * argv[ ] )
     }
     os.readConfigurationFile(argv[1]);
     os.outputSettingsToConsole();
-
+    os.readMetaDataFile();
+    myLog.timer.stop();
 
     return 0;
     //

@@ -3,169 +3,108 @@
 ConfigurationSettings::ConfigurationSettings()
 {
 	version = "1.0"; // Default version unless otherwised specified
-}
-
-void ConfigurationSettings::checkValidity(int currentLine, string currentString)
-{
-	string tempString = getSettingFileKey(currentLine);
-	if(currentString.compare(tempString) != 0)
-	{
-		myLog.logError(currentString + " should be " + tempString);
-	}
-}
-
-string ConfigurationSettings::getSettingFileKey(int currentLine)
-{
-	string key;
-	if(version.compare("1.0"))
-	{
-		switch(currentLine)
-		{
-			case 1:
-			{
-				key = "Start Simulator Configuration File";
-				break;
-			}
-			case 2:
-			{
-				key = "Version/Phase";
-				break;
-			}
-			case 3:
-			{
-				key = "File Path";
-				break;
-			}
-			case 4:
-			{
-				key = "Processor cycle time (msec)";
-				break;
-			}
-			case 5:
-			{
-				key = "Monitor display time (msec)";
-				break;
-			}
-			case 6:
-			{
-				key = "Hard drive cycle time (msec)";
-				break;
-			}
-			case 7:
-			{
-				key = "Printer cycle time (msec)";
-				break;
-			}
-			case 8:
-			{
-				key = "Keyboard cycle time (msec)";
-				break;
-			}
-			case 9:
-			{
-				key = "Log";
-				break;
-			}
-			case 10:
-			{
-				key = "Log File Path";
-				break;
-			}
-			case 11:
-			{
-				key = "End Simulator Configuration File";
-				break;
-			}
-		}
-        
-	}
-	else if(version.compare("2.0"))
-	{
-		myLog.logError("Version 2.0 currently not implemented");
-	}
-	else if(version.compare("3.0"))
-	{
-		myLog.logError("Version 3.0 currently not implemented");
-	}
-
-	return key;
+	regexLineKeys = {
+		"(Start Simulator Configuration File)",
+		"Version/Phase: ([0-9]\\.0)",
+		"File Path: (test_\\d\\.mdf)",
+		"Processor cycle time \\(msec\\): ([1-9]+[0-9]*)",
+		"Monitor display time \\(msec\\): ([1-9]+[0-9]*)",
+		"Hard drive cycle time \\(msec\\): ([1-9]+[0-9]*)",
+		"Printer cycle time \\(msec\\): ([1-9]+[0-9]*)",
+		"Keyboard cycle time \\(msec\\): ([1-9]+[0-9]*)",
+		"Log: Log to (File|Monitor|Both)",
+		"Log File Path: (logfile_\\d\\.lgf)",
+		"(End Simulator Configuration File)"
+	};
 }
 
 void ConfigurationSettings::set(int settingLine, string settingValue)
 {
-	// trim leading white spaces
-	size_t startpos = settingValue.find_first_not_of(" \t");
-	if( string::npos != startpos )
+	if(settingLine >= regexLineKeys.size())
+		return;
+	RE2 regExpression(regexLineKeys[settingLine]);
+    string match;
+    re2::StringPiece reString(settingValue);
+	if(RE2::FullMatch(reString, regExpression, &match))
 	{
-    	settingValue = settingValue.substr( startpos );
+		switch(settingLine)
+		{
+			case 0:
+			{
+				break;
+			}
+			case 1:
+			{
+				version = match;
+				// Future: updateRegexKeys(version);
+				break;
+			}
+			default:
+			{
+				if(version.compare("1.0") == 0)
+				{
+				setPhaseOne(settingLine, match);
+				}
+				else if(version.compare("2.0") == 0)
+				{
+					myLog.logError("Version 2.0 currently not implemented");
+				}
+				else if(version.compare("3.0") == 0)
+				{
+					myLog.logError("Version 3.0 Currently not implemented");
+				}
+				else
+				{
+					myLog.logError("Incorrect version number "+  version);
+				}
+			}
+		}
+	}
+	else
+	{
+		myLog.logError(settingValue + " is not valid for line " + to_string(settingLine));
 	}
 
-	switch(settingLine)
-	{
-		case 2:
-		{
-			version = settingValue;
-			break;
-		}
-		default:
-		{
-			if(version.compare("1.0") == 0)
-			{
-				setPhaseOne(settingLine, settingValue);
-			}
-			else if(version.compare("2.0") == 0)
-			{
-				myLog.logError("Version 2.0 currently not implemented");
-			}
-			else if(version.compare("3.0") == 0)
-			{
-				myLog.logError("Version 3.0 Currently not implemented");
-			}
-			else
-			{
-				myLog.logError("Incorrect version number "+  version);
-			}
-		}
-	}
+	
 }
 
 void ConfigurationSettings::setPhaseOne(int settingLine, string settingValue)
 {
 	switch(settingLine)
 	{
-		case 3:
+		case 2:
 		{
 			filePath = settingValue;
 			break;
 		}
-		case 4:
+		case 3:
 		{
 			processCycleTime = atoi(settingValue.c_str());
 			break;
 		}
-		case 5:
+		case 4:
 		{
 			monitorDisplayTime = atoi(settingValue.c_str());
 			break;
 		}
-		case 6:
+		case 5:
 		{
 			hardDriveCycleTime = atoi(settingValue.c_str());
 			break;
 		}
-		case 7:
+		case 6:
 		{
 			printerCycleTime = atoi(settingValue.c_str());
 			break;
 		}
-		case 8:
+		case 7:
 		{
 			keyboardCycleTime = atoi(settingValue.c_str());
 			break;
 		}
-		case 9:
+		case 8:
 		{
-			if(settingValue.compare("Log to Both") == 0 || settingValue.compare("Log to Monitor") == 0 || settingValue.compare("Log to File") == 0)
+			if(settingValue.compare("Both") == 0 || settingValue.compare("Monitor") == 0 || settingValue.compare("File") == 0)
 			{
 				logType = settingValue;
 			}
@@ -175,14 +114,18 @@ void ConfigurationSettings::setPhaseOne(int settingLine, string settingValue)
 			}
 			break;
 		}
-		case 10:
+		case 9:
 		{
 			logFilePath = settingValue;
 			break;
 		}
+		case 10:
+		{
+			break;
+		}
 		default:
 		{
-			myLog.logError("Error, too many lines in this configuration file");
+			myLog.logError("Error, too many lines in this configuration file" + to_string(settingLine));
 		}
 	}
 }

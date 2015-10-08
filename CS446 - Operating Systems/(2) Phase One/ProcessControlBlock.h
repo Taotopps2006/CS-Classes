@@ -3,6 +3,7 @@
 
 #include <time.h>
 #include <thread>
+#include <unistd.h>
 #include "Logger.h"
 #include "ConfigurationSettings.h"
 

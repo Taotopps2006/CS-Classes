@@ -1,5 +1,12 @@
 #include "OperatingSystem.h"
 
+OperatingSystem::OperatingSystem()
+{
+    totalNumberOfProcesses = 0;
+    indexOfCurProcess = -1;
+    numberOfProcesses = 0;
+}
+
 void OperatingSystem::readConfigurationFile(char* fileName)
 {
     ifstream configFile;
@@ -14,20 +21,24 @@ void OperatingSystem::readConfigurationFile(char* fileName)
          // This for loop will end in 1 of 2 ways:
          // Versions 1.0 & 2.0: Hit end of file
         // Version 3.0: currentline gets to 13
-        for(int currentLine = 1; configFile.eofbit == 0 && currentLine <= 13; currentLine++, getline(configFile, tempString, ':'))
+        for(int currentLine = 0; !configFile.eof() && currentLine < 13; currentLine++)
         {
             // If next line fails, the program will exit
-            settings.checkValidity(currentLine, tempString);
             getline(configFile, tempString);
             settings.set(currentLine, tempString);
         }
     }
+    else
+    {
+        myLog.logError("Could not open configuration file");
+    }
+    myLog.setTypeAndName(settings.logType, settings.logFilePath);
 }
 
-void OperatingSystem::readMetaDataFile(char* fileName)
+void OperatingSystem::readMetaDataFile()
 {
     ifstream metaFile;
-    metaFile.open(fileName, ios::in);
+    metaFile.open(settings.filePath, ios::in);
     if(metaFile.is_open())
     {
         string tempString;
@@ -36,24 +47,23 @@ void OperatingSystem::readMetaDataFile(char* fileName)
         {
             myLog.logError("Metadata file must begin with 'Start Program Meta-Data Code:'");
         }
-        regex regExpression("([A-Z])\\(([a-z]*)\\)([0-9]+);");
-        smatch matches;
-
-        while(regex_search(tempString, matches, regExpression))
+        while(getline(metaFile, tempString))
         {
-            // Format of matches if successful:
-            // [0] = found string
-            // [1] = first character
-            // [2] = word inside ()
-            // [3] = number of cycles
-            string componentString = matches[1];
-            char component = componentString[0];
-            string operation = matches[2];
-            string cycleTimeString = matches[3];
-            int cycleTime = atoi(cycleTimeString.c_str());
+        RE2 regExpression("([A-Z])\\(([a-z]+|[a-z]+ [a-z]+)\\)([0-9]+);");
+        re2::StringPiece reString(tempString);
+        char component;
+        string operation;
+        int cycleTime;
+
+        while(RE2::FindAndConsume(&reString, regExpression, &component, &operation, &cycleTime))
+        {
             processOperation(component, operation, cycleTime);
-            tempString = matches.suffix().str();
         }
+    }
+    }
+    else
+    {
+        myLog.logError(settings.filePath + " not found");
     }
 }
 
@@ -61,7 +71,7 @@ void OperatingSystem::processOperation(char component, string operation, int cyc
 {
     if(simulatorRunning == false)
     {
-        if(component == 'S' && operation.compare("start"))
+        if(component == 'S' && operation.compare("start") == 0)
         {
             if(cycleTime != 0)
             {
@@ -145,13 +155,18 @@ void OperatingSystem::evalApplication(string operation, int cycleTime)
 
     if(operation.compare("start") == 0)
     {
-        ProcessControlBlock b(++totalNumberOfProcesses, settings);
-        processes.push_back(b);
+        totalNumberOfProcesses++;
         indexOfCurProcess++;
         numberOfProcesses++;
+        myLog.logProcess("OS: preparing process " + to_string(totalNumberOfProcesses));
+        ProcessControlBlock b(totalNumberOfProcesses, settings);
+        processes.push_back(b);
     }
     else if(operation.compare("end") == 0)
     {
+        myLog.logProcess("OS: removing process " + to_string(indexOfCurProcess));
+        indexOfCurProcess--;
+        numberOfProcesses--;
         processes.erase(processes.begin());
     }
     else

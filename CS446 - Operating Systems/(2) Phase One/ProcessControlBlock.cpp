@@ -2,10 +2,8 @@
 
 static void createThreadThatSleeps(int sleepTimeInMilliSec)
 {
-	struct timespec req = {0};
-	req.tv_sec = 0;
-	req.tv_nsec = sleepTimeInMilliSec * 1000000L;
-	nanosleep(&req, (struct timespec *)NULL);
+	int sleepTimeInMicroSec = sleepTimeInMilliSec * 1000;
+	usleep(sleepTimeInMicroSec);
 }
 
 ProcessControlBlock::ProcessControlBlock(int pProcessNumber, const ConfigurationSettings & pSettings)

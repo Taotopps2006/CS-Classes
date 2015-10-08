@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include <regex>
+#include <re2/re2.h>
 #include <cstdlib>
 #include "Logger.h"
 #include "ProcessControlBlock.h"
@@ -13,8 +13,9 @@ extern Logger myLog;
 class OperatingSystem
 {
 public:
+	OperatingSystem();
 	void readConfigurationFile(char * fileName);
-	void readMetaDataFile(char * fileName);
+	void readMetaDataFile();
 	void outputSettingsToConsole();
 private:
 	void processOperation(char component, string operation, int cycleTime);

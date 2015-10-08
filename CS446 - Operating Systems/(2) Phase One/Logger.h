@@ -9,12 +9,14 @@
 class Logger
 {
 public:
+	void setTypeAndName(string pLogType, string pFileName = "");
 	void logProcess(string processDescription);
 	void logError(string errorMessage);
-private:
 	SimpleTimer timer;
+private:
 	string logType;
-	char* fileName;
+	string fileName;
+	double totalTime;
 };
 
 #endif // LOGGER_H
