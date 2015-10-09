@@ -1,6 +1,6 @@
 #include "ConfigurationSettings.h"
 
-ConfigurationSettings::ConfigurationSettings()
+ConfigurationSettings::ConfigurationSettings( )
 {
 	version = "1.0"; // Default version unless otherwised specified
 	regexLineKeys = {
@@ -18,16 +18,31 @@ ConfigurationSettings::ConfigurationSettings()
 	};
 }
 
-void ConfigurationSettings::set(int settingLine, string settingValue)
+void ConfigurationSettings::insertLineOfConfigFile( string line )
 {
-	if(settingLine >= regexLineKeys.size())
-		return;
-	RE2 regExpression(regexLineKeys[settingLine]);
-    string match;
-    re2::StringPiece reString(settingValue);
-	if(RE2::FullMatch(reString, regExpression, &match))
+	configFile.push_back( line );
+}
+
+void ConfigurationSettings::processConfigFile( )
+{
+	for( unsigned int currentLine = 0; currentLine < configFile.size( ); currentLine++ )
 	{
-		switch(settingLine)
+		set( currentLine, configFile[currentLine] );
+	}
+}
+
+void ConfigurationSettings::set( unsigned int settingLine, string settingValue )
+{
+	if( settingLine >= regexLineKeys.size( ) )
+	{
+		return;
+	}
+	RE2 regExpression( regexLineKeys[settingLine] );
+    string match;
+    re2::StringPiece reString( settingValue );
+	if( RE2::FullMatch( reString, regExpression, &match ) )
+	{
+		switch( settingLine )
 		{
 			case 0:
 			{
@@ -36,41 +51,43 @@ void ConfigurationSettings::set(int settingLine, string settingValue)
 			case 1:
 			{
 				version = match;
-				// Future: updateRegexKeys(version);
+				// Future: updateRegexKeys( version );
 				break;
 			}
 			default:
 			{
-				if(version.compare("1.0") == 0)
+				if( version.compare( "1.0" ) == 0 )
 				{
-				setPhaseOne(settingLine, match);
+					setPhaseOne( settingLine, match );
 				}
-				else if(version.compare("2.0") == 0)
+				else if( version.compare( "2.0" ) == 0 )
 				{
-					myLog.logError("Version 2.0 currently not implemented");
+					myLog.logError( "Version 2.0 currently not implemented" );
 				}
-				else if(version.compare("3.0") == 0)
+				else if( version.compare( "3.0" ) == 0 )
 				{
-					myLog.logError("Version 3.0 Currently not implemented");
+					myLog.logError( "Version 3.0 Currently not implemented" );
 				}
 				else
 				{
-					myLog.logError("Incorrect version number "+  version);
+					myLog.logError( "Incorrect version number "+  version );
 				}
 			}
 		}
 	}
 	else
 	{
-		myLog.logError(settingValue + " is not valid for line " + to_string(settingLine));
+		myLog.logError( 
+			settingValue + " is not valid for line " + to_string( settingLine )
+			);
 	}
 
 	
 }
 
-void ConfigurationSettings::setPhaseOne(int settingLine, string settingValue)
+void ConfigurationSettings::setPhaseOne( int settingLine, string settingValue )
 {
-	switch(settingLine)
+	switch( settingLine )
 	{
 		case 2:
 		{
@@ -79,38 +96,41 @@ void ConfigurationSettings::setPhaseOne(int settingLine, string settingValue)
 		}
 		case 3:
 		{
-			processCycleTime = atoi(settingValue.c_str());
+			processCycleTime = atoi( settingValue.c_str( ) );
 			break;
 		}
 		case 4:
 		{
-			monitorDisplayTime = atoi(settingValue.c_str());
+			monitorDisplayTime = atoi( settingValue.c_str( ) );
 			break;
 		}
 		case 5:
 		{
-			hardDriveCycleTime = atoi(settingValue.c_str());
+			hardDriveCycleTime = atoi( settingValue.c_str( ) );
 			break;
 		}
 		case 6:
 		{
-			printerCycleTime = atoi(settingValue.c_str());
+			printerCycleTime = atoi( settingValue.c_str( ) );
 			break;
 		}
 		case 7:
 		{
-			keyboardCycleTime = atoi(settingValue.c_str());
+			keyboardCycleTime = atoi( settingValue.c_str( ) );
 			break;
 		}
 		case 8:
 		{
-			if(settingValue.compare("Both") == 0 || settingValue.compare("Monitor") == 0 || settingValue.compare("File") == 0)
+			if( 
+				settingValue.compare( "Both" ) == 0 || 
+				settingValue.compare( "Monitor" ) == 0 || 
+				settingValue.compare( "File" ) == 0 )
 			{
 				logType = settingValue;
 			}
 			else
 			{
-				myLog.logError("Incorrect myLog type " + settingValue);
+				myLog.logError( "Incorrect myLog type " + settingValue );
 			}
 			break;
 		}
@@ -125,12 +145,12 @@ void ConfigurationSettings::setPhaseOne(int settingLine, string settingValue)
 		}
 		default:
 		{
-			myLog.logError("Error, too many lines in this configuration file" + to_string(settingLine));
+			myLog.logError( "Error, too many lines in this configuration file" + to_string( settingLine ) );
 		}
 	}
 }
 
-void ConfigurationSettings::outputSettingsToConsole()
+void ConfigurationSettings::outputSettingsToConsole( )
 {
 	cout << "Version: " << version << endl;
 	cout << "filePath: " << filePath << endl;

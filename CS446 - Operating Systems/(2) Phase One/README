@@ -1,5 +1,0 @@
-10-7-2015 TODO:
-- Add processes to queue instead of processing immediately
-- Put output messages onto some sort of data structure to output at the end of the program
-- Add documentation to methods / classes
-- Test RE2 library on test environment
