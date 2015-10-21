@@ -8,11 +8,14 @@
  then the family tree will be outputted to the standard output.
  Parents will create a new process for each of their children.
  For example: for the family of
+ ------------------------------
  Adam BB Casey Donna X
  Donna Yong Mary Emily
  Mary Frank
  Casey Paul Karen
+ ------------------------------
  A family tree of
+ ------------------------------
  Adam(0)–BB
      Casey(839)-Paul
          Karen(857)
@@ -20,11 +23,12 @@
         Mary(906)-Frank
         Emily(906)
     X(839)
+ ------------------------------
 Where the number in parenthesis is the parent ID of that process
 */
 // Version/Revision Information ///////////////////////////////////
 /*
- 1.00 ( 01/18/2015 ) - Tim Kwist
+ 1.00 ( 01/18/2015 ) -  Tim Kwist
  Original Code
 */
  // Program Description/Support /////////////////////////////////////
@@ -52,22 +56,22 @@ Where the number in parenthesis is the parent ID of that process
 /* Copyright ( C ) 2009-2015 Francesco Nidito 
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files ( the "Software" ), to deal
- * in the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions: 
+ * of this software and associated documentation files ( the "Software" ), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software. 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE. 
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+ * ,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
+ * THE SOFTWARE. 
  */
 #ifndef _TRY_THROW_CATCH_H_
 #define _TRY_THROW_CATCH_H_
@@ -79,7 +83,8 @@ Where the number in parenthesis is the parent ID of that process
  * /~nids/docs/longjump_try_trow_catch.html
  */
 
-#define TRY do { jmp_buf ex_buf__; switch( setjmp( ex_buf__ ) ) { case 0: while( 1 ) {
+#define TRY do { jmp_buf ex_buf__; switch( setjmp( ex_buf__ ) )\
+ { case 0: while( 1 ) {
 #define CATCH( x ) break; case x:
 // Not needed in this program: #define FINALLY break; } default: {
 #define ETRY break; } } } while( 0 )
@@ -97,35 +102,59 @@ Where the number in parenthesis is the parent ID of that process
 //
 // Free Function Prototypes ///////////////////////////////////////
 //
-extern int isalpha( int );
-extern pid_t getppid( void );
-extern pid_t waitpid( pid_t, int *, int );
+extern int isalpha( 
+	int );
+extern pid_t getppid( 
+	void );
+extern pid_t waitpid( 
+	pid_t, int *, 
+	int );
 
-void StoreNames( const char * fileName, char * familyArray[ ][ 16 ], int * numRows, int * numColPerRow );
-void OutputData( char * familyArray[ ][ 16 ], int numRows, int numColsPerRow[ ] );
-bool CheckIfAllAreNames( char * familySubArray[ 16 ], int numCols );
-int GetIndexOfChild( char*  childName, char * familyArray[ ][ 16 ], int numRows );
+void StoreNames( 
+	const char * fileName, 
+	char * familyArray[ ][ 16 ], 
+	int * numRows, 
+	int * numColPerRow );
+void OutputData( 
+	char * familyArray[ ][ 16 ], 
+	int numRows, 
+	int numColsPerRow[ ] );
+bool CheckIfAllAreNames( 
+	char * familySubArray[ 16 ], 
+	int numCols );
+int GetIndexOfChild( 
+	char*  childName, 
+	char * familyArray[ ][ 16 ], 
+	int numRows );
 
 // Main Function Implementation ///////////////////////////////////
 //
-int main( int argc, char * argv[ ] ) 
+int main( 
+	int argc, 
+	char * argv[ ] ) 
 {
     // Variable Declarations /////////
     //
-    int curRow, curCol; // The current row and column for iterating over familyArray
+    // The current row and column for iterating over familyArray
+    int curRow, curCol;
     const int MAX_ROWS_IN_ARRAY = 16;
     const int MAX_COLS_IN_ARRAY = 16;
-    int numRows = 0; // Total number of rows that have names in our familyArray
-    int * pNumRows = & numRows; // Pointer to the number of rows so that we can pass by reference
-    int numColsPerRow[ MAX_COLS_IN_ARRAY ]; // Number of columns with names in them per row in our familyArray
-    char* familyArray[ MAX_ROWS_IN_ARRAY ][ MAX_COLS_IN_ARRAY ]; // Our over family tree / family array.
-                                   // Each row correlates to input file; each cell holds a name
+    // Total number of rows that have names in our familyArray
+    int numRows = 0; 
+    // Pointer to the number of rows so that we can pass by reference
+    int * pNumRows = & numRows;
+    // Number of columns with names in them per row in our familyArray
+    int numColsPerRow[ MAX_COLS_IN_ARRAY ];
+    // Our overall family tree / family array.
+    // Each row correlates to input file; each cell holds a name
+    char* familyArray[ MAX_ROWS_IN_ARRAY ][ MAX_COLS_IN_ARRAY ];
     // Initialize familyArray
     for( curRow = 0; ( curRow < 16 ); curRow++ )
     {
         for( curCol = 0; ( curCol < 16 ); curCol++ )
         {
-            // None of the names we are testing against have more than 10 characters in them
+            // None of the names we are testing against 
+            // have more than 10 characters in them
             familyArray[ curRow ][ curCol ] = malloc( sizeof( char[ 10 ] ) );
         }
     }
@@ -188,10 +217,15 @@ Algorithm:
                 that holds data in each row that
                 holds data in familyArray
 */
-void StoreNames( const char * filename, char * familyArray[ 16 ][ 16 ], int * numRows, int * numColPerRow )
+void StoreNames( 
+	const char * filename, 
+	char * familyArray[ 16 ][ 16 ], 
+	int * numRows, 
+	int * numColPerRow )
 {
     // Variable Declarations /////////
     //
+    int curRow = 0; // The current row of familyArray being looked at
     char currentLine[ 256 ]; // Current line from the file
     FILE *fp; // Pointer to the file we'll open
     //
@@ -207,39 +241,51 @@ void StoreNames( const char * filename, char * familyArray[ 16 ][ 16 ], int * nu
             && ( strcmp( currentLine, "\n" ) != 0 ) )
         {
             numColPerRow[ curRow ] = 
-                sscanf( currentLine, "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s",
-                 familyArray[ curRow ][ 0 ],familyArray[ curRow ][ 1 ],familyArray[ curRow ][ 2 ],
-                 familyArray[ curRow ][ 3 ],familyArray[ curRow ][ 4 ],familyArray[ curRow ][ 5 ],
-                 familyArray[ curRow ][ 6 ],familyArray[ curRow ][ 7 ],familyArray[ curRow ][ 8 ],
-                 familyArray[ curRow ][ 9 ],familyArray[ curRow ][ 10 ],familyArray[ curRow ][ 11 ],
-                 familyArray[ curRow ][ 12 ],familyArray[ curRow ][ 13 ],familyArray[ curRow ][ 14 ],
-                 familyArray[ curRow ][ 15 ] );
+                sscanf( currentLine, 
+                    "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s",
+                 familyArray[ curRow ][ 0 ],familyArray[ curRow ][ 1 ],
+                 familyArray[ curRow ][ 2 ],familyArray[ curRow ][ 3 ],
+                 familyArray[ curRow ][ 4 ],familyArray[ curRow ][ 5 ],
+                 familyArray[ curRow ][ 6 ],familyArray[ curRow ][ 7 ],
+                 familyArray[ curRow ][ 8 ],familyArray[ curRow ][ 9 ],
+                 familyArray[ curRow ][ 10 ],familyArray[ curRow ][ 11 ],
+                 familyArray[ curRow ][ 12 ],familyArray[ curRow ][ 13 ],
+                 familyArray[ curRow ][ 14 ],familyArray[ curRow ][ 15 ] );
 
             if( numColPerRow[ curRow ] == -1 )
             {
-                THROW( 1 ); // Error reading the strings
+                THROW( 2 ); // Error reading the strings
             }
-            if( CheckIfAllAreNames( familyArray[ curRow ], numColPerRow[ curRow ] ) == false )
+            if( CheckIfAllAreNames( 
+            	familyArray[ curRow ], 
+            	numColPerRow[ curRow ] ) == false )
             {
-                THROW( 2 ); // One or more of the strings were not names ( IE, only alphabet characters )
+            	// One or more of the strings were not names 
+            	// ( IE, only alphabet characters )
+                THROW( 3 );
             }
-            (*numRows)++;
+            curRow++;
         }
+        ( * numRows ) = curRow + 1;
         fclose( fp ); /* CLOSE FILE */
     }
     CATCH( 1 )
     {
-        printf( "System Error Message: %s\nFailed to open input file. Program terminating.\n", strerror( errno ) );
+        printf( "System Error Message: %s\n", strerror( errno ) );
+        printf( "Failed to open input file. Program terminating.\n");
         exit( 0 ); /* EXIT PROGRAM */
     }
     CATCH( 2 )
     {
-        printf( "There was an error reading the input file. Program terminating.\n" );
+        printf( 
+        	"There was an error reading the input file. Program"
+                 "terminating.\n" );
         exit( 0 ); /* EXIT PROGRAM */
     }
     CATCH( 3 )
     {
-        printf( "One or more of the names were made up of non-alphabet characters( A-Z,a-z ). Program terminating.\n" );
+        printf( "One or more of the names were made up of non-alphabet"
+        	"characters( A-Z,a-z ). Program terminating.\n" );
          exit( 0 ); /* EXIT PROGRAM */
     }
     ETRY;
@@ -257,10 +303,10 @@ Preconditions:
  - int numColsPerRow[ ] holds the number of columns in each
  row of familyArray that have data in them
 Postconditions:
- - familyArray, numRows, and numColsPerRow will not be changed
- in the calling function
- - The family tree will be printed to the standard output
- in the form of
+ - familyArray, numRows, and numColsPerRow will not be 
+ changed in the calling function
+ - The family tree will be printed to the standard 
+ output in the form of
  parent1(parentID) -parent2
     child1(parentID) -child1Parent
         child1Child(parentID)
@@ -296,7 +342,10 @@ Algorithm:
                 that holds data in each row that
                 holds data in familyArray
 */
-void OutputData( char* familyArray[ ][ 16 ], int numRows, int numColsPerRow[ ] )
+void OutputData( 
+	char* familyArray[ ][ 16 ], 
+	int numRows, 
+	int numColsPerRow[ ] )
 {
     // Variable Declarations /////////
     int genIndex = 0; // Index of generation for iterating
@@ -332,25 +381,28 @@ void OutputData( char* familyArray[ ][ 16 ], int numRows, int numColsPerRow[ ] )
             }
             if( pid > 0 )
             {
-                waitpid( pid, 0, 0 ); // Child off at college, wait for it to come back
+            	// Child off at college, wait for it to come back
+                waitpid( pid, 0, 0 );
                 curCol++;
             }
             else if( pid == 0 )
             {
                 curGen++;
-                indexOfChild = GetIndexOfChild( familyArray[ curRow ][ curCol ], 
-                                                familyArray, 
-                                                numRows );
+                indexOfChild = GetIndexOfChild(
+                    familyArray[ curRow ][ curCol ],
+                    familyArray,
+                    numRows );
                 if( indexOfChild == -1 )
                 {
                     for( genIndex = 0; ( genIndex < curGen ); genIndex++ )
                     {
                         printf( "\t" );
                     }
-                    printf( "%s( %d )\n", 
+                    printf( "%s(%d)\n", 
                         familyArray[ curRow ][ curCol ], 
                         getppid( ) );
-                    exit( 0 ); // Oh god, Michael - why did you make me kill all these children?
+            // Oh god, Michael - why did you make me kill all these children?
+                    exit( 0 );
                 }
                 else
                 {
@@ -378,12 +430,12 @@ Postconditions:
 Algorithm:
  - Iterate over the elements in familyArray from
  col = o to col = numCols
- - Iterate over each character of each name in familyArray from
- char = 0 to char = name length
+ - Iterate over each character of each name in familyArray 
+ from char = 0 to char = name length
  - Use isalpha to check if each character is alphabetic
  - If isalpha returns 0, this function returns false
- - If all characters are checked with isalpha and none return
- 0, this function returns 0
+ - If all characters are checked with isalpha and none 
+ return 0, this function returns 0
  Exceptional/Error Conditions:
 ============================================================
 ***********************************************************/
@@ -392,7 +444,9 @@ Algorithm:
                   put into familyArray
  numCols - holds the number of columns in familySubArray
 */
-bool CheckIfAllAreNames( char* familySubArray[ 16 ], int numCols )
+bool CheckIfAllAreNames( 
+	char* familySubArray[ 16 ], 
+	int numCols )
 {
     // Variable Declarations /////////
     //
@@ -428,9 +482,9 @@ Preconditions:
 Postconditions:
  - childName, familyArray, and numRows are not changed in the
  calling function
- - If the child is found, return their row index; the column index
- is implicitly 0 since we are only looking for children with
- families
+ - If the child is found, return their row index; the column 
+ index is implicitly 0 since we are only looking for children 
+ with families
 Algorithm:
  - Iterate over the elements in familyArray from
  row = 0 to row = numRows
@@ -451,7 +505,10 @@ Algorithm:
  numRows - holds the number of rows in familyArray that holds
            data
 */
-int GetIndexOfChild( char* childName, char* familyArray[ ][ 16 ], int numRows )
+int GetIndexOfChild( 
+	char* childName, 
+	char* familyArray[ ][ 16 ], 
+	int numRows )
 {
     // Variable Declarations /////////
     int curRow; // Current row in familyArray
