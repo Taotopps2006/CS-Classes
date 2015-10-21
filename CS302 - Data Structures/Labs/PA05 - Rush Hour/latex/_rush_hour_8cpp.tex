@@ -1,0 +1,189 @@
+\hypertarget{_rush_hour_8cpp}{\section{Rush\+Hour.\+cpp File Reference}
+\label{_rush_hour_8cpp}\index{Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}}
+}
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_rush_hour_8cpp_ab886ef4f7a385dd21939f11f06ffa7e6}{build\+Board} ()
+\item 
+bool \hyperlink{_rush_hour_8cpp_a57d1f895499e8a7a178e9e1eeec58e4b}{forward} (int)
+\item 
+bool \hyperlink{_rush_hour_8cpp_a3d6af94bedc3caddbc7f8242f2602d98}{backward} (int)
+\item 
+int \hyperlink{_rush_hour_8cpp_ab59521049b9aeafd7e99c2faaaf342d7}{solve} (int, int, int, int)
+\item 
+bool \hyperlink{_rush_hour_8cpp_ae142af05424034c8cd4d7d9fa7d46c2d}{solved} ()
+\item 
+int \hyperlink{_rush_hour_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$$\ast$ \hyperlink{_rush_hour_8cpp_a55cb9414a970dc2e3e8bb4a4d151b79f}{board} = new char$\ast$\mbox{[}6\mbox{]}
+\item 
+\hypertarget{_rush_hour_8cpp_a0fb7007c32c8ee9364d1e83903e13055}{int $\ast$$\ast$ {\bfseries list\+Of\+Cars}}\label{_rush_hour_8cpp_a0fb7007c32c8ee9364d1e83903e13055}
+
+\item 
+\hypertarget{_rush_hour_8cpp_a36ecf0006f5fe9d8bf1f2c1f2f2b4554}{int {\bfseries M\+A\+X} = 10}\label{_rush_hour_8cpp_a36ecf0006f5fe9d8bf1f2c1f2f2b4554}
+
+\item 
+\hypertarget{_rush_hour_8cpp_aad1ca03c7ec97a9390cbcb91d85183e2}{int {\bfseries L\+O\+W} = 11}\label{_rush_hour_8cpp_aad1ca03c7ec97a9390cbcb91d85183e2}
+
+\item 
+\hypertarget{_rush_hour_8cpp_a1a498cddd62c0f831348a4cfd5fe5dc9}{int {\bfseries num\+Cars} = -\/1}\label{_rush_hour_8cpp_a1a498cddd62c0f831348a4cfd5fe5dc9}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{_rush_hour_8cpp_a3d6af94bedc3caddbc7f8242f2602d98}{\index{Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}!backward@{backward}}
+\index{backward@{backward}!Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}}
+\subsubsection[{backward}]{\setlength{\rightskip}{0pt plus 5cm}bool backward (
+\begin{DoxyParamCaption}
+\item[{int}]{car\+Number}
+\end{DoxyParamCaption}
+)}}\label{_rush_hour_8cpp_a3d6af94bedc3caddbc7f8242f2602d98}
+Move the car backwards if possible. For vertical cars, this is down. For horizontal cars, this is right
+
+
+\begin{DoxyParams}{Parameters}
+{\em car\+Number} & Car being moved backwards \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if car can be moved backwards, false otherwise 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+There are cars on the board to be moved 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The car specified will be moved backwards if possible 
+\end{DoxyPostcond}
+\hypertarget{_rush_hour_8cpp_ab886ef4f7a385dd21939f11f06ffa7e6}{\index{Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}!build\+Board@{build\+Board}}
+\index{build\+Board@{build\+Board}!Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}}
+\subsubsection[{build\+Board}]{\setlength{\rightskip}{0pt plus 5cm}void build\+Board (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{_rush_hour_8cpp_ab886ef4f7a385dd21939f11f06ffa7e6}
+Function headers
+
+Method implementation Get input from the user to build the board Input should come in the following order\+:
+\begin{DoxyItemize}
+\item number of cars
+\item \mbox{[}length of car\mbox{]} \mbox{[}car orientation\mbox{]} \mbox{[}row of car\mbox{]} \mbox{[}col of car\mbox{]} if number of cars is 0, skip getting any more input and assume end of file This method will also update the list of cars 
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The board will be generated based on given input, and list of cars will also be updated 
+\end{DoxyPostcond}
+
+\end{DoxyItemize}\hypertarget{_rush_hour_8cpp_a57d1f895499e8a7a178e9e1eeec58e4b}{\index{Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}!forward@{forward}}
+\index{forward@{forward}!Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}}
+\subsubsection[{forward}]{\setlength{\rightskip}{0pt plus 5cm}bool forward (
+\begin{DoxyParamCaption}
+\item[{int}]{car\+Number}
+\end{DoxyParamCaption}
+)}}\label{_rush_hour_8cpp_a57d1f895499e8a7a178e9e1eeec58e4b}
+Move the car forward if possible. For vertical cars, this is up. For horizontal cars, this is left.
+
+
+\begin{DoxyParams}{Parameters}
+{\em car\+Number} & Car being moved forward \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if car can be moved forward, false otherwise 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+There are cars on the board to be moved 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The car specified will be moved forward if possible 
+\end{DoxyPostcond}
+\hypertarget{_rush_hour_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{\index{Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}!main@{main}}
+\index{main@{main}!Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{_rush_hour_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
+Main method implementation This main method will set up the initial board, and will, on loop, ask for input of the rush hour problem, solve the board, and output how many moves the solution takes. \begin{DoxyPrecond}{Precondition}
+
+\end{DoxyPrecond}
+\hypertarget{_rush_hour_8cpp_ab59521049b9aeafd7e99c2faaaf342d7}{\index{Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}!solve@{solve}}
+\index{solve@{solve}!Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}}
+\subsubsection[{solve}]{\setlength{\rightskip}{0pt plus 5cm}int solve (
+\begin{DoxyParamCaption}
+\item[{int}]{car\+Number, }
+\item[{int}]{current\+Move\+Number, }
+\item[{int}]{move\+Direction, }
+\item[{int}]{current\+Stack}
+\end{DoxyParamCaption}
+)}}\label{_rush_hour_8cpp_ab59521049b9aeafd7e99c2faaaf342d7}
+Use a brute force, breadth-\/first search to try to solve the rush hour puzzle. If a puzzle takes more than 10 moves, its node will be terminated. If the ratio of moves to stack calls is too high, it is assumed that the program is stuck in an infinite loop and the node will be terminated as well.
+
+
+\begin{DoxyParams}{Parameters}
+{\em car\+Number} & car currently being evaluated for solving \\
+\hline
+{\em current\+Move\+Number} & Current number of moves used for current stack call \\
+\hline
+{\em move\+Direction} & Direction that current car is being moved \\
+\hline
+{\em current\+Stack} & Current number of stack call of this method \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Always returns 0 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The grid will be set back to its original state, and nothing will be changed except for the global variable L\+O\+W 
+\end{DoxyPostcond}
+int car\+North = -\/1; int car\+South = -\/1; int car\+West = -\/1; int car\+East = -\/1;
+
+for(int i = cur\+Row; i $>$ 0; i--) \{ if(board\mbox{[}i\mbox{]}\mbox{[}cur\+Col\mbox{]} != '.' \&\& board\mbox{[}i\mbox{]}\mbox{[}cur\+Col\mbox{]} != car\+Number) \{ car\+North = board\mbox{[}i\mbox{]}\mbox{[}cur\+Col\mbox{]}; \} \} for(int i = cur\+Row; i $<$ 6; i++) \{ if(board\mbox{[}i\mbox{]}\mbox{[}cur\+Col\mbox{]} != '.' \&\& board\mbox{[}i\mbox{]}\mbox{[}cur\+Col\mbox{]} != car\+Number) \{ car\+South = board\mbox{[}i\mbox{]}\mbox{[}cur\+Col\mbox{]}; \} \} for(int j = cur\+Col; j $>$ 0; j--) \{ if(board\mbox{[}cur\+Row\mbox{]}\mbox{[}j\mbox{]} != '.' \&\& board\mbox{[}cur\+Row\mbox{]}\mbox{[}j\mbox{]} != car\+Number) \{ car\+West = board\mbox{[}cur\+Row\mbox{]}\mbox{[}j\mbox{]}; \} \} for(int j = cur\+Col; j $<$ 6; j++) \{ if(board\mbox{[}cur\+Row\mbox{]}\mbox{[}j\mbox{]} != '.' \&\& board\mbox{[}cur\+Row\mbox{]}\mbox{[}j\mbox{]} != car\+Number) \{ car\+East = board\mbox{[}cur\+Row\mbox{]}\mbox{[}j\mbox{]}; \} \}
+
+if(car\+North != -\/1) \{ solve(car\+North, current\+Move\+Number, 1, current\+Stack); // Forward solve(car\+North, current\+Move\+Number, 1, current\+Stack); // Backward \} if(car\+West != -\/1) \{ solve(car\+West, current\+Move\+Number, 0, current\+Stack); // Forward solve(car\+West, current\+Move\+Number, 1, current\+Stack); // Backward \} if(car\+South != -\/1) \{ solve(car\+South, current\+Move\+Number, 0, current\+Stack); // Forward solve(car\+South, current\+Move\+Number, 1, current\+Stack); // Backward \} if(car\+East != -\/1) \{ solve(car\+East, current\+Move\+Number, 0, current\+Stack); // Forward solve(car\+East, current\+Move\+Number, 1, current\+Stack); // Backward \} if(move\+Successful) \{ solve(car\+Number, current\+Move\+Number, move\+Direction, current\+Stack); \}\hypertarget{_rush_hour_8cpp_ae142af05424034c8cd4d7d9fa7d46c2d}{\index{Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}!solved@{solved}}
+\index{solved@{solved}!Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}}
+\subsubsection[{solved}]{\setlength{\rightskip}{0pt plus 5cm}bool solved (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{_rush_hour_8cpp_ae142af05424034c8cd4d7d9fa7d46c2d}
+Determine whether the rush hour puzzle is solved by checking if the car is on the last column
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if car is on 5th column, false otherwise 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+No variables will be changed 
+\end{DoxyPostcond}
+
+
+\subsection{Variable Documentation}
+\hypertarget{_rush_hour_8cpp_a55cb9414a970dc2e3e8bb4a4d151b79f}{\index{Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}!board@{board}}
+\index{board@{board}!Rush\+Hour.\+cpp@{Rush\+Hour.\+cpp}}
+\subsubsection[{board}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$$\ast$ board = new char$\ast$\mbox{[}6\mbox{]}}}\label{_rush_hour_8cpp_a55cb9414a970dc2e3e8bb4a4d151b79f}
+Global Variables 

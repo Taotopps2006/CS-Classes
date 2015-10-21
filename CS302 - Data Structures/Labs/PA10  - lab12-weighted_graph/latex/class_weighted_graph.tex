@@ -1,0 +1,540 @@
+\hypertarget{class_weighted_graph}{\section{Weighted\+Graph Class Reference}
+\label{class_weighted_graph}\index{Weighted\+Graph@{Weighted\+Graph}}
+}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_weighted_graph_1_1_vertex}{Vertex}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_weighted_graph_acf8f5b4f212bc8daf4b12f0b88899180}{Weighted\+Graph} (int max\+Number=def\+Max\+Graph\+Size)
+\item 
+\hyperlink{class_weighted_graph_a294fd717db213e761dc0eb65bbfcb7ab}{Weighted\+Graph} (const \hyperlink{class_weighted_graph}{Weighted\+Graph} \&other)
+\item 
+\hyperlink{class_weighted_graph}{Weighted\+Graph} \& \hyperlink{class_weighted_graph_aa5982a507e944af28e4749cdc06543c6}{operator=} (const \hyperlink{class_weighted_graph}{Weighted\+Graph} \&other)
+\item 
+\hyperlink{class_weighted_graph_ad7b4a5c8206772f9f4fb5906c0d64923}{$\sim$\+Weighted\+Graph} ()
+\item 
+void \hyperlink{class_weighted_graph_aec4ef3455e3cc0d73a42e042adb7ac40}{insert\+Vertex} (const \hyperlink{class_weighted_graph_1_1_vertex}{Vertex} \&new\+Vertex)  throw ( logic\+\_\+error )
+\item 
+void \hyperlink{class_weighted_graph_a6f59ad223d921324c3ec629d0d6e4eea}{insert\+Edge} (const string \&v1, const string \&v2, int wt)  throw ( logic\+\_\+error )
+\item 
+bool \hyperlink{class_weighted_graph_a3afabc2236c99dac950f5161f715f114}{retrieve\+Vertex} (const string \&v, \hyperlink{class_weighted_graph_1_1_vertex}{Vertex} \&v\+Data) const 
+\item 
+bool \hyperlink{class_weighted_graph_ab136044e7378313087be69eb43e7f042}{get\+Edge\+Weight} (const string \&v1, const string \&v2, int \&wt) const   throw ( logic\+\_\+error )
+\item 
+void \hyperlink{class_weighted_graph_abaaa572a9b1a60ec3cd99d8db9d9590e}{remove\+Vertex} (const string \&v)  throw ( logic\+\_\+error )
+\item 
+void \hyperlink{class_weighted_graph_a1db455249fa7fedf70aa5683487a17df}{remove\+Edge} (const string \&v1, const string \&v2)  throw ( logic\+\_\+error )
+\item 
+void \hyperlink{class_weighted_graph_a26890ebf74d23821a6e4dbcf803b5002}{clear} ()
+\item 
+bool \hyperlink{class_weighted_graph_a1c03a0f68447cf88fed97c2076501702}{is\+Empty} () const 
+\item 
+bool \hyperlink{class_weighted_graph_a22e56836e3967031a657cfa9ea5b9843}{is\+Full} () const 
+\item 
+void \hyperlink{class_weighted_graph_ad7f20a989073ea5401d504d944182347}{show\+Structure} () const 
+\item 
+void \hyperlink{class_weighted_graph_a91740718926ca2862726d297e7b28b7f}{show\+Shortest\+Paths} () const 
+\item 
+bool \hyperlink{class_weighted_graph_a60be8bab10a9142846093cb768855efd}{has\+Proper\+Coloring} () const 
+\item 
+bool \hyperlink{class_weighted_graph_a03884e32b9e093b10e3a44add7eaa928}{are\+All\+Even} () const 
+\item 
+\hypertarget{class_weighted_graph_acf8f5b4f212bc8daf4b12f0b88899180}{{\bfseries Weighted\+Graph} (int max\+Number=def\+Max\+Graph\+Size)}\label{class_weighted_graph_acf8f5b4f212bc8daf4b12f0b88899180}
+
+\item 
+\hypertarget{class_weighted_graph_a294fd717db213e761dc0eb65bbfcb7ab}{{\bfseries Weighted\+Graph} (const \hyperlink{class_weighted_graph}{Weighted\+Graph} \&other)}\label{class_weighted_graph_a294fd717db213e761dc0eb65bbfcb7ab}
+
+\item 
+\hypertarget{class_weighted_graph_a32c3057c0f746f427068be4a9b408845}{\hyperlink{class_weighted_graph}{Weighted\+Graph} \& {\bfseries operator=} (const \hyperlink{class_weighted_graph}{Weighted\+Graph} \&other)}\label{class_weighted_graph_a32c3057c0f746f427068be4a9b408845}
+
+\item 
+\hypertarget{class_weighted_graph_a164845f6fecf25a25f5f14f69d42d975}{void {\bfseries insert\+Vertex} (\hyperlink{class_weighted_graph_1_1_vertex}{Vertex} new\+Vertex)  throw ( logic\+\_\+error )}\label{class_weighted_graph_a164845f6fecf25a25f5f14f69d42d975}
+
+\item 
+\hypertarget{class_weighted_graph_ad5e4bb96c2b3b5ace4be251bb3b47621}{void {\bfseries insert\+Edge} (char $\ast$v1, char $\ast$v2, int wt)  throw ( logic\+\_\+error )}\label{class_weighted_graph_ad5e4bb96c2b3b5ace4be251bb3b47621}
+
+\item 
+\hypertarget{class_weighted_graph_add447f0f2354c8c776045bf3bec865d8}{bool {\bfseries retrieve\+Vertex} (char $\ast$v, \hyperlink{class_weighted_graph_1_1_vertex}{Vertex} \&v\+Data) const }\label{class_weighted_graph_add447f0f2354c8c776045bf3bec865d8}
+
+\item 
+\hypertarget{class_weighted_graph_a80b2b095e7a05df4841383d2067e4345}{int {\bfseries edge\+Weight} (char $\ast$v1, char $\ast$v2, int \&wt) const   throw ( logic\+\_\+error )}\label{class_weighted_graph_a80b2b095e7a05df4841383d2067e4345}
+
+\item 
+\hypertarget{class_weighted_graph_a0ff5197e169472040ab88b81049340d9}{bool {\bfseries get\+Edge\+Weight} (char $\ast$v1, char $\ast$v2, int \&wt) const   throw ( logic\+\_\+error )}\label{class_weighted_graph_a0ff5197e169472040ab88b81049340d9}
+
+\item 
+\hypertarget{class_weighted_graph_a0eb59d893befdedcda67add1466b9fdd}{void {\bfseries remove\+Vertex} (char $\ast$v)  throw ( logic\+\_\+error )}\label{class_weighted_graph_a0eb59d893befdedcda67add1466b9fdd}
+
+\item 
+\hypertarget{class_weighted_graph_ad06596ac31405f02f39e482860ebe3a8}{void {\bfseries remove\+Edge} (char $\ast$v1, char $\ast$v2)  throw ( logic\+\_\+error )}\label{class_weighted_graph_ad06596ac31405f02f39e482860ebe3a8}
+
+\item 
+\hypertarget{class_weighted_graph_a26890ebf74d23821a6e4dbcf803b5002}{void {\bfseries clear} ()}\label{class_weighted_graph_a26890ebf74d23821a6e4dbcf803b5002}
+
+\item 
+\hypertarget{class_weighted_graph_aeaea1bd5b1e14b69f2155613bfd25d68}{void {\bfseries compute\+Paths} ()}\label{class_weighted_graph_aeaea1bd5b1e14b69f2155613bfd25d68}
+
+\item 
+\hypertarget{class_weighted_graph_a1c03a0f68447cf88fed97c2076501702}{bool {\bfseries is\+Empty} () const }\label{class_weighted_graph_a1c03a0f68447cf88fed97c2076501702}
+
+\item 
+\hypertarget{class_weighted_graph_a22e56836e3967031a657cfa9ea5b9843}{bool {\bfseries is\+Full} () const }\label{class_weighted_graph_a22e56836e3967031a657cfa9ea5b9843}
+
+\item 
+\hypertarget{class_weighted_graph_ad7f20a989073ea5401d504d944182347}{void {\bfseries show\+Structure} () const }\label{class_weighted_graph_ad7f20a989073ea5401d504d944182347}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_weighted_graph_a126ff6aa1d4ab79c67491e1847fd1126}{static const int {\bfseries def\+Max\+Graph\+Size} = 10}\label{class_weighted_graph_a126ff6aa1d4ab79c67491e1847fd1126}
+
+\item 
+\hypertarget{class_weighted_graph_a1c888219c6dd8aff12519f368a415d5a}{static const int {\bfseries vertex\+Label\+Length} = 11}\label{class_weighted_graph_a1c888219c6dd8aff12519f368a415d5a}
+
+\item 
+\hypertarget{class_weighted_graph_a00fcc9bad275eb37d4f3a2c4a43afc17}{static const int {\bfseries infinite\+Edge\+Wt} = I\+N\+T\+\_\+\+M\+A\+X}\label{class_weighted_graph_a00fcc9bad275eb37d4f3a2c4a43afc17}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_weighted_graph_acf8f5b4f212bc8daf4b12f0b88899180}{\index{Weighted\+Graph@{Weighted\+Graph}!Weighted\+Graph@{Weighted\+Graph}}
+\index{Weighted\+Graph@{Weighted\+Graph}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{Weighted\+Graph}]{\setlength{\rightskip}{0pt plus 5cm}Weighted\+Graph\+::\+Weighted\+Graph (
+\begin{DoxyParamCaption}
+\item[{int}]{max\+Number = {\ttfamily defMaxGraphSize}}
+\end{DoxyParamCaption}
+)}}\label{class_weighted_graph_acf8f5b4f212bc8daf4b12f0b88899180}
+Constructor for Weighted Graph. Allocates enough memory for a graph containing max\+Number vertices
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+Number} & \+: Number of vertices allowed in this graph \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+none 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Graph will have memory allocated to it and max\+Size will be set 
+\end{DoxyPostcond}
+\hypertarget{class_weighted_graph_a294fd717db213e761dc0eb65bbfcb7ab}{\index{Weighted\+Graph@{Weighted\+Graph}!Weighted\+Graph@{Weighted\+Graph}}
+\index{Weighted\+Graph@{Weighted\+Graph}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{Weighted\+Graph}]{\setlength{\rightskip}{0pt plus 5cm}Weighted\+Graph\+::\+Weighted\+Graph (
+\begin{DoxyParamCaption}
+\item[{const {\bf Weighted\+Graph} \&}]{other}
+\end{DoxyParamCaption}
+)}}\label{class_weighted_graph_a294fd717db213e761dc0eb65bbfcb7ab}
+Copy Constructor for Weighted Graph.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \+: Weighted which will be copied into this graph \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+This graph will be equivalent to other 
+\end{DoxyPostcond}
+\hypertarget{class_weighted_graph_ad7b4a5c8206772f9f4fb5906c0d64923}{\index{Weighted\+Graph@{Weighted\+Graph}!````~Weighted\+Graph@{$\sim$\+Weighted\+Graph}}
+\index{````~Weighted\+Graph@{$\sim$\+Weighted\+Graph}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{$\sim$\+Weighted\+Graph}]{\setlength{\rightskip}{0pt plus 5cm}Weighted\+Graph\+::$\sim$\+Weighted\+Graph (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_weighted_graph_ad7b4a5c8206772f9f4fb5906c0d64923}
+Destructor for Weighted Graph
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Memory of the graph will be deallocated 
+\end{DoxyPostcond}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_weighted_graph_a03884e32b9e093b10e3a44add7eaa928}{\index{Weighted\+Graph@{Weighted\+Graph}!are\+All\+Even@{are\+All\+Even}}
+\index{are\+All\+Even@{are\+All\+Even}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{are\+All\+Even}]{\setlength{\rightskip}{0pt plus 5cm}bool Weighted\+Graph\+::are\+All\+Even (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_weighted_graph_a03884e32b9e093b10e3a44add7eaa928}
+Returns true if every vertex in a graph is of even degree. Otherwise, return false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if every vertex in a graph is of even degree. Otherwise, return false. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this graph will be unaffected 
+\end{DoxyPostcond}
+\hypertarget{class_weighted_graph_a26890ebf74d23821a6e4dbcf803b5002}{\index{Weighted\+Graph@{Weighted\+Graph}!clear@{clear}}
+\index{clear@{clear}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{clear}]{\setlength{\rightskip}{0pt plus 5cm}void Weighted\+Graph\+::clear (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_weighted_graph_a26890ebf74d23821a6e4dbcf803b5002}
+Removes all the vertices and edges in the graph.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Removes all the vertices and edges in the graph. 
+\end{DoxyPostcond}
+\hypertarget{class_weighted_graph_ab136044e7378313087be69eb43e7f042}{\index{Weighted\+Graph@{Weighted\+Graph}!get\+Edge\+Weight@{get\+Edge\+Weight}}
+\index{get\+Edge\+Weight@{get\+Edge\+Weight}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{get\+Edge\+Weight}]{\setlength{\rightskip}{0pt plus 5cm}bool Weighted\+Graph\+::get\+Edge\+Weight (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{v1, }
+\item[{const string \&}]{v2, }
+\item[{int \&}]{wt}
+\end{DoxyParamCaption}
+) const throw  logic\+\_\+error) }}\label{class_weighted_graph_ab136044e7378313087be69eb43e7f042}
+Searches the graph for the edge connecting vertices v1 and v2. If this edge exists, then places the weight of the edge in wt and returns true. Otherwise, returns false with wt undefined.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v1} & \+: vertice 1 of edge to search for \\
+\hline
+{\em v2} & \+: vertice 2 of the edge to search for \\
+\hline
+{\em wt} & \+: If the given edge is found, its weight will be copied into this reference variable \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool \+: If the edge exists, true; else false 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+Graph includes vertices v1 and v2 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+If this edge exists, then places the weight of the edge in wt and returns true. Otherwise, returns false with wt undefined. 
+\end{DoxyPostcond}
+\hypertarget{class_weighted_graph_a60be8bab10a9142846093cb768855efd}{\index{Weighted\+Graph@{Weighted\+Graph}!has\+Proper\+Coloring@{has\+Proper\+Coloring}}
+\index{has\+Proper\+Coloring@{has\+Proper\+Coloring}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{has\+Proper\+Coloring}]{\setlength{\rightskip}{0pt plus 5cm}bool Weighted\+Graph\+::has\+Proper\+Coloring (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_weighted_graph_a60be8bab10a9142846093cb768855efd}
+Returns true if no vertex in the graph has the same color as an adjacent vertex. Otherwise, returns false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool \+: Returns true if no vertex in the graph has the same color as an adjacent vertex. Otherwise, returns false. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+All vertices have been assigned a color 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of the graph will be unaffected 
+\end{DoxyPostcond}
+\hypertarget{class_weighted_graph_a6f59ad223d921324c3ec629d0d6e4eea}{\index{Weighted\+Graph@{Weighted\+Graph}!insert\+Edge@{insert\+Edge}}
+\index{insert\+Edge@{insert\+Edge}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{insert\+Edge}]{\setlength{\rightskip}{0pt plus 5cm}void Weighted\+Graph\+::insert\+Edge (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{v1, }
+\item[{const string \&}]{v2, }
+\item[{int}]{wt}
+\end{DoxyParamCaption}
+) throw  logic\+\_\+error) }}\label{class_weighted_graph_a6f59ad223d921324c3ec629d0d6e4eea}
+Inserts an undirected edge connecting vertices v1 and v2 into the graph. The weight of the edge is wt. If there is already an edge connecting these vertices, then updates the weight of the edge.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v1} & \+: vertice 1 \\
+\hline
+{\em v2} & \+: vertice 2 \\
+\hline
+{\em wt} & \+: weight of the edge \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+Graph includes vertices v1 and v2. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Inserts an undirected edge connecting vertices v1 and v2 into the graph. The weight of the edge is wt. If there is already an edge connecting these vertices, then updates the weight of the edge. 
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em logic\+\_\+error} & \+: If graph does not included vertices v1 and v2, through \char`\"{}\+Vertex not found\char`\"{} error. \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{class_weighted_graph_aec4ef3455e3cc0d73a42e042adb7ac40}{\index{Weighted\+Graph@{Weighted\+Graph}!insert\+Vertex@{insert\+Vertex}}
+\index{insert\+Vertex@{insert\+Vertex}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{insert\+Vertex}]{\setlength{\rightskip}{0pt plus 5cm}void Weighted\+Graph\+::insert\+Vertex (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vertex} \&}]{new\+Vertex}
+\end{DoxyParamCaption}
+) throw  logic\+\_\+error) }}\label{class_weighted_graph_aec4ef3455e3cc0d73a42e042adb7ac40}
+Insert new\+Vertex into a graph. If it already exists in the graph, then updates it.
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Vertex} & \+: the new vertex to be inserted into the graph \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+Graph is not full 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+new\+Vertex will be inserted or will be updated (if it already exists in the graph) 
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em logic\+\_\+error} & \+: Throws \char`\"{}\+The Graph is full\char`\"{} is the graph is full \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{class_weighted_graph_a1c03a0f68447cf88fed97c2076501702}{\index{Weighted\+Graph@{Weighted\+Graph}!is\+Empty@{is\+Empty}}
+\index{is\+Empty@{is\+Empty}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{is\+Empty}]{\setlength{\rightskip}{0pt plus 5cm}bool Weighted\+Graph\+::is\+Empty (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_weighted_graph_a1c03a0f68447cf88fed97c2076501702}
+Returns true if the graph is empty (no vertices). Otherwise, returns false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool \+: Returns true if the graph is empty (no vertices). Otherwise, returns false. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Contents of graph will be unaffected 
+\end{DoxyPostcond}
+\hypertarget{class_weighted_graph_a22e56836e3967031a657cfa9ea5b9843}{\index{Weighted\+Graph@{Weighted\+Graph}!is\+Full@{is\+Full}}
+\index{is\+Full@{is\+Full}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{is\+Full}]{\setlength{\rightskip}{0pt plus 5cm}bool Weighted\+Graph\+::is\+Full (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_weighted_graph_a22e56836e3967031a657cfa9ea5b9843}
+Returns true if the graph is full (cannot add any more vertices). Otherwise, returns false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool \+: Returns true if the graph is full (cannot add any more vertices). Otherwise, returns false. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Contents of graph will be unaffected 
+\end{DoxyPostcond}
+\hypertarget{class_weighted_graph_aa5982a507e944af28e4749cdc06543c6}{\index{Weighted\+Graph@{Weighted\+Graph}!operator=@{operator=}}
+\index{operator=@{operator=}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{operator=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Weighted\+Graph} \& Weighted\+Graph\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Weighted\+Graph} \&}]{other}
+\end{DoxyParamCaption}
+)}}\label{class_weighted_graph_aa5982a507e944af28e4749cdc06543c6}
+Overloaded assignment operator for Weighted Graph
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \+: Weighted Graph which will be copied into this graph \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{class_weighted_graph}{Weighted\+Graph}\& \+: A copy of this graph 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+This graph will be equivalent to other 
+\end{DoxyPostcond}
+\hypertarget{class_weighted_graph_a1db455249fa7fedf70aa5683487a17df}{\index{Weighted\+Graph@{Weighted\+Graph}!remove\+Edge@{remove\+Edge}}
+\index{remove\+Edge@{remove\+Edge}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{remove\+Edge}]{\setlength{\rightskip}{0pt plus 5cm}void Weighted\+Graph\+::remove\+Edge (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{v1, }
+\item[{const string \&}]{v2}
+\end{DoxyParamCaption}
+) throw  logic\+\_\+error) }}\label{class_weighted_graph_a1db455249fa7fedf70aa5683487a17df}
+Removes the edge connecting vertices v1 and v2 from the graph.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v1} & \+: vertice one of edge to remove \\
+\hline
+{\em v2} & \+: vertice two of edge to remove \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+Graph includes vertices v1 and v2 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Removes the edge connecting vertices v1 and v2 from the graph. 
+\end{DoxyPostcond}
+\hypertarget{class_weighted_graph_abaaa572a9b1a60ec3cd99d8db9d9590e}{\index{Weighted\+Graph@{Weighted\+Graph}!remove\+Vertex@{remove\+Vertex}}
+\index{remove\+Vertex@{remove\+Vertex}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{remove\+Vertex}]{\setlength{\rightskip}{0pt plus 5cm}void Weighted\+Graph\+::remove\+Vertex (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{v}
+\end{DoxyParamCaption}
+) throw  logic\+\_\+error) }}\label{class_weighted_graph_abaaa572a9b1a60ec3cd99d8db9d9590e}
+Removes vertex v from the graph and any edges connected to v.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & \+: vertex to be removed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+Graph includes vertex v 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Removes vertex v from the graph and any edges connected to v. 
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em logic\+\_\+error} & \+: If the given vertex does not exist in the graph, throw a logic\+\_\+error \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{class_weighted_graph_a3afabc2236c99dac950f5161f715f114}{\index{Weighted\+Graph@{Weighted\+Graph}!retrieve\+Vertex@{retrieve\+Vertex}}
+\index{retrieve\+Vertex@{retrieve\+Vertex}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{retrieve\+Vertex}]{\setlength{\rightskip}{0pt plus 5cm}bool Weighted\+Graph\+::retrieve\+Vertex (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{v, }
+\item[{{\bf Vertex} \&}]{v\+Data}
+\end{DoxyParamCaption}
+) const}}\label{class_weighted_graph_a3afabc2236c99dac950f5161f715f114}
+Searches a graph for vertex v. If this vertex is found, then places the value of the vertex's data in v\+Data and returns true. Otherwise, returns false with v\+Data undefined.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & \+: vertex string label to look for \\
+\hline
+{\em v\+Data} & \+: if the given vertex is found, it will be copied into this reference variable \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool \+: true if the given vertex is in the graph, false otherwise 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+If this vertex is found, then places the value of the vertex's data in v\+Data and returns true. Otherwise, returns false with v\+Data undefined. 
+\end{DoxyPostcond}
+\hypertarget{class_weighted_graph_a91740718926ca2862726d297e7b28b7f}{\index{Weighted\+Graph@{Weighted\+Graph}!show\+Shortest\+Paths@{show\+Shortest\+Paths}}
+\index{show\+Shortest\+Paths@{show\+Shortest\+Paths}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{show\+Shortest\+Paths}]{\setlength{\rightskip}{0pt plus 5cm}void Weighted\+Graph\+::show\+Shortest\+Paths (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_weighted_graph_a91740718926ca2862726d297e7b28b7f}
+Computes and displays the graph's path matrix If there exists a path (a to c) in which there are subsequent paths (a to b) and (b to c), in which ((a to b) + (b to c)) $<$ (a to c), replace a to c with ((a to b) + (b + c)).
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Contents of the graph will be unaffected 
+\end{DoxyPostcond}
+\hypertarget{class_weighted_graph_ad7f20a989073ea5401d504d944182347}{\index{Weighted\+Graph@{Weighted\+Graph}!show\+Structure@{show\+Structure}}
+\index{show\+Structure@{show\+Structure}!Weighted\+Graph@{Weighted\+Graph}}
+\subsubsection[{show\+Structure}]{\setlength{\rightskip}{0pt plus 5cm}void Weighted\+Graph\+::show\+Structure (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_weighted_graph_ad7f20a989073ea5401d504d944182347}
+Outputs a graph's vertex list and adjacency matrix. This operation is intended for testing/debugging purposes only.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Contents of graph will be unaffected 
+\end{DoxyPostcond}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Weighted\+Graph.\+h\item 
+Weighted\+Graph2.\+h\item 
+show12.\+cpp\item 
+\hyperlink{_weighted_graph_8cpp}{Weighted\+Graph.\+cpp}\end{DoxyCompactItemize}

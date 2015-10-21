@@ -1,0 +1,64 @@
+\hypertarget{database_8cpp}{\section{database.\+cpp File Reference}
+\label{database_8cpp}\index{database.\+cpp@{database.\+cpp}}
+}
+
+
+This program will implement Exercise 1 for \hyperlink{class_b_s_tree}{B\+S\+Tree}.  
+
+
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include \char`\"{}B\+S\+Tree.\+cpp\char`\"{}}\\*
+{\ttfamily \#include $<$cstdlib$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_account_record}{Account\+Record}
+\item 
+struct \hyperlink{struct_index_entry}{Index\+Entry}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{database_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const int \hyperlink{database_8cpp_a5d9687231dabb10b55cd7598e1be6702}{name\+Length} = 11
+\item 
+const long \hyperlink{database_8cpp_a79deb9c018e75d0dbd8d7e19d0415e89}{bytes\+Per\+Record} = 37
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This program will implement Exercise 1 for \hyperlink{class_b_s_tree}{B\+S\+Tree}. 
+
+\begin{DoxyAuthor}{Author}
+Tim Kwist 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0
+\end{DoxyVersion}
+The specifications of this program are defined by C++ Data Structures\+: A Laboratory Course (3rd edition) by Brandle, J\+Geisler, Roberge, Whittington, lab 9 exercise 1. \begin{DoxyDate}{Date}
+Wednesday, October 8, 2014 
+\end{DoxyDate}
+
+
+\subsection{Function Documentation}
+\hypertarget{database_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{\index{database.\+cpp@{database.\+cpp}!main@{main}}
+\index{main@{main}!database.\+cpp@{database.\+cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{database_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
+Get the account ids and store them into a binary search tree with appropriate record number, then output the account ids from least to greatest. Next user will input an account id; if it exists in the list, find it and output all of the account details of the account id. 
+
+\subsection{Variable Documentation}
+\hypertarget{database_8cpp_a79deb9c018e75d0dbd8d7e19d0415e89}{\index{database.\+cpp@{database.\+cpp}!bytes\+Per\+Record@{bytes\+Per\+Record}}
+\index{bytes\+Per\+Record@{bytes\+Per\+Record}!database.\+cpp@{database.\+cpp}}
+\subsubsection[{bytes\+Per\+Record}]{\setlength{\rightskip}{0pt plus 5cm}const long bytes\+Per\+Record = 37}}\label{database_8cpp_a79deb9c018e75d0dbd8d7e19d0415e89}
+\hypertarget{database_8cpp_a5d9687231dabb10b55cd7598e1be6702}{\index{database.\+cpp@{database.\+cpp}!name\+Length@{name\+Length}}
+\index{name\+Length@{name\+Length}!database.\+cpp@{database.\+cpp}}
+\subsubsection[{name\+Length}]{\setlength{\rightskip}{0pt plus 5cm}const int name\+Length = 11}}\label{database_8cpp_a5d9687231dabb10b55cd7598e1be6702}

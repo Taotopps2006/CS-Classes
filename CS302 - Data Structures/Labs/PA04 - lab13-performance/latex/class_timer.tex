@@ -1,0 +1,119 @@
+\hypertarget{class_timer}{\section{Timer Class Reference}
+\label{class_timer}\index{Timer@{Timer}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_timer_a5f16e8da27d2a5a5242dead46de05d97}{Timer} ()
+\item 
+void \hyperlink{class_timer_a3a8b5272198d029779dc9302a54305a8}{start} ()  throw (runtime\+\_\+error)
+\item 
+void \hyperlink{class_timer_a63f0eb44b27402196590a03781515dba}{stop} ()  throw (logic\+\_\+error)
+\item 
+double \hyperlink{class_timer_ad306e18f8d8a0296e001683f92d7f86e}{get\+Elapsed\+Time} () const   throw (logic\+\_\+error)
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_timer_a5f16e8da27d2a5a5242dead46de05d97}{\index{Timer@{Timer}!Timer@{Timer}}
+\index{Timer@{Timer}!Timer@{Timer}}
+\subsubsection[{Timer}]{\setlength{\rightskip}{0pt plus 5cm}Timer\+::\+Timer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_timer_a5f16e8da27d2a5a5242dead46de05d97}
+Method implementation Initialize \hyperlink{class_timer}{Timer} object
+
+
+\begin{DoxyParams}{Parameters}
+{\em none} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Initialize the internal timer valuesso that the timer is ready to measure time 
+\end{DoxyPostcond}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_timer_ad306e18f8d8a0296e001683f92d7f86e}{\index{Timer@{Timer}!get\+Elapsed\+Time@{get\+Elapsed\+Time}}
+\index{get\+Elapsed\+Time@{get\+Elapsed\+Time}!Timer@{Timer}}
+\subsubsection[{get\+Elapsed\+Time}]{\setlength{\rightskip}{0pt plus 5cm}double Timer\+::get\+Elapsed\+Time (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const throw  logic\+\_\+error) }}\label{class_timer_ad306e18f8d8a0296e001683f92d7f86e}
+Find how much time has elapsed between start and end of timer
+
+
+\begin{DoxyParams}{Parameters}
+{\em none} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double Length of time interval in seconds 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+\hyperlink{class_timer}{Timer} has been started and ended 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Returns the length of the time interval in seconds 
+\end{DoxyPostcond}
+\hypertarget{class_timer_a3a8b5272198d029779dc9302a54305a8}{\index{Timer@{Timer}!start@{start}}
+\index{start@{start}!Timer@{Timer}}
+\subsubsection[{start}]{\setlength{\rightskip}{0pt plus 5cm}void Timer\+::start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) throw  runtime\+\_\+error) }}\label{class_timer_a3a8b5272198d029779dc9302a54305a8}
+Set timer started to true and record the beginning time
+
+
+\begin{DoxyParams}{Parameters}
+{\em none} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+\hyperlink{class_timer}{Timer} has not started yet 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Mark the beginning of a time interval; start the timer 
+\end{DoxyPostcond}
+\hypertarget{class_timer_a63f0eb44b27402196590a03781515dba}{\index{Timer@{Timer}!stop@{stop}}
+\index{stop@{stop}!Timer@{Timer}}
+\subsubsection[{stop}]{\setlength{\rightskip}{0pt plus 5cm}void Timer\+::stop (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) throw  logic\+\_\+error) }}\label{class_timer_a63f0eb44b27402196590a03781515dba}
+Set timer started to false and record end time of timer
+
+
+\begin{DoxyParams}{Parameters}
+{\em none} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+\hyperlink{class_timer}{Timer} has started 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Marks the end of a time interval; stop the timer 
+\end{DoxyPostcond}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Timer.\+h\item 
+\hyperlink{_timer_8cpp}{Timer.\+cpp}\item 
+Timer.\+cs\end{DoxyCompactItemize}

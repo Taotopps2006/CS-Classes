@@ -1,0 +1,69 @@
+\hypertarget{rush_hour_8cpp}{\section{rush\+Hour.\+cpp File Reference}
+\label{rush_hour_8cpp}\index{rush\+Hour.\+cpp@{rush\+Hour.\+cpp}}
+}
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$set$>$}\\*
+{\ttfamily \#include $<$queue$>$}\\*
+{\ttfamily \#include \char`\"{}Board.\+h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{rush_hour_8cpp_aa775f8ed24e08b0b48e06ce0149c8de0}{solve\+Board} ()
+\item 
+int \hyperlink{rush_hour_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{rush_hour_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{\index{rush\+Hour.\+cpp@{rush\+Hour.\+cpp}!main@{main}}
+\index{main@{main}!rush\+Hour.\+cpp@{rush\+Hour.\+cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{rush_hour_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
+Main method\+: continue through multiple scenarios of rush hour until calling the solve\+Board method returns -\/1.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int \+: mandatory for main method 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+None 
+\end{DoxyPostcond}
+\hypertarget{rush_hour_8cpp_aa775f8ed24e08b0b48e06ce0149c8de0}{\index{rush\+Hour.\+cpp@{rush\+Hour.\+cpp}!solve\+Board@{solve\+Board}}
+\index{solve\+Board@{solve\+Board}!rush\+Hour.\+cpp@{rush\+Hour.\+cpp}}
+\subsubsection[{solve\+Board}]{\setlength{\rightskip}{0pt plus 5cm}int solve\+Board (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{rush_hour_8cpp_aa775f8ed24e08b0b48e06ce0149c8de0}
+Solve the rush hour puzzle given to us using a breadth-\/first search. Pseudo code\+:
+\begin{DoxyEnumerate}
+\item Set up a queue that will hold each possible move and a set that will hold a \char`\"{}snap shot\char`\"{} of each board to check whether we've encountered it before or not.
+\item Call the board's add\+Cars method to get all the input of the cars and set them up on the board. If the number of cars on the board is 0, exit out of the method. Otherwise, push this board onto the queue.
+\item While loop 3a. Set the current board to the board from the front of the queue, and pop the queue. 3b. Check if the board is solved. If it is, return the number of moves stored on the board. 3c. Otherwise, create a snapshot of this board in the form of converting the board to a string. 3d. If the snapshot is found in the set (deja\+Vu), don't go any farther in the loop, go back to the beginning. 3e. Otherwise, insert the snapshot into deja\+Vu and go into our for loop 3f. For each car on the board\+: 3fa. Try to move the car forward; if we can, increase the number of moves, push it onto the queue, then decrease the number of moves and move it back to where it was. 3fb. Do the same with backwards; check if we can do it, and if we can then increase the number of moves, push it onto the queue, then decrease the number and move it back to where it was.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int \+: Smallest number of moves required to solve this board; if number of cars on the board is 0, return -\/1 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+None 
+\end{DoxyPostcond}

@@ -1,0 +1,289 @@
+\hypertarget{class_board}{\section{Board Class Reference}
+\label{class_board}\index{Board@{Board}}
+}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_board_1_1_car}{Car}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_board_a9db987525359a83281f439e29de8a0ed}{Board} (int r=6, int c=6)
+\item 
+\hyperlink{class_board}{Board} \& \hyperlink{class_board_ae6c8d66af1bb70e1d34a704321675975}{operator=} (const \hyperlink{class_board}{Board} \&other)
+\item 
+void \hyperlink{class_board_ace31b86f9f51f587a6c2ba5a5d0985f0}{add\+Cars} ()
+\item 
+void \hyperlink{class_board_a920001868ffd3c2052e5d4e74f5c572d}{swap\+Cells} (int, int, int, int)
+\item 
+bool \hyperlink{class_board_a786078ebc74eb75daf35ee0544268f60}{move\+Forward} (int)
+\item 
+bool \hyperlink{class_board_ac7d514a5419f6769680e9cc69940cb43}{move\+Backward} (int)
+\item 
+bool \hyperlink{class_board_ad2a89f2b09377aeb8ca2e5227ca7e5a2}{can\+Move\+Here} (int row, int col) const 
+\item 
+bool \hyperlink{class_board_ac4ff60c93408bf056ee3af19138a6d96}{is\+Solved} () const 
+\item 
+string \hyperlink{class_board_abdfc2421a2c14024ea74924f09b6f777}{board\+To\+String} () const 
+\item 
+\hypertarget{class_board_ad9f8a4777501205f36488c5b4590ab7f}{void {\bfseries print\+Everything} () const }\label{class_board_ad9f8a4777501205f36488c5b4590ab7f}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_board_ab0678710e0cb026be902dbb6a8ad8c40}{int {\bfseries rows}}\label{class_board_ab0678710e0cb026be902dbb6a8ad8c40}
+
+\item 
+\hypertarget{class_board_af1931f1d51e9dcfdcda8be9b7b51d371}{int {\bfseries cols}}\label{class_board_af1931f1d51e9dcfdcda8be9b7b51d371}
+
+\item 
+\hypertarget{class_board_ae0cd5faf221be36798fd4fbd458bb10e}{int {\bfseries number\+Of\+Cars}}\label{class_board_ae0cd5faf221be36798fd4fbd458bb10e}
+
+\item 
+\hypertarget{class_board_a0f1716a3334ffba859db870d6b321a29}{int {\bfseries number\+Of\+Moves}}\label{class_board_a0f1716a3334ffba859db870d6b321a29}
+
+\item 
+\hypertarget{class_board_a09354b70901ba14673898efe2230dd3b}{vector$<$ \hyperlink{struct_board_1_1_car}{Car} $>$ {\bfseries list\+Of\+Cars}}\label{class_board_a09354b70901ba14673898efe2230dd3b}
+
+\item 
+\hypertarget{class_board_a125fd8c343b61fca5cd2636a1e7d1eb2}{vector$<$ vector$<$ char $>$ $>$ {\bfseries board}}\label{class_board_a125fd8c343b61fca5cd2636a1e7d1eb2}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_board_a9db987525359a83281f439e29de8a0ed}{\index{Board@{Board}!Board@{Board}}
+\index{Board@{Board}!Board@{Board}}
+\subsubsection[{Board}]{\setlength{\rightskip}{0pt plus 5cm}Board\+::\+Board (
+\begin{DoxyParamCaption}
+\item[{int}]{r = {\ttfamily 6}, }
+\item[{int}]{c = {\ttfamily 6}}
+\end{DoxyParamCaption}
+)}}\label{class_board_a9db987525359a83281f439e29de8a0ed}
+\hyperlink{class_board}{Board} constructor. Sets rows and columns to parameters or default of 6. Sets number of cars and number of moves to 0 Initializes 2\+D vector of all periods
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & \+: rows \\
+\hline
+{\em c} & \+: cols \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+None 
+\end{DoxyPostcond}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_board_ace31b86f9f51f587a6c2ba5a5d0985f0}{\index{Board@{Board}!add\+Cars@{add\+Cars}}
+\index{add\+Cars@{add\+Cars}!Board@{Board}}
+\subsubsection[{add\+Cars}]{\setlength{\rightskip}{0pt plus 5cm}void Board\+::add\+Cars (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_board_ace31b86f9f51f587a6c2ba5a5d0985f0}
+Get input from the user to build the board Input should come in the following order\+:
+\begin{DoxyItemize}
+\item \mbox{[}number of cars\mbox{]}
+\item \mbox{[}length of car\mbox{]}
+\item \mbox{[}car orientation\mbox{]}
+\item \mbox{[}row of car\mbox{]}
+\item \mbox{[}col of car\mbox{]} if number of cars is 0, skip getting any more input and assume end of file This method will also update the list of cars 
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The board will be generated based on given input, and list of cars will also be updated 
+\end{DoxyPostcond}
+
+\end{DoxyItemize}\hypertarget{class_board_abdfc2421a2c14024ea74924f09b6f777}{\index{Board@{Board}!board\+To\+String@{board\+To\+String}}
+\index{board\+To\+String@{board\+To\+String}!Board@{Board}}
+\subsubsection[{board\+To\+String}]{\setlength{\rightskip}{0pt plus 5cm}string Board\+::board\+To\+String (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_board_abdfc2421a2c14024ea74924f09b6f777}
+Convert the board to a string and return it. Pseudo-\/code\+: create a temp string, then concat every character on the board to the string and return the string.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string \+: string containing all the characters in the board. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+No variables will be changed 
+\end{DoxyPostcond}
+\hypertarget{class_board_ad2a89f2b09377aeb8ca2e5227ca7e5a2}{\index{Board@{Board}!can\+Move\+Here@{can\+Move\+Here}}
+\index{can\+Move\+Here@{can\+Move\+Here}!Board@{Board}}
+\subsubsection[{can\+Move\+Here}]{\setlength{\rightskip}{0pt plus 5cm}bool Board\+::can\+Move\+Here (
+\begin{DoxyParamCaption}
+\item[{int}]{row, }
+\item[{int}]{col}
+\end{DoxyParamCaption}
+) const}}\label{class_board_ad2a89f2b09377aeb8ca2e5227ca7e5a2}
+Determine whether the given position in the 2\+D vector can be moved to. Pseudo-\/code\+: Check if the row and col given are within the bounds of the array ( $>$= 0, $<$ \#rows/cols) Check if spot on board is a period. If it is, true; else, false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em row} & \+: row of the spot being checked if valid move \\
+\hline
+{\em col} & \+: column of the spot being checked if valid move \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool \+: true if the spot is valid to move to, false if not 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+No variables will be changed 
+\end{DoxyPostcond}
+\hypertarget{class_board_ac4ff60c93408bf056ee3af19138a6d96}{\index{Board@{Board}!is\+Solved@{is\+Solved}}
+\index{is\+Solved@{is\+Solved}!Board@{Board}}
+\subsubsection[{is\+Solved}]{\setlength{\rightskip}{0pt plus 5cm}bool Board\+::is\+Solved (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_board_ac4ff60c93408bf056ee3af19138a6d96}
+Determine whether the rush hour puzzle is solved by checking if the car is on the last column
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if car at index 0 is on 5th column, false otherwise 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+No variables will be changed 
+\end{DoxyPostcond}
+\hypertarget{class_board_ac7d514a5419f6769680e9cc69940cb43}{\index{Board@{Board}!move\+Backward@{move\+Backward}}
+\index{move\+Backward@{move\+Backward}!Board@{Board}}
+\subsubsection[{move\+Backward}]{\setlength{\rightskip}{0pt plus 5cm}bool Board\+::move\+Backward (
+\begin{DoxyParamCaption}
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)}}\label{class_board_ac7d514a5419f6769680e9cc69940cb43}
+Move the car backwards if possible. For vertical cars, this is down. For horizontal cars, this is left Pseudo-\/code\+: Checks to see if the desired location to move the car is A. valid and B. empty If it is, swap cells and change row/col to update position after move.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & \+: Index of \hyperlink{struct_board_1_1_car}{Car} being moved backwards \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if car can be moved backwards, false otherwise 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+There are cars on the board to be moved 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The car specified will be moved backwards if possible 
+\end{DoxyPostcond}
+\hypertarget{class_board_a786078ebc74eb75daf35ee0544268f60}{\index{Board@{Board}!move\+Forward@{move\+Forward}}
+\index{move\+Forward@{move\+Forward}!Board@{Board}}
+\subsubsection[{move\+Forward}]{\setlength{\rightskip}{0pt plus 5cm}bool Board\+::move\+Forward (
+\begin{DoxyParamCaption}
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)}}\label{class_board_a786078ebc74eb75daf35ee0544268f60}
+Move the car forward if possible. For vertical cars, this is up. For horizontal cars, this is right. Pseudo-\/code\+: Checks to see if the desired location to move the car is A. valid and B. empty If it is, swap cells and change row/col to update position after move.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & \+: Index of \hyperlink{struct_board_1_1_car}{Car} being moved forward \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if car can be moved forward, false otherwise 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+There are cars on the board to be moved 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The car specified will be moved forward if possible 
+\end{DoxyPostcond}
+\hypertarget{class_board_ae6c8d66af1bb70e1d34a704321675975}{\index{Board@{Board}!operator=@{operator=}}
+\index{operator=@{operator=}!Board@{Board}}
+\subsubsection[{operator=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Board} \& Board\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Board} \&}]{other}
+\end{DoxyParamCaption}
+)}}\label{class_board_ae6c8d66af1bb70e1d34a704321675975}
+Equal operator overload for board Creates deep copy of other board 
+\begin{DoxyParams}{Parameters}
+{\em other} & \+: other board that this one is being set to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{class_board}{Board}\& \+: returns this board after it has been deep copied 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+None 
+\end{DoxyPostcond}
+\hypertarget{class_board_a920001868ffd3c2052e5d4e74f5c572d}{\index{Board@{Board}!swap\+Cells@{swap\+Cells}}
+\index{swap\+Cells@{swap\+Cells}!Board@{Board}}
+\subsubsection[{swap\+Cells}]{\setlength{\rightskip}{0pt plus 5cm}void Board\+::swap\+Cells (
+\begin{DoxyParamCaption}
+\item[{int}]{r1, }
+\item[{int}]{c1, }
+\item[{int}]{r2, }
+\item[{int}]{c2}
+\end{DoxyParamCaption}
+)}}\label{class_board_a920001868ffd3c2052e5d4e74f5c572d}
+Swap cells on the 2\+D vector
+
+
+\begin{DoxyParams}{Parameters}
+{\em r1} & \+: row of the first item to be swapped \\
+\hline
+{\em c1} & \+: column of the first item to be swapped \\
+\hline
+{\em r2} & \+: row of the second item to be swapped \\
+\hline
+{\em c2} & \+: column of the second item to be swapped \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+None 
+\end{DoxyPostcond}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Board.\+h\end{DoxyCompactItemize}

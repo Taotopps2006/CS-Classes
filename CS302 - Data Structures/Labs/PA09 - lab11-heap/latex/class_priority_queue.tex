@@ -1,0 +1,125 @@
+\hypertarget{class_priority_queue}{\section{Priority\+Queue$<$ Data\+Type, Key\+Type, Comparator $>$ Class Template Reference}
+\label{class_priority_queue}\index{Priority\+Queue$<$ Data\+Type, Key\+Type, Comparator $>$@{Priority\+Queue$<$ Data\+Type, Key\+Type, Comparator $>$}}
+}
+Inheritance diagram for Priority\+Queue$<$ Data\+Type, Key\+Type, Comparator $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_priority_queue}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_priority_queue_a47de2a46cff1d6a6ed30a99c94dc1b14}{Priority\+Queue} (int max\+Number=def\+Max\+Queue\+Size)
+\item 
+\hyperlink{class_priority_queue_a7d959dc823b18c647aa0ee4a80f27881}{$\sim$\+Priority\+Queue} ()
+\item 
+void \hyperlink{class_priority_queue_a61f3339cf0e87c67ed004f8eff0a1bfa}{enqueue} (const Data\+Type \&new\+Data\+Item)
+\item 
+Data\+Type \hyperlink{class_priority_queue_a5bc758e313d6244e672ea6e81d695a46}{dequeue} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_priority_queue_a47de2a46cff1d6a6ed30a99c94dc1b14}{\index{Priority\+Queue@{Priority\+Queue}!Priority\+Queue@{Priority\+Queue}}
+\index{Priority\+Queue@{Priority\+Queue}!Priority\+Queue@{Priority\+Queue}}
+\subsubsection[{Priority\+Queue}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type , typename Comparator $>$ {\bf Priority\+Queue}$<$ Data\+Type, Key\+Type, Comparator $>$\+::{\bf Priority\+Queue} (
+\begin{DoxyParamCaption}
+\item[{int}]{max\+Number = {\ttfamily defMaxQueueSize}}
+\end{DoxyParamCaption}
+)}}\label{class_priority_queue_a47de2a46cff1d6a6ed30a99c94dc1b14}
+Constructor for \hyperlink{class_priority_queue}{Priority\+Queue}. Calls constructor for heap. Set max\+Number of items this Priority\+Heap can hold.
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+Number} & \+: maximum number of items allowed in this heap. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+This Priority\+Heap will be initialized. 
+\end{DoxyPostcond}
+\hypertarget{class_priority_queue_a7d959dc823b18c647aa0ee4a80f27881}{\index{Priority\+Queue@{Priority\+Queue}!````~Priority\+Queue@{$\sim$\+Priority\+Queue}}
+\index{````~Priority\+Queue@{$\sim$\+Priority\+Queue}!Priority\+Queue@{Priority\+Queue}}
+\subsubsection[{$\sim$\+Priority\+Queue}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type , typename Comparator $>$ {\bf Priority\+Queue}$<$ Data\+Type, Key\+Type, Comparator $>$\+::$\sim${\bf Priority\+Queue} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_priority_queue_a7d959dc823b18c647aa0ee4a80f27881}
+Destructor for Priority\+Heap. Deallocates all memory in this heap. Calls \hyperlink{class_heap}{Heap} clear method.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+All memory of this heap will be deallocated. 
+\end{DoxyPostcond}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_priority_queue_a5bc758e313d6244e672ea6e81d695a46}{\index{Priority\+Queue@{Priority\+Queue}!dequeue@{dequeue}}
+\index{dequeue@{dequeue}!Priority\+Queue@{Priority\+Queue}}
+\subsubsection[{dequeue}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type , typename Comparator $>$ Data\+Type {\bf Priority\+Queue}$<$ Data\+Type, Key\+Type, Comparator $>$\+::dequeue (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_priority_queue_a5bc758e313d6244e672ea6e81d695a46}
+Removes highest priority item in the Priority\+Heap. Uses base heap's remove method.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Data\+Type \+: highest priority item that was removed from the Priority\+Heap 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+H\+Ighest priority item will be removed from the Priority\+Heap. 
+\end{DoxyPostcond}
+\hypertarget{class_priority_queue_a61f3339cf0e87c67ed004f8eff0a1bfa}{\index{Priority\+Queue@{Priority\+Queue}!enqueue@{enqueue}}
+\index{enqueue@{enqueue}!Priority\+Queue@{Priority\+Queue}}
+\subsubsection[{enqueue}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type , typename Comparator $>$ void {\bf Priority\+Queue}$<$ Data\+Type, Key\+Type, Comparator $>$\+::enqueue (
+\begin{DoxyParamCaption}
+\item[{const Data\+Type \&}]{new\+Data\+Item}
+\end{DoxyParamCaption}
+)}}\label{class_priority_queue_a61f3339cf0e87c67ed004f8eff0a1bfa}
+Enqueues an item into the \hyperlink{class_priority_queue}{Priority\+Queue}. Uses heap insert method.
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Data\+Item} & \+: New item to insert into the Priority\+Heap. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Item will be inserted into the heap. 
+\end{DoxyPostcond}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Priority\+Queue.\+h\item 
+\hyperlink{_priority_queue_8cpp}{Priority\+Queue.\+cpp}\end{DoxyCompactItemize}

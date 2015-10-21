@@ -1,0 +1,603 @@
+\hypertarget{class_b_s_tree}{\section{B\+S\+Tree$<$ Data\+Type, Key\+Type $>$ Class Template Reference}
+\label{class_b_s_tree}\index{B\+S\+Tree$<$ Data\+Type, Key\+Type $>$@{B\+S\+Tree$<$ Data\+Type, Key\+Type $>$}}
+}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_b_s_tree_1_1_b_s_tree_node}{B\+S\+Tree\+Node}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_b_s_tree_a4513fc6697f5e51bff8e7c448b446c9e}{B\+S\+Tree} ()
+\item 
+\hyperlink{class_b_s_tree_a6658391c178cb35858c9c465e1839fb0}{B\+S\+Tree} (const \hyperlink{class_b_s_tree}{B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$ \&other)
+\item 
+\hyperlink{class_b_s_tree}{B\+S\+Tree} \& \hyperlink{class_b_s_tree_ac36b0b564aa3c411c239d730f506f448}{operator=} (const \hyperlink{class_b_s_tree}{B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$ \&other)
+\item 
+\hyperlink{class_b_s_tree_a968c51c539f4ae41357c78b6a60fea4c}{$\sim$\+B\+S\+Tree} ()
+\item 
+void \hyperlink{class_b_s_tree_ab86b4cea496ee53076021126423d51fd}{insert} (const Data\+Type \&new\+Data\+Item)
+\item 
+bool \hyperlink{class_b_s_tree_a4359bfee390669b5adaf0380ef62b18d}{retrieve} (const Key\+Type \&search\+Key, Data\+Type \&search\+Data\+Item) const 
+\item 
+bool \hyperlink{class_b_s_tree_a755549f7b88d0178a96ca84afd5e04cf}{remove} (const Key\+Type \&delete\+Key)
+\item 
+void \hyperlink{class_b_s_tree_a7f08f48e6d1bbe3eb726856a947325e7}{write\+Keys} () const 
+\item 
+void \hyperlink{class_b_s_tree_a926822d08f3d0321603f9fafd2254b16}{clear} ()
+\item 
+bool \hyperlink{class_b_s_tree_a43768375369ca8fe641a86451997ad45}{is\+Empty} () const 
+\item 
+void \hyperlink{class_b_s_tree_ac28277cacbf8ab33326473a419abf097}{show\+Structure} () const 
+\item 
+int \hyperlink{class_b_s_tree_a3850adc6b8ae965ec11ec0e0567b6f7d}{get\+Height} () const 
+\item 
+int \hyperlink{class_b_s_tree_a880d98553153533d3c29504e8a272c7d}{get\+Count} () const 
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_b_s_tree_a44b3002e3476eb410468a4b9aaaa73ef}{show\+Helper} (\hyperlink{class_b_s_tree_1_1_b_s_tree_node}{B\+S\+Tree\+Node} $\ast$p, int level) const 
+\item 
+void \hyperlink{class_b_s_tree_a2833c786ee7ad54bad176d0d44dccf6c}{copy\+Helper} (\hyperlink{class_b_s_tree_1_1_b_s_tree_node}{B\+S\+Tree\+Node} $\ast$\&current, \hyperlink{class_b_s_tree_1_1_b_s_tree_node}{B\+S\+Tree\+Node} $\ast$other)
+\item 
+void \hyperlink{class_b_s_tree_a03c40a8e81d293f5dbeb4a35eaeb14ca}{insert\+Helper} (\hyperlink{class_b_s_tree_1_1_b_s_tree_node}{B\+S\+Tree\+Node} $\ast$\&p, const Data\+Type \&new\+Data\+Item)
+\item 
+bool \hyperlink{class_b_s_tree_a071fd2ff13c5ce3af48d46697eaddace}{retrieve\+Helper} (\hyperlink{class_b_s_tree_1_1_b_s_tree_node}{B\+S\+Tree\+Node} $\ast$p, const Key\+Type \&search\+Key, Data\+Type \&search\+Data\+Item) const 
+\item 
+bool \hyperlink{class_b_s_tree_af9e56aa85b0470c624dec325c780494f}{remove\+Helper} (\hyperlink{class_b_s_tree_1_1_b_s_tree_node}{B\+S\+Tree\+Node} $\ast$\&p, const Key\+Type \&delete\+Key)
+\item 
+void \hyperlink{class_b_s_tree_a2b949b501d86db3aa1d03b415f26582f}{write\+Keys\+Helper} (const \hyperlink{class_b_s_tree_1_1_b_s_tree_node}{B\+S\+Tree\+Node} $\ast$p) const 
+\item 
+void \hyperlink{class_b_s_tree_afb5d38809653f67dc423d8a8c6e9e106}{clear\+Helper} (\hyperlink{class_b_s_tree_1_1_b_s_tree_node}{B\+S\+Tree\+Node} $\ast$\&p)
+\item 
+int \hyperlink{class_b_s_tree_a0c13fd5ffd6a2fd777b7f67a6cf98390}{get\+Height\+Helper} (const \hyperlink{class_b_s_tree_1_1_b_s_tree_node}{B\+S\+Tree\+Node} $\ast$p) const 
+\item 
+int \hyperlink{class_b_s_tree_ae2e29d4350734ca0721b3907a31803ff}{get\+Count\+Helper} (const \hyperlink{class_b_s_tree_1_1_b_s_tree_node}{B\+S\+Tree\+Node} $\ast$p) const 
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_b_s_tree_a83534afce9094181ac031f9f596a8625}{\hyperlink{class_b_s_tree_1_1_b_s_tree_node}{B\+S\+Tree\+Node} $\ast$ {\bfseries root}}\label{class_b_s_tree_a83534afce9094181ac031f9f596a8625}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_b_s_tree_a4513fc6697f5e51bff8e7c448b446c9e}{\index{B\+S\+Tree@{B\+S\+Tree}!B\+S\+Tree@{B\+S\+Tree}}
+\index{B\+S\+Tree@{B\+S\+Tree}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{B\+S\+Tree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::{\bf B\+S\+Tree} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_b_s_tree_a4513fc6697f5e51bff8e7c448b446c9e}
+Default constructor for \hyperlink{class_b_s_tree}{B\+S\+Tree}
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Creates an empty binary search tree 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a6658391c178cb35858c9c465e1839fb0}{\index{B\+S\+Tree@{B\+S\+Tree}!B\+S\+Tree@{B\+S\+Tree}}
+\index{B\+S\+Tree@{B\+S\+Tree}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{B\+S\+Tree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::{\bf B\+S\+Tree} (
+\begin{DoxyParamCaption}
+\item[{const {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$ \&}]{other}
+\end{DoxyParamCaption}
+)}}\label{class_b_s_tree_a6658391c178cb35858c9c465e1839fb0}
+Copy constructor for \hyperlink{class_b_s_tree}{B\+S\+Tree}
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Initializes the binary search tree to be equivalent to the other \hyperlink{class_b_s_tree}{B\+S\+Tree} object parameter 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a968c51c539f4ae41357c78b6a60fea4c}{\index{B\+S\+Tree@{B\+S\+Tree}!````~B\+S\+Tree@{$\sim$\+B\+S\+Tree}}
+\index{````~B\+S\+Tree@{$\sim$\+B\+S\+Tree}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{$\sim$\+B\+S\+Tree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::$\sim${\bf B\+S\+Tree} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_b_s_tree_a968c51c539f4ae41357c78b6a60fea4c}
+Destructor for \hyperlink{class_b_s_tree}{B\+S\+Tree}
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Deallocates (frees) the memory used to store the binary search tree. 
+\end{DoxyPostcond}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_b_s_tree_a926822d08f3d0321603f9fafd2254b16}{\index{B\+S\+Tree@{B\+S\+Tree}!clear@{clear}}
+\index{clear@{clear}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{clear}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ void {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::clear (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_b_s_tree_a926822d08f3d0321603f9fafd2254b16}
+Removes all the data items in the binary search tree.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+This binary search tree will have nothing in it and all memory will be deallocated. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_afb5d38809653f67dc423d8a8c6e9e106}{\index{B\+S\+Tree@{B\+S\+Tree}!clear\+Helper@{clear\+Helper}}
+\index{clear\+Helper@{clear\+Helper}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{clear\+Helper}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ void {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::clear\+Helper (
+\begin{DoxyParamCaption}
+\item[{{\bf B\+S\+Tree\+Node} $\ast$\&}]{p}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_b_s_tree_afb5d38809653f67dc423d8a8c6e9e106}
+Recursively assist the clear method by deleting nodes one by one. Go as far as left as possible, go as far right as possible, delete the child nodes, then go back to the previous stack call and delete the child nodes which now have no other children
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+This binary search tree will have nothing in it and all memory will be deallocated. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a2833c786ee7ad54bad176d0d44dccf6c}{\index{B\+S\+Tree@{B\+S\+Tree}!copy\+Helper@{copy\+Helper}}
+\index{copy\+Helper@{copy\+Helper}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{copy\+Helper}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ void {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::copy\+Helper (
+\begin{DoxyParamCaption}
+\item[{{\bf B\+S\+Tree\+Node} $\ast$\&}]{current, }
+\item[{{\bf B\+S\+Tree\+Node} $\ast$}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_b_s_tree_a2833c786ee7ad54bad176d0d44dccf6c}
+Helper function for copy constructor and assignment operator. Copies the contents, recursively, from one \hyperlink{class_b_s_tree}{B\+S\+Tree} to this one
+
+
+\begin{DoxyParams}{Parameters}
+{\em current} & Current node of this \hyperlink{class_b_s_tree}{B\+S\+Tree} \\
+\hline
+{\em other} & Current node of other \hyperlink{class_b_s_tree}{B\+S\+Tree} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Copies other \hyperlink{class_b_s_tree}{B\+S\+Tree} to current \hyperlink{class_b_s_tree}{B\+S\+Tree} 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a880d98553153533d3c29504e8a272c7d}{\index{B\+S\+Tree@{B\+S\+Tree}!get\+Count@{get\+Count}}
+\index{get\+Count@{get\+Count}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{get\+Count}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ int {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::get\+Count (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_b_s_tree_a880d98553153533d3c29504e8a272c7d}
+Return the count of the number of data items in the binary search tree.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of data items in the binary search tree 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this \hyperlink{class_b_s_tree}{B\+S\+Tree} will be unchanged. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_ae2e29d4350734ca0721b3907a31803ff}{\index{B\+S\+Tree@{B\+S\+Tree}!get\+Count\+Helper@{get\+Count\+Helper}}
+\index{get\+Count\+Helper@{get\+Count\+Helper}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{get\+Count\+Helper}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ int {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::get\+Count\+Helper (
+\begin{DoxyParamCaption}
+\item[{const {\bf B\+S\+Tree\+Node} $\ast$}]{p}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_b_s_tree_ae2e29d4350734ca0721b3907a31803ff}
+Recursive helper function for get\+Count Check every node on the left side, check every node on the right side. Add one for each that isn't null, return total. Return the count of the number of data items in the binary search tree.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of data items in the binary search tree 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this \hyperlink{class_b_s_tree}{B\+S\+Tree} will be unchanged. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a3850adc6b8ae965ec11ec0e0567b6f7d}{\index{B\+S\+Tree@{B\+S\+Tree}!get\+Height@{get\+Height}}
+\index{get\+Height@{get\+Height}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{get\+Height}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ int {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::get\+Height (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_b_s_tree_a3850adc6b8ae965ec11ec0e0567b6f7d}
+Calculate and return the height of the \hyperlink{class_b_s_tree}{B\+S\+Tree}
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The height of the binary search tree 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this \hyperlink{class_b_s_tree}{B\+S\+Tree} will be unchanged. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a0c13fd5ffd6a2fd777b7f67a6cf98390}{\index{B\+S\+Tree@{B\+S\+Tree}!get\+Height\+Helper@{get\+Height\+Helper}}
+\index{get\+Height\+Helper@{get\+Height\+Helper}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{get\+Height\+Helper}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ int {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::get\+Height\+Helper (
+\begin{DoxyParamCaption}
+\item[{const {\bf B\+S\+Tree\+Node} $\ast$}]{p}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_b_s_tree_a0c13fd5ffd6a2fd777b7f67a6cf98390}
+Recursive helper function for get\+Height If left not N\+U\+L\+L, go down left side; if right not N\+U\+L\+L, go down right side. Once at the bottom, return 1, then as we go back up compare whether the left or right side has a higher value to determine what to return Calculate and return the height of the \hyperlink{class_b_s_tree}{B\+S\+Tree}
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The height of the binary search tree 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this \hyperlink{class_b_s_tree}{B\+S\+Tree} will be unchanged. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_ab86b4cea496ee53076021126423d51fd}{\index{B\+S\+Tree@{B\+S\+Tree}!insert@{insert}}
+\index{insert@{insert}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{insert}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ void {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::insert (
+\begin{DoxyParamCaption}
+\item[{const Data\+Type \&}]{new\+Data\+Item}
+\end{DoxyParamCaption}
+)}}\label{class_b_s_tree_ab86b4cea496ee53076021126423d51fd}
+Inserts new\+Data\+Item into the binary search tree. If a data item with the same key as new\+Data\+Item already exists in the tree, then updates that data item with new\+Data\+Item.
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Data\+Item} & item to be inserted into binary search tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Another item will be added to this binary search tree if the passed in data is new. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a03c40a8e81d293f5dbeb4a35eaeb14ca}{\index{B\+S\+Tree@{B\+S\+Tree}!insert\+Helper@{insert\+Helper}}
+\index{insert\+Helper@{insert\+Helper}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{insert\+Helper}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ void {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::insert\+Helper (
+\begin{DoxyParamCaption}
+\item[{{\bf B\+S\+Tree\+Node} $\ast$\&}]{p, }
+\item[{const Data\+Type \&}]{new\+Data\+Item}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_b_s_tree_a03c40a8e81d293f5dbeb4a35eaeb14ca}
+Recursive helper for insert method. If null, create new node Else continue down tree until we find a null node If data greater than current val, go down right If data less than current val, go down left Inserts new\+Data\+Item into the binary search tree. If a data item with the same key as new\+Data\+Item already exists in the tree, then updates that data item with new\+Data\+Item.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & current node being evaluated for whether or not to insert into \\
+\hline
+{\em new\+Data\+Item} & item to be inserted into binary search tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Another item will be added to this binary search tree if the passed in data is new. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a43768375369ca8fe641a86451997ad45}{\index{B\+S\+Tree@{B\+S\+Tree}!is\+Empty@{is\+Empty}}
+\index{is\+Empty@{is\+Empty}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{is\+Empty}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ bool {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::is\+Empty (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_b_s_tree_a43768375369ca8fe641a86451997ad45}
+Return if tree is empty or not.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the binary search tree is empty. Otherwise, returns false. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this binary search tree will not be changed. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_ac36b0b564aa3c411c239d730f506f448}{\index{B\+S\+Tree@{B\+S\+Tree}!operator=@{operator=}}
+\index{operator=@{operator=}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{operator=}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$ \& {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$ \&}]{other}
+\end{DoxyParamCaption}
+)}}\label{class_b_s_tree_ac36b0b564aa3c411c239d730f506f448}
+Overloaded assignment operator for \hyperlink{class_b_s_tree}{B\+S\+Tree}
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \hyperlink{class_b_s_tree}{B\+S\+Tree} object to be set equal to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{class_b_s_tree}{B\+S\+Tree} A reference to this \hyperlink{class_b_s_tree}{B\+S\+Tree} object 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Sets the binary search tree to be equivalent to the other \hyperlink{class_b_s_tree}{B\+S\+Tree} object parameter and returns a reference to this object 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a755549f7b88d0178a96ca84afd5e04cf}{\index{B\+S\+Tree@{B\+S\+Tree}!remove@{remove}}
+\index{remove@{remove}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{remove}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ bool {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::remove (
+\begin{DoxyParamCaption}
+\item[{const Key\+Type \&}]{delete\+Key}
+\end{DoxyParamCaption}
+)}}\label{class_b_s_tree_a755549f7b88d0178a96ca84afd5e04cf}
+Deletes the data item with the key delete\+Key from the binary search tree. If this data item is found, then deletes it from the tree and returns true. Otherwise return false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em delete\+Key} & key to be deleted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if item is found and deleted; false otherwise. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The delete\+Key will be deleted from the tree if it exists in the tree. Otherwise the tree will be unchanged. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_af9e56aa85b0470c624dec325c780494f}{\index{B\+S\+Tree@{B\+S\+Tree}!remove\+Helper@{remove\+Helper}}
+\index{remove\+Helper@{remove\+Helper}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{remove\+Helper}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ bool {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::remove\+Helper (
+\begin{DoxyParamCaption}
+\item[{{\bf B\+S\+Tree\+Node} $\ast$\&}]{p, }
+\item[{const Key\+Type \&}]{delete\+Key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_b_s_tree_af9e56aa85b0470c624dec325c780494f}
+Recursive helper function for remove If no children, delete the node If one child, set child to current position then delete node If two children, find the predecessor to replace node, then delete node Deletes the data item with the key delete\+Key from the binary search tree. If this data item is found, then deletes it from the tree and returns true. Otherwise return false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & current node being looked for deletion \\
+\hline
+{\em delete\+Key} & key to be deleted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if item is found and deleted; false otherwise. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The delete\+Key will be deleted from the tree if it exists in the tree. Otherwise the tree will be unchanged. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a4359bfee390669b5adaf0380ef62b18d}{\index{B\+S\+Tree@{B\+S\+Tree}!retrieve@{retrieve}}
+\index{retrieve@{retrieve}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{retrieve}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ bool {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::retrieve (
+\begin{DoxyParamCaption}
+\item[{const Key\+Type \&}]{search\+Key, }
+\item[{Data\+Type \&}]{search\+Data\+Item}
+\end{DoxyParamCaption}
+) const}}\label{class_b_s_tree_a4359bfee390669b5adaf0380ef62b18d}
+Searches the binary search tree for the data item with key search\+Key. If this data item is found, then copies the data item to search\+Data\+Item and return true. Otherwise returns false with search\+Data\+Item
+
+
+\begin{DoxyParams}{Parameters}
+{\em search\+Key} & key to be searched for \\
+\hline
+{\em search\+Data\+Item} & data to be updated if key found \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if data item found; false otherwise 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this tree will not be changed 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a071fd2ff13c5ce3af48d46697eaddace}{\index{B\+S\+Tree@{B\+S\+Tree}!retrieve\+Helper@{retrieve\+Helper}}
+\index{retrieve\+Helper@{retrieve\+Helper}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{retrieve\+Helper}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ bool {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::retrieve\+Helper (
+\begin{DoxyParamCaption}
+\item[{{\bf B\+S\+Tree\+Node} $\ast$}]{p, }
+\item[{const Key\+Type \&}]{search\+Key, }
+\item[{Data\+Type \&}]{search\+Data\+Item}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_b_s_tree_a071fd2ff13c5ce3af48d46697eaddace}
+Recursive helper function for retrieve. If current value greater than search key, go down left If current value less than search key, go down right If null, return false Searches the binary search tree for the data item with key search\+Key. If this data item is found, then copies the data item to search\+Data\+Item and return true. Otherwise returns false with search\+Data\+Item
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & current node being checked for if it is the search\+Key \\
+\hline
+{\em search\+Key} & key to be searched for \\
+\hline
+{\em search\+Data\+Item} & data to be updated if key found \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if data item found; false otherwise 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this tree will not be changed 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a44b3002e3476eb410468a4b9aaaa73ef}{\index{B\+S\+Tree@{B\+S\+Tree}!show\+Helper@{show\+Helper}}
+\index{show\+Helper@{show\+Helper}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{show\+Helper}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ void {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::show\+Helper (
+\begin{DoxyParamCaption}
+\item[{{\bf B\+S\+Tree\+Node} $\ast$}]{p, }
+\item[{int}]{level}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_b_s_tree_a44b3002e3476eb410468a4b9aaaa73ef}
+Recursive helper for show\+Structure. Outputs the subtree whose root node is pointed to by p.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & \hyperlink{class_b_s_tree_1_1_b_s_tree_node}{B\+S\+Tree\+Node} currently being outputted \\
+\hline
+{\em level} & the level of this node within the tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of thi \hyperlink{class_b_s_tree}{B\+S\+Tree} will be unchanged. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_ac28277cacbf8ab33326473a419abf097}{\index{B\+S\+Tree@{B\+S\+Tree}!show\+Structure@{show\+Structure}}
+\index{show\+Structure@{show\+Structure}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{show\+Structure}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ void {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::show\+Structure (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_b_s_tree_ac28277cacbf8ab33326473a419abf097}
+Outputs the keys in a binary search tree. The tree is output rotated counterclockwie 90 degrees from its conventional orientation using a \char`\"{}reverse\char`\"{} inorder traversal. This operation is intended for testing and debugging purposes only.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this \hyperlink{class_b_s_tree}{B\+S\+Tree} will be unchanged. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a7f08f48e6d1bbe3eb726856a947325e7}{\index{B\+S\+Tree@{B\+S\+Tree}!write\+Keys@{write\+Keys}}
+\index{write\+Keys@{write\+Keys}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{write\+Keys}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ void {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::write\+Keys (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_b_s_tree_a7f08f48e6d1bbe3eb726856a947325e7}
+Outputs the keys of the data items in the binary search tree. The keys are output in ascending order on one line, separated by spaces.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this \hyperlink{class_b_s_tree}{B\+S\+Tree} will be unchanged. 
+\end{DoxyPostcond}
+\hypertarget{class_b_s_tree_a2b949b501d86db3aa1d03b415f26582f}{\index{B\+S\+Tree@{B\+S\+Tree}!write\+Keys\+Helper@{write\+Keys\+Helper}}
+\index{write\+Keys\+Helper@{write\+Keys\+Helper}!B\+S\+Tree@{B\+S\+Tree}}
+\subsubsection[{write\+Keys\+Helper}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type , typename Key\+Type $>$ void {\bf B\+S\+Tree}$<$ Data\+Type, Key\+Type $>$\+::write\+Keys\+Helper (
+\begin{DoxyParamCaption}
+\item[{const {\bf B\+S\+Tree\+Node} $\ast$}]{p}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_b_s_tree_a2b949b501d86db3aa1d03b415f26582f}
+Recursive helper function for write\+Keys Outputs the keys of the data items in the binary search tree. The keys are output in ascending order on one line, separated by spaces.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this \hyperlink{class_b_s_tree}{B\+S\+Tree} will be unchanged. 
+\end{DoxyPostcond}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+B\+S\+Tree.\+h\item 
+\hyperlink{_b_s_tree_8cpp}{B\+S\+Tree.\+cpp}\end{DoxyCompactItemize}

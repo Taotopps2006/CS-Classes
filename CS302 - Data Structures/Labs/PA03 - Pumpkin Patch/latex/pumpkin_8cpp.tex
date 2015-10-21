@@ -1,0 +1,139 @@
+\hypertarget{pumpkin_8cpp}{\section{pumpkin.\+cpp File Reference}
+\label{pumpkin_8cpp}\index{pumpkin.\+cpp@{pumpkin.\+cpp}}
+}
+{\ttfamily \#include $<$algorithm$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{pumpkin_8cpp_ae0a189ccffd7d8ed25797a84958b0b63}{find\+Total\+Pumpkins} (char $\ast$$\ast$p\+Patch)
+\begin{DoxyCompactList}\small\item\em Function headers. \end{DoxyCompactList}\item 
+bool \hyperlink{pumpkin_8cpp_a9fb78e4b0975ea2d9405cdbb68a44d05}{check\+For\+Patches} (char $\ast$$\ast$p\+Patch, int \&row, int \&col)
+\begin{DoxyCompactList}\small\item\em Sequentially search through the 2\+D array of characters to see if there are any pumpkins (represented by 'p' s). \end{DoxyCompactList}\item 
+int \hyperlink{pumpkin_8cpp_abf73406604705976ad95ff41ca94462f}{find\+Patch\+Size} (char $\ast$$\ast$p\+Patch, int row, int col, int from)
+\begin{DoxyCompactList}\small\item\em Recursively check the size of a pumpkin patch. \end{DoxyCompactList}\item 
+int \hyperlink{pumpkin_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\begin{DoxyCompactList}\small\item\em Main method implementation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{pumpkin_8cpp_adf135b12af3cbb61a265cbbb4fc184ab}{int \hyperlink{pumpkin_8cpp_adf135b12af3cbb61a265cbbb4fc184ab}{patch\+Rows} = 0}\label{pumpkin_8cpp_adf135b12af3cbb61a265cbbb4fc184ab}
+
+\begin{DoxyCompactList}\small\item\em Global Variables. \end{DoxyCompactList}\item 
+\hypertarget{pumpkin_8cpp_a779fdbfe6d350f764c2f8afa7856dea4}{int {\bfseries patch\+Cols} = 0}\label{pumpkin_8cpp_a779fdbfe6d350f764c2f8afa7856dea4}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{pumpkin_8cpp_a9fb78e4b0975ea2d9405cdbb68a44d05}{\index{pumpkin.\+cpp@{pumpkin.\+cpp}!check\+For\+Patches@{check\+For\+Patches}}
+\index{check\+For\+Patches@{check\+For\+Patches}!pumpkin.\+cpp@{pumpkin.\+cpp}}
+\subsubsection[{check\+For\+Patches}]{\setlength{\rightskip}{0pt plus 5cm}bool check\+For\+Patches (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{p\+Patch, }
+\item[{int \&}]{row, }
+\item[{int \&}]{col}
+\end{DoxyParamCaption}
+)}}\label{pumpkin_8cpp_a9fb78e4b0975ea2d9405cdbb68a44d05}
+
+
+Sequentially search through the 2\+D array of characters to see if there are any pumpkins (represented by 'p' s). 
+
+If there are, it will return true and the ints passed by reference will contain the coordinates of the pumpkin.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pumpkin\+Patch} & 2\+D array of characters that represents the 'pumpkin patch' to be searched though \\
+\hline
+{\em row} & Blank int passed by reference. If a pumpkin is found, this variable will contain the x coordinate (or row) the pumpkin is in \\
+\hline
+{\em col} & Blank int passed by reference. If a pumpkin is found, this variable will contain the y coordinate (or col) the pumpkin is in \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if a 'p' is found in the array. Otherwise, false. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The array will be unchanged. If there is a patch found, the value of row and col will be changed to the coordinates of that pumpkin 
+\end{DoxyPostcond}
+\hypertarget{pumpkin_8cpp_abf73406604705976ad95ff41ca94462f}{\index{pumpkin.\+cpp@{pumpkin.\+cpp}!find\+Patch\+Size@{find\+Patch\+Size}}
+\index{find\+Patch\+Size@{find\+Patch\+Size}!pumpkin.\+cpp@{pumpkin.\+cpp}}
+\subsubsection[{find\+Patch\+Size}]{\setlength{\rightskip}{0pt plus 5cm}int find\+Patch\+Size (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{p\+Patch, }
+\item[{int}]{row, }
+\item[{int}]{col, }
+\item[{int}]{from}
+\end{DoxyParamCaption}
+)}}\label{pumpkin_8cpp_abf73406604705976ad95ff41ca94462f}
+
+
+Recursively check the size of a pumpkin patch. 
+
+The original coordinate must contain a pumpkin ('p'). Once a pumpkin is found, the character will be changed to a 0 to avoid passing over the same pumpkin. If valid, check for pumpkins in each 4 main directions (north, south, east, west) for more pumpkins. If more are found, call this method with that pumpkin's location.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pumpkin\+Patch} & A 2\+D array of chars that represents the pumpkin patch \\
+\hline
+{\em row} & The row at which a pumpkin exists \\
+\hline
+{\em col} & The column at which a pumpkin exists \\
+\hline
+{\em from} & The direction from which this method was called. 0\+: none, 1\+: South, 2\+: West, 3\+: North, 4\+: East \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The size(int) of 'p' s in a patch. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+A pumpkin('p') exists at pumpkin\+Patch\mbox{[}row\mbox{]}\mbox{[}col\mbox{]} 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+All pumpkin's within the patch of the original pumpkin will be changed to 0s in the pumpkin\+Patch array 
+\end{DoxyPostcond}
+\hypertarget{pumpkin_8cpp_ae0a189ccffd7d8ed25797a84958b0b63}{\index{pumpkin.\+cpp@{pumpkin.\+cpp}!find\+Total\+Pumpkins@{find\+Total\+Pumpkins}}
+\index{find\+Total\+Pumpkins@{find\+Total\+Pumpkins}!pumpkin.\+cpp@{pumpkin.\+cpp}}
+\subsubsection[{find\+Total\+Pumpkins}]{\setlength{\rightskip}{0pt plus 5cm}int find\+Total\+Pumpkins (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{p\+Patch}
+\end{DoxyParamCaption}
+)}}\label{pumpkin_8cpp_ae0a189ccffd7d8ed25797a84958b0b63}
+
+
+Function headers. 
+
+Method implementation.
+
+Sequentially count the number of pumpkins in the given array
+
+
+\begin{DoxyParams}{Parameters}
+{\em pumpkin\+Patch} & 2\+D array of characters that represents the 'pumpkin patch' to be searched though \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of 'p' s in the array 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The array will be unchanged. 
+\end{DoxyPostcond}
+\hypertarget{pumpkin_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{\index{pumpkin.\+cpp@{pumpkin.\+cpp}!main@{main}}
+\index{main@{main}!pumpkin.\+cpp@{pumpkin.\+cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{pumpkin_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
+
+
+Main method implementation. 
+
+Get input from the keyboard and create pumpkin patch

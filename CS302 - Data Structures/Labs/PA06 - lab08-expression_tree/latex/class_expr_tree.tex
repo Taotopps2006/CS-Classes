@@ -1,0 +1,324 @@
+\hypertarget{class_expr_tree}{\section{Expr\+Tree$<$ Data\+Type $>$ Class Template Reference}
+\label{class_expr_tree}\index{Expr\+Tree$<$ Data\+Type $>$@{Expr\+Tree$<$ Data\+Type $>$}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_expr_tree_a1d5004443b461637bcb0fe0a86759d50}{Expr\+Tree} ()
+\item 
+\hyperlink{class_expr_tree_aeec9dc6139cf32fcc911840bab438239}{Expr\+Tree} (const \hyperlink{class_expr_tree}{Expr\+Tree} \&source)
+\item 
+\hyperlink{class_expr_tree}{Expr\+Tree} \& \hyperlink{class_expr_tree_a9a7b2120af2c2df666b1154eec20008a}{operator=} (const \hyperlink{class_expr_tree}{Expr\+Tree} \&source)
+\item 
+\hyperlink{class_expr_tree_a8976e9af7e1209b9db475b863ab9f31d}{$\sim$\+Expr\+Tree} ()
+\item 
+void \hyperlink{class_expr_tree_a283a61049eb163f6f370d562cc92c824}{build} ()
+\item 
+void \hyperlink{class_expr_tree_ac367645dc4ccaf488e121cd5a0a8c07d}{expression} () const 
+\item 
+Data\+Type \hyperlink{class_expr_tree_ad1579e64d55cdfcd500a634ef69ed792}{evaluate} () const   throw (logic\+\_\+error)
+\item 
+void \hyperlink{class_expr_tree_a87d6593a3ad6199b5521f6d1e3ba851f}{clear} ()
+\item 
+void \hyperlink{class_expr_tree_a8bfcf0da6dfd93f4228a35cded704fb4}{commute} ()
+\item 
+bool \hyperlink{class_expr_tree_ae64a4e3b5008fa2f533fd7461ead2485}{is\+Equivalent} (const \hyperlink{class_expr_tree}{Expr\+Tree} \&source) const 
+\item 
+bool \hyperlink{class_expr_tree_a3b534db1ad9bf8fefadb20bd1161c96b}{is\+Empty} () const 
+\item 
+void \hyperlink{class_expr_tree_a6f4c5e2ae8224fb53fb893231814e6d9}{show\+Structure} () const 
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_expr_tree_a1d5004443b461637bcb0fe0a86759d50}{\index{Expr\+Tree@{Expr\+Tree}!Expr\+Tree@{Expr\+Tree}}
+\index{Expr\+Tree@{Expr\+Tree}!Expr\+Tree@{Expr\+Tree}}
+\subsubsection[{Expr\+Tree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type $>$ {\bf Expr\+Tree}$<$ Data\+Type $>$\+::{\bf Expr\+Tree} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_expr_tree_a1d5004443b461637bcb0fe0a86759d50}
+Constructor for Expression Tree
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Creates an empty expression tree. 
+\end{DoxyPostcond}
+\hypertarget{class_expr_tree_aeec9dc6139cf32fcc911840bab438239}{\index{Expr\+Tree@{Expr\+Tree}!Expr\+Tree@{Expr\+Tree}}
+\index{Expr\+Tree@{Expr\+Tree}!Expr\+Tree@{Expr\+Tree}}
+\subsubsection[{Expr\+Tree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type $>$ {\bf Expr\+Tree}$<$ Data\+Type $>$\+::{\bf Expr\+Tree} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Expr\+Tree}$<$ Data\+Type $>$ \&}]{source}
+\end{DoxyParamCaption}
+)}}\label{class_expr_tree_aeec9dc6139cf32fcc911840bab438239}
+Copy constructor for Expression Tree
+
+
+\begin{DoxyParams}{Parameters}
+{\em source} & Expression tree that this expression tree will become a copy of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Initializes the expression tree to be equivalent to the other \hyperlink{class_expr_tree}{Expr\+Tree} object parameter. 
+\end{DoxyPostcond}
+\hypertarget{class_expr_tree_a8976e9af7e1209b9db475b863ab9f31d}{\index{Expr\+Tree@{Expr\+Tree}!````~Expr\+Tree@{$\sim$\+Expr\+Tree}}
+\index{````~Expr\+Tree@{$\sim$\+Expr\+Tree}!Expr\+Tree@{Expr\+Tree}}
+\subsubsection[{$\sim$\+Expr\+Tree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type $>$ {\bf Expr\+Tree}$<$ Data\+Type $>$\+::$\sim${\bf Expr\+Tree} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_expr_tree_a8976e9af7e1209b9db475b863ab9f31d}
+Deconstructor for Expression Tree
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Deallocates the memory used to store this expression tree 
+\end{DoxyPostcond}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_expr_tree_a283a61049eb163f6f370d562cc92c824}{\index{Expr\+Tree@{Expr\+Tree}!build@{build}}
+\index{build@{build}!Expr\+Tree@{Expr\+Tree}}
+\subsubsection[{build}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type $>$ void {\bf Expr\+Tree}$<$ Data\+Type $>$\+::build (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_expr_tree_a283a61049eb163f6f370d562cc92c824}
+Builds the Expression Tree from user input
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Builds an expression tree according to keyboard input 
+\end{DoxyPostcond}
+\hypertarget{class_expr_tree_a87d6593a3ad6199b5521f6d1e3ba851f}{\index{Expr\+Tree@{Expr\+Tree}!clear@{clear}}
+\index{clear@{clear}!Expr\+Tree@{Expr\+Tree}}
+\subsubsection[{clear}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type $>$ void {\bf Expr\+Tree}$<$ Data\+Type $>$\+::clear (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_expr_tree_a87d6593a3ad6199b5521f6d1e3ba851f}
+Deallocate memory assigned to this tree and remove its contents.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+All the data items in this expression tree will be removed. 
+\end{DoxyPostcond}
+\hypertarget{class_expr_tree_a8bfcf0da6dfd93f4228a35cded704fb4}{\index{Expr\+Tree@{Expr\+Tree}!commute@{commute}}
+\index{commute@{commute}!Expr\+Tree@{Expr\+Tree}}
+\subsubsection[{commute}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type $>$ void {\bf Expr\+Tree}$<$ Data\+Type $>$\+::commute (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_expr_tree_a8bfcf0da6dfd93f4228a35cded704fb4}
+Apply the commutative property to the expression tree
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of the expression tree will be swapped around according to the commutative property 
+\end{DoxyPostcond}
+\hypertarget{class_expr_tree_ad1579e64d55cdfcd500a634ef69ed792}{\index{Expr\+Tree@{Expr\+Tree}!evaluate@{evaluate}}
+\index{evaluate@{evaluate}!Expr\+Tree@{Expr\+Tree}}
+\subsubsection[{evaluate}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type $>$ Data\+Type {\bf Expr\+Tree}$<$ Data\+Type $>$\+::evaluate (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const throw  logic\+\_\+error) }}\label{class_expr_tree_ad1579e64d55cdfcd500a634ef69ed792}
+Evaluate the expression contained within the expression tree.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Datatype value of the corresponding arithmetic expression contained within this Expression Tree 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+Expression tree is not empty. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this expression tree will not be changed. The value of the corresponding arithmetic expression will be returned. 
+\end{DoxyPostcond}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em logic\+\_\+error} & Throws error if tree is empty \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{class_expr_tree_ac367645dc4ccaf488e121cd5a0a8c07d}{\index{Expr\+Tree@{Expr\+Tree}!expression@{expression}}
+\index{expression@{expression}!Expr\+Tree@{Expr\+Tree}}
+\subsubsection[{expression}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type $>$ void {\bf Expr\+Tree}$<$ Data\+Type $>$\+::expression (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_expr_tree_ac367645dc4ccaf488e121cd5a0a8c07d}
+Outputs the expression corresponding to the values in the tree in fully parenthesized infix form.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this expression tree will not be changed. An expression corresponding to the value of the tree in fully parenthesized infix form will be outputted. 
+\end{DoxyPostcond}
+\hypertarget{class_expr_tree_a3b534db1ad9bf8fefadb20bd1161c96b}{\index{Expr\+Tree@{Expr\+Tree}!is\+Empty@{is\+Empty}}
+\index{is\+Empty@{is\+Empty}!Expr\+Tree@{Expr\+Tree}}
+\subsubsection[{is\+Empty}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type $>$ bool {\bf Expr\+Tree}$<$ Data\+Type $>$\+::is\+Empty (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_expr_tree_a3b534db1ad9bf8fefadb20bd1161c96b}
+Checks if the current Exprssion Tree is empty
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if tree is empty, false otherwise 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this expression tree will not be changed 
+\end{DoxyPostcond}
+\hypertarget{class_expr_tree_ae64a4e3b5008fa2f533fd7461ead2485}{\index{Expr\+Tree@{Expr\+Tree}!is\+Equivalent@{is\+Equivalent}}
+\index{is\+Equivalent@{is\+Equivalent}!Expr\+Tree@{Expr\+Tree}}
+\subsubsection[{is\+Equivalent}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type $>$ bool {\bf Expr\+Tree}$<$ Data\+Type $>$\+::is\+Equivalent (
+\begin{DoxyParamCaption}
+\item[{const {\bf Expr\+Tree}$<$ Data\+Type $>$ \&}]{source}
+\end{DoxyParamCaption}
+) const}}\label{class_expr_tree_ae64a4e3b5008fa2f533fd7461ead2485}
+Checks whether a given expression tree is equivalent to the current expression tree. This means that the overall value of the tree is equivalent, and the children nodes are equal. The order of child nodes may be different if the overall expression is not changed. I\+E 1 + 3 is equivalent to 3 + 1, but 3 -\/ 1 is not equivalent to 1 -\/ 3.
+
+
+\begin{DoxyParams}{Parameters}
+{\em source} & Another expression tree to which this expression tree is being compared to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if both trees are equivalent, otherwise false. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of both trees will not be changed. 
+\end{DoxyPostcond}
+\hypertarget{class_expr_tree_a9a7b2120af2c2df666b1154eec20008a}{\index{Expr\+Tree@{Expr\+Tree}!operator=@{operator=}}
+\index{operator=@{operator=}!Expr\+Tree@{Expr\+Tree}}
+\subsubsection[{operator=}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type $>$ {\bf Expr\+Tree}$<$ Data\+Type $>$ \& {\bf Expr\+Tree}$<$ Data\+Type $>$\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Expr\+Tree}$<$ Data\+Type $>$ \&}]{source}
+\end{DoxyParamCaption}
+)}}\label{class_expr_tree_a9a7b2120af2c2df666b1154eec20008a}
+Assignment operator overload for Expression Tree
+
+
+\begin{DoxyParams}{Parameters}
+{\em source} & Expression tree that this expression tree will become a copy of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{class_expr_tree}{Expr\+Tree}\& Reference to this object 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+Sets the expression tree to be equivalent to the other \hyperlink{class_expr_tree}{Expr\+Tree} object parameter. Will not change any part of source parameter 
+\end{DoxyPostcond}
+\hypertarget{class_expr_tree_a6f4c5e2ae8224fb53fb893231814e6d9}{\index{Expr\+Tree@{Expr\+Tree}!show\+Structure@{show\+Structure}}
+\index{show\+Structure@{show\+Structure}!Expr\+Tree@{Expr\+Tree}}
+\subsubsection[{show\+Structure}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Data\+Type $>$ void {\bf Expr\+Tree}$<$ Data\+Type $>$\+::show\+Structure (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_expr_tree_a6f4c5e2ae8224fb53fb893231814e6d9}
+Outputs an express tree with its branches oriented from left (root) to right (leaves) -\/ that is, the tree output is rotated counterclockwise ninety degrees from its conventional orientation. If the tree is empty, outputs \char`\"{}\+Empty Tree\char`\"{}. Note that this operation is intended for testing/debugging purposes only. It assumes that arithmetic expressions contain only single-\/digit, nonnegative integers and the arithmetic operators for addition, subtraction, mutiplication, and division.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+None 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+The contents of this expression tree will not be modified. The expression tree will be outputted. 
+\end{DoxyPostcond}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Expression\+Tree.\+h\item 
+\hyperlink{_expression_tree_8cpp}{Expression\+Tree.\+cpp}\item 
+show8.\+cpp\end{DoxyCompactItemize}
