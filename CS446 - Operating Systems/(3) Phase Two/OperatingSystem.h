@@ -15,7 +15,7 @@ struct Process
 {
 	char component;
 	string operation;
-	int cycleTime;
+	int numberOfCycles;
 };
 
 class OperatingSystem
@@ -65,6 +65,14 @@ public:
 	 */
 	void readMetaDataFile( );
 
+	void runSimulator( );
+
+	void prepareProcesses( );
+
+	void runApplications( );
+
+	void runSimulatorPhaseTwo( );
+
 	/**
 	 * Iterates through the vector of Processes to process each oepration
 	 * correctly. Heavily relies on the processOperation method to function
@@ -101,19 +109,19 @@ private:
 	 * (P, I, O).
 	 * @param operation  Describes the exact operation that this component
 	 * is trying to achieve. Is not evaluated here, but is passed on.
-	 * @param cycleTime The number of cycles that this operation will run for.
+	 * @param numberOfCycles The number of cycles that this operation will run for.
 	 * Not evaluated in this method, but is passed on.
 	 */
 	void processOperation( 
 		char component, 
 		string operation, 
-		int cycleTime );
+		int numberOfCycles );
 
 	/**
 	 * Specifically evaluates the operating system operations.
 	 * Ways this will succeed:
-	 * - operation = start, cycleTime = 0, simulatorRunning = false
-	 * - operation = end, cycleTime = 0, simulatorRunning = true
+	 * - operation = start, numberOfCycles = 0, simulatorRunning = false
+	 * - operation = end, numberOfCycles = 0, simulatorRunning = true
 	 * All other possibilities cause the program to crash with an
 	 * appropriate error message.
 	 *
@@ -122,17 +130,17 @@ private:
 	 * depending on whether operation is start or end, respectively.
 	 *  
 	 * @param operation Must be 'start' or 'end'
-	 * @param cycleTime Must be 0
+	 * @param numberOfCycles Must be 0
 	 */
 	void evalOperatingSystem( 
 		string operation, 
-		int cycleTime );
+		int numberOfCycles );
 
 	/**
 	 * Specifically evaluates the application operations.
 	 * Ways this will succeed:
-	 * - operation = start, cycleTime = 0
-	 * - operation = end, cycleTime = 0
+	 * - operation = start, numberOfCycles = 0
+	 * - operation = end, numberOfCycles = 0
 	 * All other possibilities cause the program to crash with an 
 	 * appropriate error message.
 	 *
@@ -140,11 +148,11 @@ private:
 	 * Post: A new application will be created or destroyed in the 
 	 * vector of ProcessControlBlock variable.
 	 * @param operation Must be 'start' or 'end'
-	 * @param cycleTime Must be 0
+	 * @param numberOfCycles Must be 0
 	 */
 	void evalApplication( 
 		string operation, 
-		int cycleTime );
+		int numberOfCycles );
 
 	/**
 	 * Specifically evaluates the process operations.
@@ -157,11 +165,11 @@ private:
 	 * by the Process Control Block.
 	 * 
 	 * @param operation Must be 'run'
-	 * @param cycleTime Must be positive.
+	 * @param numberOfCycles Must be positive.
 	 */
 	void evalProcess( 
 		string operation, 
-		int cycleTime );
+		int numberOfCycles );
 
 	/**
 	 * Specifically evaluates the input operations.
@@ -173,11 +181,11 @@ private:
 	 * by the Process Control Block.
 	 * 
 	 * @param operation Must be 'hard drive' or 'keyboard'
-	 * @param cycleTime Must be positive
+	 * @param numberOfCycles Must be positive
 	 */
 	void evalInput( 
 		string operation, 
-		int cycleTime );
+		int numberOfCycles );
 
 	/**
 	 * Specifically evaluates the input operations.
@@ -188,11 +196,11 @@ private:
 	 * Post: This process will be handled correctly and completely
 	 * by the Process Control Block.
 	 * @param operation Must be 'hard drive', 'monitor', or 'printer'
-	 * @param cycleTime Must be positive.
+	 * @param numberOfCycles Must be positive.
 	 */
 	void evalOutput( 
 		string operation, 
-		int cycleTime );
+		int numberOfCycles );
 	
 	bool simulatorRunning; // True if yes, false if no
 	int totalNumberOfProcesses; // Number of unique PCB's from this OS

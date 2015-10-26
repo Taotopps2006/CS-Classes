@@ -64,6 +64,7 @@ public:
 	int hardDriveCycleTime;
 	int printerCycleTime;
 	int keyboardCycleTime;
+	string cpuScheduling;
 	string filePath;
 	string logType;
 	string logFilePath;
@@ -76,7 +77,7 @@ private:
 	 * settingLine 0 and 1 are dealt with here.
 	 * All others are passed to setPhaseOne method.
 	 * 
-	 * Pre: Version is 1.0
+	 * Pre: Version is 1.0 or 2.0
 	 * Post: Calls setPhaseOne to set value appropriately
 	 * 
 	 * @param settingLine  Between 0 and 10 inclusively (currently)
@@ -90,6 +91,7 @@ private:
 	 * Set variables and settings appropriately for phase one
 	 * Will use atoi to convert from string to int if necessary
 	 * settingLine 2 through 9 set a variable
+	 * 10 is ignored
 	 * 0 and 1 are dealt with in set.
 	 * All others crash with appropriate error message.
 	 * 
@@ -99,8 +101,23 @@ private:
 	void setPhaseOne( 
 		int settingLine, 
 		string settingValue );
-	// future method: void setPhaseTwo( int settingLine, string settingValue );
+
+	/**
+	 * Set variables and settings appropriately for phase two
+	 * Will use atoi to convert from string to int if necessary
+	 * settingLine 2 through 10 set a variable
+	 * 0 and 1 are dealt with in set.
+	 * 11 is ignored
+	 * All others crash with appropriate error message.
+	 * 
+	 * @param settingLine  Must be between 2 and 11 inclusively
+	 * @param settingValue Must be an appropriate setting value
+	 */
+	void setPhaseTwo(
+		int settingLine, 
+		string settingValue);
 	// future method: void setPhaseThree( int settingLine, string settingValue );
+
 	string version;
 	vector< string > regexLineKeys;
 	vector< string > configFile;

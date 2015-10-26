@@ -29,7 +29,7 @@ class ProcessControlBlock
 public:
 	/**
 	 * ProcessControlBlock constructor
-	 * Updates this PCB's processNumber and various cycleTime settings
+	 * Updates this PCB's processNumber and various numberOfCycles settings
 	 * - ProcessCycleTime
 	 * - MonitorDisplayTime
 	 * - HardDriveCycleTime
@@ -45,8 +45,20 @@ public:
 		const ConfigurationSettings &pSettings );
 
 	/**
+	* Iterates through each process in the PCB,
+	* logs the process, waits, then logs the end of the
+	* process.
+	*
+	* Pre: Processes will have been fully loaded into the
+	*      readyProcessThreads vector
+	* Post: readyProcessThreads will be empty and finishedProcessThreads
+	*       will be filled with all the processes from readyProcessThreads
+	*/
+	void runProcesses();
+	
+	/**
 	 * Creates a new Processor Thread
-	 * Sets sleep time to processCycleTime * cycleTime
+	 * Sets sleep time to processCycleTime * numberOfCycles
 	 * Creates new thread, then waits for thread to end.
 	 *
 	 * Pre: processCycleTime has been set appropriately
@@ -54,17 +66,17 @@ public:
 	 * Will also log output for start/end of process
 	 * 
 	 * @param operation Name of the operation, used for output
-	 * @param cycleTime Number of cycles to run for
+	 * @param numberOfCycles Number of cycles to run for
 	 */
 	void newProcessThread( 
 		string operation, 
-		int cycleTime );
+		int numberOfCycles );
 
 	/**
 	 * Creates a new Processor Thread
 	 * Sets sleep time to 
-	 *  hardDriveCycleTime * cycleTime
-	 *  keyboardCycleTime * cycleTime
+	 *  hardDriveCycleTime * numberOfCycles
+	 *  keyboardCycleTime * numberOfCycles
 	 * based on the given operation
 	 * Creates new thread, then waits for thread to end.
 	 *
@@ -74,18 +86,18 @@ public:
 	 * Will also log output for start/end of process
 	 * 
 	 * @param operation Name of the operation, used for output
-	 * @param cycleTime Number of cycles to run for
+	 * @param numberOfCycles Number of cycles to run for
 	 */
 	void newInputThread( 
 		string operation, 
-		int cycleTime );
+		int numberOfCycles );
 
 	/**
 	 * Creates a new Output Thread
 	 * Sets sleep time to 
-	 *  hardDriveCycleTime * cycleTime
-	 *  monitorDisplayTime * cycleTime
-	 *  printerCycleTime * cycleTime
+	 *  hardDriveCycleTime * numberOfCycles
+	 *  monitorDisplayTime * numberOfCycles
+	 *  printerCycleTime * numberOfCycles
 	 * based on the given operation
 	 * Creates new thread, then waits for thread to end.
 	 *
@@ -95,18 +107,37 @@ public:
 	 * Will also log output for start/end of process
 	 * 
 	 * @param operation Name of the operation, used for output
-	 * @param cycleTime Number of cycles to run for
+	 * @param numberOfCycles Number of cycles to run for
 	 */
 	void newOutputThread( 
 		string operation, 
-		int cycleTime );
-private:
+		int numberOfCycles );
+
+	/**
+	* Struct os_thread will be used to hold all the
+	* threads that will be run throughout this process.
+	* The name of the operation will be saved, as will
+	* the total time it will take for the process to
+	* run.
+	*
+	* @param operation The name of the operation
+	* @param processTime Total process time
+		                   (numberOfCycles * cycleTime)
+	*/
+	struct os_thread
+	{
+		string startLogMessage;
+		string endLogMessage;
+		int processTime;
+	};
+
 	int processNumber;
 	int processCycleTime;
 	int monitorDisplayTime;
 	int hardDriveCycleTime;
 	int printerCycleTime;
 	int keyboardCycleTime;
-	// Future: Queue for CPU scheduling
+	vector<os_thread> readyProcessThreads;
+	vector<os_thread> finishedProcessThreads;
 };
 #endif // PROCESS_CONTROL_BLOCK_H

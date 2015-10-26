@@ -62,7 +62,7 @@ void OperatingSystem::readMetaDataFile( )
             re2::StringPiece reString( tempString );
             char component;
             string operation;
-            int cycleTime;
+            int numberOfCycles;
 
             while( 
                 RE2::FindAndConsume( 
@@ -70,12 +70,12 @@ void OperatingSystem::readMetaDataFile( )
                     regExpression, 
                     &component, 
                     &operation, 
-                    &cycleTime ) )
+                    &numberOfCycles ) )
             {
                 Process currentProcess;
                 currentProcess.component = component;
                 currentProcess.operation = operation;
-                currentProcess.cycleTime = cycleTime;
+                currentProcess.numberOfCycles = numberOfCycles;
                 operatingSystemInstructions.push_back( currentProcess );
             }
 
@@ -85,12 +85,12 @@ void OperatingSystem::readMetaDataFile( )
                     endOSRegEx, 
                     &component, 
                     &operation, 
-                    &cycleTime ) )
+                    &numberOfCycles ) )
             {
                 Process currentProcess;
                 currentProcess.component = component;
                 currentProcess.operation = operation;
-                currentProcess.cycleTime = cycleTime;
+                currentProcess.numberOfCycles = numberOfCycles;
                 operatingSystemInstructions.push_back( currentProcess );
                 break; // End the loop, we found the end of the os meta file
             }
@@ -125,10 +125,10 @@ void OperatingSystem::runPhaseOneSimulator( )
         currentProcess++
         )
     {
-        processOperation( 
+        processOperation(
             currentProcess->component,
             currentProcess->operation,
-            currentProcess->cycleTime );
+            currentProcess->numberOfCycles );
     }
     if( simulatorRunning == true )
     {
@@ -137,13 +137,13 @@ void OperatingSystem::runPhaseOneSimulator( )
     }
 }
 
-void OperatingSystem::processOperation( char component, string operation, int cycleTime )
+void OperatingSystem::processOperation( char component, string operation, int numberOfCycles )
 {
     if( simulatorRunning == false )
     {
         if( component == 'S' && operation.compare( "start" ) == 0 )
         {
-            if( cycleTime != 0 )
+            if( numberOfCycles != 0 )
             {
                 myLog.logError( 
                     "Operating System operation must have cycle time of 0" );
@@ -163,27 +163,27 @@ void OperatingSystem::processOperation( char component, string operation, int cy
     {
         case 'S':
         {
-            evalOperatingSystem( operation, cycleTime );
+            evalOperatingSystem( operation, numberOfCycles );
             break;
         }
         case 'A':
         {
-            evalApplication( operation, cycleTime );
+            evalApplication( operation, numberOfCycles );
             break;
         }
         case 'P':
         {
-            evalProcess( operation, cycleTime );
+            evalProcess( operation, numberOfCycles );
             break;
         }
         case 'I':
         {
-            evalInput( operation, cycleTime );
+            evalInput( operation, numberOfCycles );
             break;
         }
         case 'O':
         {
-            evalOutput( operation, cycleTime );
+            evalOutput( operation, numberOfCycles );
             break;
         }
         default:
@@ -193,9 +193,9 @@ void OperatingSystem::processOperation( char component, string operation, int cy
     }
 }
 
-void OperatingSystem::evalOperatingSystem( string operation, int cycleTime )
+void OperatingSystem::evalOperatingSystem( string operation, int numberOfCycles )
 {
-    if( cycleTime != 0 )
+    if( numberOfCycles != 0 )
     {
         myLog.logError( "Operating System operation must have cycle time of 0" );
     }
@@ -217,9 +217,9 @@ void OperatingSystem::evalOperatingSystem( string operation, int cycleTime )
     }
 }
 
-void OperatingSystem::evalApplication( string operation, int cycleTime )
+void OperatingSystem::evalApplication( string operation, int numberOfCycles )
 {
-    if( cycleTime != 0 )
+    if( numberOfCycles != 0 )
     {
         myLog.logError( "Program Application operation must have cycle time of 0" );
     }
@@ -247,7 +247,7 @@ void OperatingSystem::evalApplication( string operation, int cycleTime )
     }
 }
 
-void OperatingSystem::evalProcess( string operation, int cycleTime )
+void OperatingSystem::evalProcess( string operation, int numberOfCycles )
 {
     if( numberOfProcesses <= 0 )
     {
@@ -256,7 +256,7 @@ void OperatingSystem::evalProcess( string operation, int cycleTime )
 
     if( operation.compare( "run" ) == 0 )
     {
-        processes[indexOfCurProcess].newProcessThread( operation, cycleTime );
+        processes[indexOfCurProcess].newProcessThread( operation, numberOfCycles );
     }
     else
     {
@@ -264,7 +264,7 @@ void OperatingSystem::evalProcess( string operation, int cycleTime )
     }
 }
 
-void OperatingSystem::evalInput( string operation, int cycleTime )
+void OperatingSystem::evalInput( string operation, int numberOfCycles )
 {
     if( numberOfProcesses <= 0 )
     {
@@ -274,7 +274,7 @@ void OperatingSystem::evalInput( string operation, int cycleTime )
     if( operation.compare( "hard drive" ) == 0 ||
                 operation.compare( "keyboard" ) == 0 )
     {
-        processes[indexOfCurProcess].newInputThread( operation, cycleTime );
+        processes[indexOfCurProcess].newInputThread( operation, numberOfCycles );
     }
     else
     {
@@ -282,7 +282,7 @@ void OperatingSystem::evalInput( string operation, int cycleTime )
     }
 }
 
-void OperatingSystem::evalOutput( string operation, int cycleTime )
+void OperatingSystem::evalOutput( string operation, int numberOfCycles )
 {
     if( numberOfProcesses <= 0 )
     {
@@ -293,7 +293,7 @@ void OperatingSystem::evalOutput( string operation, int cycleTime )
                 operation.compare( "monitor" ) == 0 ||
                 operation.compare( "printer" ) == 0 )
     {
-        processes[indexOfCurProcess].newOutputThread( operation, cycleTime );
+        processes[indexOfCurProcess].newOutputThread( operation, numberOfCycles );
     }
     else
     {

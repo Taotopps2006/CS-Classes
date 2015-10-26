@@ -7,6 +7,7 @@ ConfigurationSettings::ConfigurationSettings( )
 		"(Start Simulator Configuration File)",
 		"Version/Phase: ([0-9]\\.0)",
 		"File Path: (test_\\d\\.mdf)",
+		//"CPU Scheduling: (FIFO|SJF|SRTF-N)" (Version 2.0 only; this is at begin()+3)
 		"Processor cycle time \\(msec\\): ([1-9]+[0-9]*)",
 		"Monitor display time \\(msec\\): ([1-9]+[0-9]*)",
 		"Hard drive cycle time \\(msec\\): ([1-9]+[0-9]*)",
@@ -58,11 +59,13 @@ void ConfigurationSettings::set( unsigned int settingLine, string settingValue )
 			{
 				if( version.compare( "1.0" ) == 0 )
 				{
-					setPhaseOne( settingLine, match );
+					setPhaseOne( settingLine , match );
 				}
 				else if( version.compare( "2.0" ) == 0 )
 				{
-					myLog.logError( "Version 2.0 currently not implemented" );
+					regexLineKeys.insert(
+						regexLineKeys.begin()+3 ,
+						"CPU Scheduling: (FIFO|SJF|SRTF-N)" );
 				}
 				else if( version.compare( "3.0" ) == 0 )
 				{
@@ -140,6 +143,75 @@ void ConfigurationSettings::setPhaseOne( int settingLine, string settingValue )
 			break;
 		}
 		case 10:
+		{
+			break;
+		}
+		default:
+		{
+			myLog.logError( "Error, too many lines in this configuration file" + to_string( settingLine ) );
+		}
+	}
+}
+
+void ConfigurationSettings::setPhaseTwo( int settingLine, string settingValue )
+{
+	switch( settingLine )
+	{
+		case 2:
+		{
+			filePath = settingValue;
+			break;
+		}
+		case 3:
+		{
+			cpuScheduling = settingValue;
+		}
+		case 4:
+		{
+			processCycleTime = atoi( settingValue.c_str( ) );
+			break;
+		}
+		case 5:
+		{
+			monitorDisplayTime = atoi( settingValue.c_str( ) );
+			break;
+		}
+		case 6:
+		{
+			hardDriveCycleTime = atoi( settingValue.c_str( ) );
+			break;
+		}
+		case 7:
+		{
+			printerCycleTime = atoi( settingValue.c_str( ) );
+			break;
+		}
+		case 8:
+		{
+			keyboardCycleTime = atoi( settingValue.c_str( ) );
+			break;
+		}
+		case 9:
+		{
+			if( 
+				settingValue.compare( "Both" ) == 0 || 
+				settingValue.compare( "Monitor" ) == 0 || 
+				settingValue.compare( "File" ) == 0 )
+			{
+				logType = settingValue;
+			}
+			else
+			{
+				myLog.logError( "Incorrect myLog type " + settingValue );
+			}
+			break;
+		}
+		case 10:
+		{
+			logFilePath = settingValue;
+			break;
+		}
+		case 11:
 		{
 			break;
 		}
