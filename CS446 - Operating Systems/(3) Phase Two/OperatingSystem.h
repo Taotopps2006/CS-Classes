@@ -7,16 +7,10 @@
 #include <cstdlib>
 #include "Logger.h"
 #include "ProcessControlBlock.h"
+#include "Structs.h"
 using namespace std;
 
 extern Logger myLog;
-
-struct Process
-{
-	char component;
-	string operation;
-	int numberOfCycles;
-};
 
 class OperatingSystem
 {
@@ -67,12 +61,16 @@ public:
 
 	void runSimulator( );
 
-	void prepareProcesses( );
-
-	void runApplications( );
-
-	void runSimulatorPhaseTwo( );
-
+	/**
+	 * FOR DEBUGGING PURPOSES ONlY
+	 * This method is used to print out the configuration settings stored in
+	 * the settings variable to ensure that the file was read correctly.
+	 *
+	 * Pre: readConfigurationSettings was called and ran successfully.
+	 * Post: The settings will be output, but nothing will be changed.
+	 */
+	void outputSettingsToConsole( );
+private:
 	/**
 	 * Iterates through the vector of Processes to process each oepration
 	 * correctly. Heavily relies on the processOperation method to function
@@ -84,16 +82,14 @@ public:
 	 */
 	void runPhaseOneSimulator( );
 
-	/**
-	 * FOR DEBUGGING PURPOSES ONlY
-	 * This method is used to print out the configuration settings stored in
-	 * the settings variable to ensure that the file was read correctly.
-	 *
-	 * Pre: readConfigurationSettings was called and ran successfully.
-	 * Post: The settings will be output, but nothing will be changed.
-	 */
-	void outputSettingsToConsole( );
-private:
+	void runPhaseTwoSimulator( );
+
+	void runFIFO( );
+	void runSJF( );
+	void sortSJF( int originalLeft, int originalRight );
+	void runSRTFN( );
+	int findSRTFN( );
+
 	/**
 	 * Looks at the current operation being performed and passes it to the
 	 * correct evaluation method. If the component is not recognized, the
@@ -153,58 +149,11 @@ private:
 	void evalApplication( 
 		string operation, 
 		int numberOfCycles );
-
-	/**
-	 * Specifically evaluates the process operations.
-	 * Operation must be run.
-	 * Passes the operation to current application
-	 *
-	 * Pre: There must be an application available to run this
-	 * process.
-	 * Post: This process will be handled correctly and completely
-	 * by the Process Control Block.
-	 * 
-	 * @param operation Must be 'run'
-	 * @param numberOfCycles Must be positive.
-	 */
-	void evalProcess( 
-		string operation, 
-		int numberOfCycles );
-
-	/**
-	 * Specifically evaluates the input operations.
-	 * Possible operations: hard drive, keyboard
-	 * 
-	 * Pre: There must be an application available to run this
-	 * process.
-	 * Post: This process will be handled correctly and completely
-	 * by the Process Control Block.
-	 * 
-	 * @param operation Must be 'hard drive' or 'keyboard'
-	 * @param numberOfCycles Must be positive
-	 */
-	void evalInput( 
-		string operation, 
-		int numberOfCycles );
-
-	/**
-	 * Specifically evaluates the input operations.
-	 * Possible operations: hard drive, monitor, printer
-	 * 
-	 * Pre: There must be an application available to run this
-	 * process.
-	 * Post: This process will be handled correctly and completely
-	 * by the Process Control Block.
-	 * @param operation Must be 'hard drive', 'monitor', or 'printer'
-	 * @param numberOfCycles Must be positive.
-	 */
-	void evalOutput( 
-		string operation, 
-		int numberOfCycles );
 	
 	bool simulatorRunning; // True if yes, false if no
+	bool applicationStarted; // True if yes, false if no
 	int totalNumberOfProcesses; // Number of unique PCB's from this OS
-	int indexOfCurProcess; // Current PCB from this OS
+	unsigned int indexOfCurProcess; // Current PCB from this OS
 	int numberOfProcesses; // Number of current PCB's from this OS
 	vector< Process > operatingSystemInstructions; // Instructions from meta-data
 	vector< ProcessControlBlock > processes; // PCB's in use

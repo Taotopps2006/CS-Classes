@@ -3,8 +3,9 @@
 OperatingSystem::OperatingSystem( )
 {
     totalNumberOfProcesses = 0;
-    indexOfCurProcess = -1;
+    indexOfCurProcess = 0;
     numberOfProcesses = 0;
+    applicationStarted = false;
 }
 
 void OperatingSystem::readConfigurationFile( char * fileName )
@@ -76,7 +77,38 @@ void OperatingSystem::readMetaDataFile( )
                 currentProcess.component = component;
                 currentProcess.operation = operation;
                 currentProcess.numberOfCycles = numberOfCycles;
-                operatingSystemInstructions.push_back( currentProcess );
+                switch(currentProcess.component)
+                {
+                	case 'S':
+                	{
+                		operatingSystemInstructions.push_back( currentProcess );
+                		break;
+                	}
+                	case 'A':
+                	{
+                		operatingSystemInstructions.push_back( currentProcess );
+                		if(currentProcess.operation.compare("start") == 0)
+                		{
+                			totalNumberOfProcesses++;
+        					if(totalNumberOfProcesses != 1)
+        					{
+        						indexOfCurProcess++;
+        					}
+        					ProcessControlBlock pcb( totalNumberOfProcesses, settings );
+        					processes.push_back(pcb);
+                		}
+                		break;
+                	}
+                	default:
+                	{
+                		if(processes.size() == 0)
+                		{
+                			myLog.logError("Operation asked for before starting a process");
+                		}
+                		processes[indexOfCurProcess].addInstruction(currentProcess);
+                		break;
+                	}
+                }
             }
 
             if( 
@@ -107,7 +139,7 @@ void OperatingSystem::readMetaDataFile( )
         {
             metaFile.close( );
             myLog.logError( 
-                "Metadata file must end with 'End Program Meta-Data Code:'" );
+                "Metadata file must end with 'End Program Meta-Data Code.'" );
         }
     }
     else
@@ -117,24 +149,215 @@ void OperatingSystem::readMetaDataFile( )
     metaFile.close( );
 }
 
+void OperatingSystem::runSimulator( )
+{
+	if(settings.version.compare("1.0") == 0)
+	{
+		runPhaseOneSimulator( );
+	}
+	else if(settings.version.compare("2.0") == 0)
+	{
+		runPhaseTwoSimulator( );
+	}
+}
+
 void OperatingSystem::runPhaseOneSimulator( )
 {
-    for( vector<Process>::iterator 
+    runFIFO();
+}
+
+void OperatingSystem::runPhaseTwoSimulator( )
+{
+	if(settings.cpuScheduling.compare("FIFO") == 0)
+	{
+		runFIFO();
+	}
+	else if(settings.cpuScheduling.compare("SJF") == 0)
+	{
+		runSJF();
+	}
+	else if(settings.cpuScheduling.compare("SRTFN") == 0)
+	{
+		runSRTFN();
+	}
+}
+
+void OperatingSystem::runFIFO()
+{
+	// Set currentIndex back to starting point
+	indexOfCurProcess = 0;
+	// Set number of remaining processes
+	numberOfProcesses = totalNumberOfProcesses;
+
+	//Iterate through all operating system instructions
+	for( vector<Process>::iterator 
         currentProcess = operatingSystemInstructions.begin( );
         currentProcess != operatingSystemInstructions.end( );
         currentProcess++
         )
     {
+    	// Process current instruction in a different method
         processOperation(
             currentProcess->component,
             currentProcess->operation,
             currentProcess->numberOfCycles );
+        // If an application was started by current instruction
+        if(applicationStarted == true)
+        {
+        	// Check that current index is valid
+        	if(indexOfCurProcess < processes.size( ) )
+        	{
+        		// Run the application, then decrement number of
+        		// remaining processes
+        		processes[indexOfCurProcess].runApplication();
+        		numberOfProcesses--;
+        		indexOfCurProcess++;
+        	}
+        	else
+        	{
+        		// If it is out of bounds, end the program and say why
+        		myLog.logError("Attempted application index out of bounds");
+        	}
+        }
     }
+    // If the simulator is still running by the time we have run out of instructions
+    // then end the program and say why
     if( simulatorRunning == true )
     {
         myLog.logError( 
             "Metadata file has no more commands, but simulator is still running" );
     }
+}
+
+void OperatingSystem::runSJF()
+{
+	// Sort processes, then use the FIFO method to run through them
+	sortSJF(0, processes.size( ) - 1);
+	runFIFO();
+}
+
+void OperatingSystem::sortSJF(int originalLeft, int originalRight)
+{
+	// Use quicksort to sort
+	// Assume that the getRemainingTime() method on each process will not
+	// take a significant amount of time overall. (getRemainingTime will be
+	// programmed to 'cache' the last calculated remaining time and only
+	// recalculate if a new item is added or removed
+	int currentLeft = originalLeft;
+	int currentRight = originalRight;
+	ProcessControlBlock temp;
+	int pivot = processes[(currentLeft + currentRight) / 2].getRemainingTime();
+
+	while(currentLeft <= currentRight)
+	{
+		while(processes[currentLeft].getRemainingTime() < pivot)
+		{
+			currentLeft++;
+		}
+
+		while(processes[currentRight].getRemainingTime() > pivot)
+		{
+			currentRight--;
+		}
+
+		if(currentLeft <= currentRight)
+		{
+			temp = processes[currentLeft];
+			processes[currentLeft] = processes[currentRight];
+			processes[currentRight] = temp;
+			currentLeft++;
+			currentRight--;
+		}
+	}
+
+	if(originalLeft < currentRight)
+	{
+		sortSJF(originalLeft, currentLeft - 1);
+	}
+
+	if(currentLeft < originalRight)
+	{
+		sortSJF(currentLeft, originalRight);
+	}
+}
+
+void OperatingSystem::runSRTFN()
+{
+	// Use the same core algorithm as fifo, but instead of
+	// simply incrementing the currentIndex, we will have a method
+	// find the shortest remaining time index
+	
+	// Set currentIndex back to starting point
+	indexOfCurProcess = 0;
+	// Set number of remaining processes
+	numberOfProcesses = totalNumberOfProcesses;
+
+	//Iterate through all operating system instructions
+	for( vector<Process>::iterator 
+        currentProcess = operatingSystemInstructions.begin( );
+        currentProcess != operatingSystemInstructions.end( );
+        currentProcess++
+        )
+    {
+    	// Process current instruction in a different method
+        processOperation(
+            currentProcess->component,
+            currentProcess->operation,
+            currentProcess->numberOfCycles );
+        // If an application was started by current instruction
+        if(applicationStarted == true)
+        {
+        	// Try to find the index of the next shortest time remaining
+        	// process
+        	indexOfCurProcess = findSRTFN( );
+        	if(indexOfCurProcess < processes.size( ) )
+        	{
+        		processes[indexOfCurProcess].runApplication( );
+        	}
+        	else
+        	{
+        		// If it is out of bounds, end the program and say why
+        		myLog.logError("Attempted application index out of bounds");
+        	}
+        }
+    }
+    // If the simulator is still running by the time we have run out of instructions
+    // then end the program and say why
+    if( simulatorRunning == true )
+    {
+        myLog.logError( 
+            "Metadata file has no more commands, but simulator is still running" );
+    }
+}
+
+int OperatingSystem::findSRTFN( )
+{
+	// Iterate over all processes to find out the next shortest
+	// Assume that the getRemainingTime() method on each process will not
+	// take a significant amount of time overall. (getRemainingTime will be
+	// programmed to 'cache' the last calculated remaining time and only
+	// recalculate if a new item is added or removed
+	int SRTFNIndex = -1;
+	int SRTFNAmount = -1;
+	myLog.logProcess("OS: selecting next process");
+	for(unsigned int indexOfCurProcess = 0; indexOfCurProcess < processes.size(); indexOfCurProcess++)
+	{
+		int curTimeAmount = processes[indexOfCurProcess].getRemainingTime();
+		if(curTimeAmount != 0 && (curTimeAmount < SRTFNAmount || SRTFNAmount == -1))
+		{
+			SRTFNIndex = indexOfCurProcess;
+			SRTFNAmount = curTimeAmount;
+		}
+	}
+
+	// Check that we have found a shortest remaining time
+	if(SRTFNAmount == -1)
+	{
+		myLog.logError("No remaining processes to run");
+	}
+
+	myLog.logProcess("OS: starting process " + to_string(processes[SRTFNIndex].processNumber));
+	return SRTFNIndex;
 }
 
 void OperatingSystem::processOperation( char component, string operation, int numberOfCycles )
@@ -171,21 +394,6 @@ void OperatingSystem::processOperation( char component, string operation, int nu
             evalApplication( operation, numberOfCycles );
             break;
         }
-        case 'P':
-        {
-            evalProcess( operation, numberOfCycles );
-            break;
-        }
-        case 'I':
-        {
-            evalInput( operation, numberOfCycles );
-            break;
-        }
-        case 'O':
-        {
-            evalOutput( operation, numberOfCycles );
-            break;
-        }
         default:
         {
             myLog.logError( "Unknown component: " + component );
@@ -204,6 +412,7 @@ void OperatingSystem::evalOperatingSystem( string operation, int numberOfCycles 
     {
         // Already established in processOperation that if we got this far
         // Then simulator has indeed already been started
+        // Assume that the simulator cannot be stopped then restarted
         myLog.logError( "Received S( start ) but simulator has already been started" );
     }
     else if( operation.compare( "end" ) == 0 )
@@ -226,78 +435,47 @@ void OperatingSystem::evalApplication( string operation, int numberOfCycles )
 
     if( operation.compare( "start" ) == 0 )
     {
-        totalNumberOfProcesses++;
-        indexOfCurProcess++;
-        numberOfProcesses++;
-        myLog.logProcess( "OS: preparing process " + to_string( totalNumberOfProcesses ) );
-        ProcessControlBlock pcb( totalNumberOfProcesses, settings );
-        processes.push_back( pcb );
-        myLog.logProcess( "OS: starting process " + to_string( totalNumberOfProcesses ) );
+    	if(applicationStarted == true)
+    	{
+    		myLog.logError("Application already started, cannot start again");
+    	}
+    	applicationStarted = true;
+    	if(settings.version.compare("1.0") == 0)
+    	{
+    		myLog.logProcess("OS: preparing process 1");
+    		myLog.logProcess("OS: starting process 1");
+    	}
+    	else if(settings.version.compare("2.0") == 0)
+    	{
+    		// If this is the first process being started, report that 
+    		// we are preparing all processes
+    		if(numberOfProcesses == totalNumberOfProcesses)
+    		{
+    			myLog.logProcess("OS: preparing all processes");
+    		}
+
+    		// If we are not dealing with SRTFN (ie, FIFO or SJF),
+    		// then this is where we will report that we are selecting next
+    		// process and starting said process
+    		if(settings.cpuScheduling.compare("SRTFN") != 0)
+    		{
+    			myLog.logProcess("OS: selecting next process");
+    			myLog.logProcess("OS: starting process " + to_string(processes[indexOfCurProcess].processNumber));
+    		}
+    	}
     }
     else if( operation.compare( "end" ) == 0 )
     {
-        myLog.logProcess( "OS: removing process " + to_string( indexOfCurProcess + 1 ) );
-        indexOfCurProcess--;
-        numberOfProcesses--;
-        processes.erase( processes.begin( ) );
+        if( applicationStarted == false)
+        {
+        	myLog.logError("Application end called before application start");
+        }
+
+        applicationStarted = false;
     }
     else
     {
         myLog.logError( "Unknown operation for Program Application: " );
-    }
-}
-
-void OperatingSystem::evalProcess( string operation, int numberOfCycles )
-{
-    if( numberOfProcesses <= 0 )
-    {
-        myLog.logError( "There is no process available to perform this operation" );
-    }
-
-    if( operation.compare( "run" ) == 0 )
-    {
-        processes[indexOfCurProcess].newProcessThread( operation, numberOfCycles );
-    }
-    else
-    {
-        myLog.logError( "Unknown operation for Process: " );
-    }
-}
-
-void OperatingSystem::evalInput( string operation, int numberOfCycles )
-{
-    if( numberOfProcesses <= 0 )
-    {
-        myLog.logError( "There is no process available to perform this operation" );
-    }
-
-    if( operation.compare( "hard drive" ) == 0 ||
-                operation.compare( "keyboard" ) == 0 )
-    {
-        processes[indexOfCurProcess].newInputThread( operation, numberOfCycles );
-    }
-    else
-    {
-        myLog.logError( "Unknown operation for Input: " + operation );
-    }
-}
-
-void OperatingSystem::evalOutput( string operation, int numberOfCycles )
-{
-    if( numberOfProcesses <= 0 )
-    {
-        myLog.logError( "There is no process available to perform this operation" );
-    }
-    
-    if( operation.compare( "hard drive" ) == 0 ||
-                operation.compare( "monitor" ) == 0 ||
-                operation.compare( "printer" ) == 0 )
-    {
-        processes[indexOfCurProcess].newOutputThread( operation, numberOfCycles );
-    }
-    else
-    {
-        myLog.logError( "Unknown operation for Output: " + operation );
     }
 }
 

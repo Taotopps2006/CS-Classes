@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include "Logger.h"
 #include "ConfigurationSettings.h"
+#include "Structs.h"
 
 using namespace std;
 
@@ -28,6 +29,11 @@ class ProcessControlBlock
 {
 public:
 	/**
+	 * Default constructor
+	 * Should only be used for temporary PCB's
+	 */
+	ProcessControlBlock( );
+	/**
 	 * ProcessControlBlock constructor
 	 * Updates this PCB's processNumber and various numberOfCycles settings
 	 * - ProcessCycleTime
@@ -43,6 +49,10 @@ public:
 	ProcessControlBlock( 
 		int pProcessNumber, 
 		const ConfigurationSettings &pSettings );
+	/**
+	 * = Operator overload
+	 */
+	ProcessControlBlock& operator=(const ProcessControlBlock& rhs);
 
 	/**
 	* Iterates through each process in the PCB,
@@ -54,8 +64,11 @@ public:
 	* Post: readyProcessThreads will be empty and finishedProcessThreads
 	*       will be filled with all the processes from readyProcessThreads
 	*/
-	void runProcesses();
-	
+	void runApplication();
+	void addInstruction(Process newInstruction);
+	int getRemainingTime();
+	int processNumber;
+private:
 	/**
 	 * Creates a new Processor Thread
 	 * Sets sleep time to processCycleTime * numberOfCycles
@@ -113,31 +126,15 @@ public:
 		string operation, 
 		int numberOfCycles );
 
-	/**
-	* Struct os_thread will be used to hold all the
-	* threads that will be run throughout this process.
-	* The name of the operation will be saved, as will
-	* the total time it will take for the process to
-	* run.
-	*
-	* @param operation The name of the operation
-	* @param processTime Total process time
-		                   (numberOfCycles * cycleTime)
-	*/
-	struct os_thread
-	{
-		string startLogMessage;
-		string endLogMessage;
-		int processTime;
-	};
-
-	int processNumber;
+	
+	bool needToRecalcRT; // Used to determine whether the remaining time needs to be recalculated
+	int remainingTime;
 	int processCycleTime;
 	int monitorDisplayTime;
 	int hardDriveCycleTime;
 	int printerCycleTime;
 	int keyboardCycleTime;
-	vector<os_thread> readyProcessThreads;
-	vector<os_thread> finishedProcessThreads;
+	vector<pcb_thread> readyProcessThreads;
+	vector<pcb_thread> finishedProcessThreads;
 };
 #endif // PROCESS_CONTROL_BLOCK_H

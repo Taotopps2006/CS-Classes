@@ -68,6 +68,7 @@ public:
 	string filePath;
 	string logType;
 	string logFilePath;
+	string version;
 private:
 	/**
 	 * Sets appropriate variable based on settingLine
@@ -118,7 +119,6 @@ private:
 		string settingValue);
 	// future method: void setPhaseThree( int settingLine, string settingValue );
 
-	string version;
 	vector< string > regexLineKeys;
 	vector< string > configFile;
 };
