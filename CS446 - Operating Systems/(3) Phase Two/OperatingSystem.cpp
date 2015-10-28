@@ -22,7 +22,7 @@ void OperatingSystem::readConfigurationFile( char * fileName )
          // This for loop will end in 1 of 2 ways:
          // Versions 1.0 & 2.0: Hit end of file
         // Version 3.0: currentline gets to 13
-        for( int currentLine = 0; 
+        for( unsigned int currentLine = 0; 
             !configFile.eof( ) && currentLine < 13; 
             currentLine++ )
         {
@@ -63,7 +63,7 @@ void OperatingSystem::readMetaDataFile( )
             re2::StringPiece reString( tempString );
             char component;
             string operation;
-            int numberOfCycles;
+            unsigned int numberOfCycles;
 
             while( 
                 RE2::FindAndConsume( 
@@ -209,6 +209,7 @@ void OperatingSystem::runFIFO()
         	{
         		// Run the application, then decrement number of
         		// remaining processes
+                myLog.logProcess("Process remaining time: " + to_string(processes[indexOfCurProcess].getRemainingTime()));
         		processes[indexOfCurProcess].runApplication();
         		numberOfProcesses--;
         		indexOfCurProcess++;
@@ -236,17 +237,17 @@ void OperatingSystem::runSJF()
 	runFIFO();
 }
 
-void OperatingSystem::sortSJF(int originalLeft, int originalRight)
+void OperatingSystem::sortSJF(unsigned int originalLeft, unsigned int originalRight)
 {
 	// Use quicksort to sort
 	// Assume that the getRemainingTime() method on each process will not
 	// take a significant amount of time overall. (getRemainingTime will be
 	// programmed to 'cache' the last calculated remaining time and only
 	// recalculate if a new item is added or removed
-	int currentLeft = originalLeft;
-	int currentRight = originalRight;
+	unsigned int currentLeft = originalLeft;
+	unsigned int currentRight = originalRight;
 	ProcessControlBlock temp;
-	int pivot = processes[(currentLeft + currentRight) / 2].getRemainingTime();
+	unsigned int pivot = processes[(currentLeft + currentRight) / 2].getRemainingTime();
 
 	while(currentLeft <= currentRight)
 	{
@@ -330,20 +331,20 @@ void OperatingSystem::runSRTFN()
     }
 }
 
-int OperatingSystem::findSRTFN( )
+unsigned int OperatingSystem::findSRTFN( )
 {
 	// Iterate over all processes to find out the next shortest
 	// Assume that the getRemainingTime() method on each process will not
 	// take a significant amount of time overall. (getRemainingTime will be
 	// programmed to 'cache' the last calculated remaining time and only
 	// recalculate if a new item is added or removed
-	int SRTFNIndex = -1;
-	int SRTFNAmount = -1;
+	unsigned int SRTFNIndex = 0;
+	unsigned int SRTFNAmount = 0;
 	myLog.logProcess("OS: selecting next process");
 	for(unsigned int indexOfCurProcess = 0; indexOfCurProcess < processes.size(); indexOfCurProcess++)
 	{
-		int curTimeAmount = processes[indexOfCurProcess].getRemainingTime();
-		if(curTimeAmount != 0 && (curTimeAmount < SRTFNAmount || SRTFNAmount == -1))
+		unsigned int curTimeAmount = processes[indexOfCurProcess].getRemainingTime();
+		if(curTimeAmount != 0 && (curTimeAmount < SRTFNAmount || SRTFNAmount == 0))
 		{
 			SRTFNIndex = indexOfCurProcess;
 			SRTFNAmount = curTimeAmount;
@@ -351,7 +352,7 @@ int OperatingSystem::findSRTFN( )
 	}
 
 	// Check that we have found a shortest remaining time
-	if(SRTFNAmount == -1)
+	if(SRTFNAmount == 0)
 	{
 		myLog.logError("No remaining processes to run");
 	}
@@ -360,7 +361,7 @@ int OperatingSystem::findSRTFN( )
 	return SRTFNIndex;
 }
 
-void OperatingSystem::processOperation( char component, string operation, int numberOfCycles )
+void OperatingSystem::processOperation( char component, string operation, unsigned int numberOfCycles )
 {
     if( simulatorRunning == false )
     {
@@ -401,7 +402,7 @@ void OperatingSystem::processOperation( char component, string operation, int nu
     }
 }
 
-void OperatingSystem::evalOperatingSystem( string operation, int numberOfCycles )
+void OperatingSystem::evalOperatingSystem( string operation, unsigned int numberOfCycles )
 {
     if( numberOfCycles != 0 )
     {
@@ -426,7 +427,7 @@ void OperatingSystem::evalOperatingSystem( string operation, int numberOfCycles 
     }
 }
 
-void OperatingSystem::evalApplication( string operation, int numberOfCycles )
+void OperatingSystem::evalApplication( string operation, unsigned int numberOfCycles )
 {
     if( numberOfCycles != 0 )
     {

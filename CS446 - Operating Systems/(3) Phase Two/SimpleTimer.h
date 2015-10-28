@@ -54,4 +54,3 @@ class SimpleTimer
    };
 
 #endif // ifndef SIMPLETIMER_H
-

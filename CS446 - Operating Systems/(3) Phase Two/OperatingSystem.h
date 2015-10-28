@@ -86,9 +86,9 @@ private:
 
 	void runFIFO( );
 	void runSJF( );
-	void sortSJF( int originalLeft, int originalRight );
+	void sortSJF( unsigned int originalLeft, unsigned int originalRight );
 	void runSRTFN( );
-	int findSRTFN( );
+	unsigned int findSRTFN( );
 
 	/**
 	 * Looks at the current operation being performed and passes it to the
@@ -111,7 +111,7 @@ private:
 	void processOperation( 
 		char component, 
 		string operation, 
-		int numberOfCycles );
+		unsigned int numberOfCycles );
 
 	/**
 	 * Specifically evaluates the operating system operations.
@@ -130,7 +130,7 @@ private:
 	 */
 	void evalOperatingSystem( 
 		string operation, 
-		int numberOfCycles );
+		unsigned int numberOfCycles );
 
 	/**
 	 * Specifically evaluates the application operations.
@@ -148,13 +148,13 @@ private:
 	 */
 	void evalApplication( 
 		string operation, 
-		int numberOfCycles );
+		unsigned int numberOfCycles );
 	
 	bool simulatorRunning; // True if yes, false if no
 	bool applicationStarted; // True if yes, false if no
-	int totalNumberOfProcesses; // Number of unique PCB's from this OS
+	unsigned int totalNumberOfProcesses; // Number of unique PCB's from this OS
 	unsigned int indexOfCurProcess; // Current PCB from this OS
-	int numberOfProcesses; // Number of current PCB's from this OS
+	unsigned int numberOfProcesses; // Number of current PCB's from this OS
 	vector< Process > operatingSystemInstructions; // Instructions from meta-data
 	vector< ProcessControlBlock > processes; // PCB's in use
 	ConfigurationSettings settings; // Instructions from config file

@@ -1,26 +1,25 @@
 #include "ProcessControlBlock.h"
 
 static void createThreadThatSleeps( 
-	int sleepTimeInMilliSec )
+	unsigned int sleepTimeInMilliSec )
 {
-	int sleepTimeInMicroSec = sleepTimeInMilliSec * 1000;
-	usleep( sleepTimeInMicroSec );
+	this_thread::sleep_for(chrono::milliseconds(sleepTimeInMilliSec));;
 }
 
 ProcessControlBlock::ProcessControlBlock( )
 {
 	needToRecalcRT = true; // Used to determine whether the remaining time needs to be recalculated
-	remainingTime = -1;
-	processNumber = -1;
-	processCycleTime = -1;
-	monitorDisplayTime = -1;
-	hardDriveCycleTime = -1;
-	printerCycleTime = -1;
-	keyboardCycleTime = -1;
+	remainingTime = 0;
+	processNumber = 0;
+	processCycleTime = 0;
+	monitorDisplayTime = 0;
+	hardDriveCycleTime = 0;
+	printerCycleTime = 0;
+	keyboardCycleTime = 0;
 }
 
 ProcessControlBlock::ProcessControlBlock( 
-	int pProcessNumber, 
+	unsigned int pProcessNumber, 
 	const ConfigurationSettings & pSettings )
 {
 	needToRecalcRT = true;
@@ -73,7 +72,7 @@ void ProcessControlBlock::runApplication()
 	}
 }
 
-int ProcessControlBlock::getRemainingTime()
+unsigned int ProcessControlBlock::getRemainingTime()
 {
 	if(needToRecalcRT == false)
 	{
@@ -122,9 +121,9 @@ void ProcessControlBlock::addInstruction(Process newInstruction)
 
 void ProcessControlBlock::newProcessThread( 
 	string operation, 
-	int numberOfCycles )
+	unsigned int numberOfCycles )
 {
-	int processTime;
+	unsigned int processTime;
 	string startLogMessage, endLogMessage;
 	// Check for correct operation type
 	if( operation.compare( "run" ) != 0 )
@@ -153,9 +152,9 @@ void ProcessControlBlock::newProcessThread(
 
 void ProcessControlBlock::newInputThread( 
 	string operation, 
-	int numberOfCycles )
+	unsigned int numberOfCycles )
 {
-	int processTime;
+	unsigned int processTime;
 	string startLogMessage, endLogMessage;
 	// Calculate the time thread will need to be processed
 	if( operation.compare( "hard drive" ) == 0 )
@@ -191,9 +190,9 @@ void ProcessControlBlock::newInputThread(
 
 void ProcessControlBlock::newOutputThread( 
 	string operation, 
-	int numberOfCycles )
+	unsigned int numberOfCycles )
 {
-	int processTime;
+	unsigned int processTime;
 	string startLogMessage, endLogMessage;
 	// Calculate the time thread will need to be processed
 	if( operation.compare( "hard drive" ) == 0 )

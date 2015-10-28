@@ -59,11 +59,11 @@ public:
 	 */
 	void outputSettingsToConsole( );
 	
-	int processCycleTime;
-	int monitorDisplayTime;
-	int hardDriveCycleTime;
-	int printerCycleTime;
-	int keyboardCycleTime;
+	unsigned int processCycleTime;
+	unsigned int monitorDisplayTime;
+	unsigned int hardDriveCycleTime;
+	unsigned int printerCycleTime;
+	unsigned int keyboardCycleTime;
 	string cpuScheduling;
 	string filePath;
 	string logType;
@@ -90,7 +90,7 @@ private:
 
 	/**
 	 * Set variables and settings appropriately for phase one
-	 * Will use atoi to convert from string to int if necessary
+	 * Will use atoi to convert from string to unsigned int if necessary
 	 * settingLine 2 through 9 set a variable
 	 * 10 is ignored
 	 * 0 and 1 are dealt with in set.
@@ -100,12 +100,12 @@ private:
 	 * @param settingValue Must be an appropriate setting value
 	 */
 	void setPhaseOne( 
-		int settingLine, 
+		unsigned int settingLine, 
 		string settingValue );
 
 	/**
 	 * Set variables and settings appropriately for phase two
-	 * Will use atoi to convert from string to int if necessary
+	 * Will use atoi to convert from string to unsigned int if necessary
 	 * settingLine 2 through 10 set a variable
 	 * 0 and 1 are dealt with in set.
 	 * 11 is ignored
@@ -115,9 +115,9 @@ private:
 	 * @param settingValue Must be an appropriate setting value
 	 */
 	void setPhaseTwo(
-		int settingLine, 
+		unsigned int settingLine, 
 		string settingValue);
-	// future method: void setPhaseThree( int settingLine, string settingValue );
+	// future method: void setPhaseThree( unsigned int settingLine, string settingValue );
 
 	vector< string > regexLineKeys;
 	vector< string > configFile;

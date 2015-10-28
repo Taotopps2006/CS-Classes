@@ -92,7 +92,7 @@ void ConfigurationSettings::set( unsigned int settingLine, string settingValue )
 	
 }
 
-void ConfigurationSettings::setPhaseOne( int settingLine, string settingValue )
+void ConfigurationSettings::setPhaseOne( unsigned int settingLine, string settingValue )
 {
 	switch( settingLine )
 	{
@@ -157,7 +157,7 @@ void ConfigurationSettings::setPhaseOne( int settingLine, string settingValue )
 	}
 }
 
-void ConfigurationSettings::setPhaseTwo( int settingLine, string settingValue )
+void ConfigurationSettings::setPhaseTwo( unsigned int settingLine, string settingValue )
 {
 	switch( settingLine )
 	{

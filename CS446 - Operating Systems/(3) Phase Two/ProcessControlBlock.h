@@ -3,7 +3,7 @@
 
 #include <time.h>
 #include <thread>
-#include <unistd.h>
+#include <chrono>
 #include "Logger.h"
 #include "ConfigurationSettings.h"
 #include "Structs.h"
@@ -23,7 +23,7 @@ extern Logger myLog;
  * @param sleepTimeInMilliSec Sleep time given in milliseconds
  */
 //static void createThreadThatSleeps(
-//	int sleepTimeInMilliSec );
+//	unsigned int sleepTimeInMilliSec );
 
 class ProcessControlBlock
 {
@@ -47,7 +47,7 @@ public:
 	 * correctly.
 	 */
 	ProcessControlBlock( 
-		int pProcessNumber, 
+		unsigned int pProcessNumber, 
 		const ConfigurationSettings &pSettings );
 	/**
 	 * = Operator overload
@@ -66,8 +66,8 @@ public:
 	*/
 	void runApplication();
 	void addInstruction(Process newInstruction);
-	int getRemainingTime();
-	int processNumber;
+	unsigned int getRemainingTime();
+	unsigned int processNumber;
 private:
 	/**
 	 * Creates a new Processor Thread
@@ -83,7 +83,7 @@ private:
 	 */
 	void newProcessThread( 
 		string operation, 
-		int numberOfCycles );
+		unsigned int numberOfCycles );
 
 	/**
 	 * Creates a new Processor Thread
@@ -103,7 +103,7 @@ private:
 	 */
 	void newInputThread( 
 		string operation, 
-		int numberOfCycles );
+		unsigned int numberOfCycles );
 
 	/**
 	 * Creates a new Output Thread
@@ -124,16 +124,16 @@ private:
 	 */
 	void newOutputThread( 
 		string operation, 
-		int numberOfCycles );
+		unsigned int numberOfCycles );
 
 	
 	bool needToRecalcRT; // Used to determine whether the remaining time needs to be recalculated
-	int remainingTime;
-	int processCycleTime;
-	int monitorDisplayTime;
-	int hardDriveCycleTime;
-	int printerCycleTime;
-	int keyboardCycleTime;
+	unsigned int remainingTime;
+	unsigned int processCycleTime;
+	unsigned int monitorDisplayTime;
+	unsigned int hardDriveCycleTime;
+	unsigned int printerCycleTime;
+	unsigned int keyboardCycleTime;
 	vector<pcb_thread> readyProcessThreads;
 	vector<pcb_thread> finishedProcessThreads;
 };

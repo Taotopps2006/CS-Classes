@@ -8,7 +8,10 @@
  *
  * @details Implements member methods for timing
  *
- * @version 1.00 (11 September 2015)
+ * @version  1.10 (19 October 2015)
+ *                Corrected issue for times greater than one second
+ *                that need carry from seconds for subtraction
+ *           1.00 (11 September 2015)
  *
  * @Note Requires SimpleTimer.h.
  * 
@@ -120,6 +123,12 @@ void SimpleTimer::getElapsedTime
         secTime = endData.tv_sec - startData.tv_sec;
         microSecTime = endData.tv_usec - startData.tv_usec;
 
+        if( microSecTime < 0 )
+           {
+            microSecTime += 1000000;
+            secTime -= 1;
+           }
+
         while( microSecTime > 0 )
            {
             timeStr[ index ] = char( microSecTime % 10 + '0' );
@@ -179,8 +188,3 @@ void SimpleTimer::getElapsedTime
 
 
 #endif // ifndef SIMPLETIMER_CPP
-
-
-
-
-
