@@ -34,10 +34,13 @@ void ConfigurationSettings::processConfigFile( )
 
 void ConfigurationSettings::set( unsigned int settingLine, string settingValue )
 {
+	// Instead of throwing an error if the config file has too many lines, we simply
+	// Ignore it
 	if( settingLine >= regexLineKeys.size( ) )
 	{
 		return;
 	}
+
 	RE2 regExpression( regexLineKeys[settingLine] );
     string match;
     re2::StringPiece reString( settingValue );
@@ -52,6 +55,8 @@ void ConfigurationSettings::set( unsigned int settingLine, string settingValue )
 			case 1:
 			{
 				version = match;
+				// For version 2 and 3, we need to add additional config lines
+				// To the regex line vector
 				if(version.compare("2.0") == 0)
 				{
 					regexLineKeys.insert(
@@ -128,6 +133,8 @@ void ConfigurationSettings::setPhaseOne( unsigned int settingLine, string settin
 		}
 		case 8:
 		{
+			// Somewhat redundant, as the regex will only find one of these 3
+			// anyway
 			if( 
 				settingValue.compare( "Both" ) == 0 || 
 				settingValue.compare( "Monitor" ) == 0 || 
@@ -168,7 +175,19 @@ void ConfigurationSettings::setPhaseTwo( unsigned int settingLine, string settin
 		}
 		case 3:
 		{
-			cpuScheduling = settingValue;
+			// Somewhat redundant, as the regex will only find one of these 3
+			// anyway
+			if( 
+				settingValue.compare( "FIFO" ) == 0 || 
+				settingValue.compare( "SJF" ) == 0 || 
+				settingValue.compare( "SRTF-N" ) == 0 )
+			{
+				cpuScheduling = settingValue;
+			}
+			else
+			{
+				myLog.logError( "Incorrect cpu scheduling type " + settingValue );
+			}
 		}
 		case 4:
 		{
@@ -197,6 +216,8 @@ void ConfigurationSettings::setPhaseTwo( unsigned int settingLine, string settin
 		}
 		case 9:
 		{
+			// Somewhat redundant, as the regex will only find one of these 3
+			// anyway
 			if( 
 				settingValue.compare( "Both" ) == 0 || 
 				settingValue.compare( "Monitor" ) == 0 || 

@@ -65,8 +65,29 @@ public:
 	*       will be filled with all the processes from readyProcessThreads
 	*/
 	void runApplication();
+
+	/**
+	* Add a new instruction to this PCB
+	*
+	* Pre: The new instruction was initialized correctly
+	* Post: This PCB will have one more instruction in it
+	*
+	* @param newInstruction Either a Processor, Input, or Output action
+	* 			with a number of cycles and a specific operation
+	*/
 	void addInstruction(Process newInstruction);
+
+	/**
+	* Calculates the remaining time of the active processes in this PCB
+	* If the remaining time has already been calculated and no new process
+	* has been run / added, will use the last calculated time instead of
+	* recalculating
+	*
+	* @return 0 if there are no more processes, or >0 dependent on the
+	*  number of instructions and their run times
+	*/
 	unsigned int getRemainingTime();
+	
 	unsigned int processNumber;
 private:
 	/**

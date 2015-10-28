@@ -19,7 +19,9 @@
  */
 // Version/Revision Information ///////////////////////////////////
 /* 
- 0.50 ( 10/26/2015 ) - Tim Kwist
+ 1.0 ( 10/28/2015 ) - Tim Kwist
+ Code is fully functional and documented 
+ 0.5 ( 10/26/2015 ) - Tim Kwist
  Copied Phase One code to new folder
  */
  // Program Description/Support /////////////////////////////////////

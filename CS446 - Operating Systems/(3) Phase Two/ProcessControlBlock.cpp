@@ -8,7 +8,7 @@ static void createThreadThatSleeps(
 
 ProcessControlBlock::ProcessControlBlock( )
 {
-	needToRecalcRT = true; // Used to determine whether the remaining time needs to be recalculated
+	needToRecalcRT = true;
 	remainingTime = 0;
 	processNumber = 0;
 	processCycleTime = 0;
@@ -74,11 +74,16 @@ void ProcessControlBlock::runApplication()
 
 unsigned int ProcessControlBlock::getRemainingTime()
 {
+	// If we don't need to recalculate, save time by returning the
+	// last calculated remainingTime
 	if(needToRecalcRT == false)
 	{
 		return remainingTime;
 	}
 
+	// Otherwise, reset the remaining time and iterate through each
+	// process and add the process time to our remaining time
+	// Set the need to recalculate flag to false
 	needToRecalcRT = false;
 	remainingTime = 0;
 	vector<pcb_thread>::iterator it;
@@ -94,6 +99,9 @@ unsigned int ProcessControlBlock::getRemainingTime()
 
 void ProcessControlBlock::addInstruction(Process newInstruction)
 {
+	// Set recalc flag to true since we now have a new instruction
+	// Then outsource the work to the appropriate thread creation
+	// method
 	needToRecalcRT = true;
 	switch(newInstruction.component)
 	{

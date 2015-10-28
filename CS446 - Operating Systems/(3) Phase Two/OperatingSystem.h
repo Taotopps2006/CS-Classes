@@ -59,6 +59,16 @@ public:
 	 */
 	void readMetaDataFile( );
 
+	/**
+	* Generic "run" method
+	* Will call appropriate Phase 1, 2, or 3 run methods based on
+	* configuration file.
+	*
+	* Pre: Phase number must be known, and PCB's must be loaded and
+	* ready to run
+	* Post: All PCB's will be run according to the configuration file
+	* settings
+	*/
 	void runSimulator( );
 
 	/**
@@ -72,9 +82,8 @@ public:
 	void outputSettingsToConsole( );
 private:
 	/**
-	 * Iterates through the vector of Processes to process each oepration
-	 * correctly. Heavily relies on the processOperation method to function
-	 * correctly.
+	 * Calls the run FIFO method, as PhaseOne is essentially just a 
+	 * single process FIFO system
 	 *
 	 * Pre: The vector of processes is full and ready to be read.
 	 * Post: The operations of this meta data file will have been carried out
@@ -82,12 +91,68 @@ private:
 	 */
 	void runPhaseOneSimulator( );
 
+	/**
+	* If cpu scheduling = SJF:
+	* - Run SJF
+	* If cpu scheduling = SRTFN:
+	* - Run SRTFN
+	*
+	* Pre: This method will only be called from runSimulator, and thus
+	* the preconditions of that method will satisfy the pre conditions
+	* for this one
+	* Post: The appropriate cpu scheduling method will be used based on
+	* configuration file, and appropriate method called for that cpu scheduling
+	*/
 	void runPhaseTwoSimulator( );
 
+	/**
+	* Iterates over all PCB's linearly, and calls their "run" method
+	*
+	* Pre: This method will only be called from runPhaseOneSimulator or
+	* runPhaseTwoSimulator, so the preconditions of those methods satisfy
+	* all preconditions for this method
+	* Post: All PCB's will have run all of their processes
+	*/
 	void runFIFO( );
+
+	/**
+	* Runs the sortSJF method, then runs runFIFO
+	*/
 	void runSJF( );
+
+	/**
+	* Uses the quick sort algorithm to recursivey sort the PCB's
+	* by their remaining process time (since this method is called
+	* only before all PCB's have been called, the remaining time is
+	* more of their total time)
+	*
+	* @param originalLeft Left boundary of the (sub)array
+	* @param originalRight Right boundary of the (sub)array
+	*/
 	void sortSJF( unsigned int originalLeft, unsigned int originalRight );
+
+	/**
+	* Uses same algorithm as FIFO, except that, instead of incrementing
+	* the current index, we search for the index of the shortest
+	* remaining time PCB after each iteration
+	*
+	* Pre: This method will only be called from runPhaseTwoSimulator
+	* Post: All PCB's will be iterated through, in order of least to greatest
+	* remaining time
+	*/
 	void runSRTFN( );
+
+	/**
+	* Finds the shortest remaining time PCB by looping through PCB's
+	* and (essentially) performing a min(currentShortest, currentPCB)
+	*
+	* Pre: This method will only be called from runSRTFN when there are still
+	* active/unrun PCB's
+	* Post: No PCB's will be changed in this method, except for potentially 
+	* their remaining time variable
+	*
+	* @return index of the shortest remaining time PCB
+	*/
 	unsigned int findSRTFN( );
 
 	/**
