@@ -13,7 +13,7 @@
  --SJF: Once the operating system has been loaded, it will analyze each
  program and sort their order by least to greatest in terms of how long it will
  take for each program to run.
- --SRTFN: After each program is run, the operating system will analyze the
+ --SRTF-N: After each program is run, the operating system will analyze the
  remaining programs and chose the shortest program to run as the next program.
 
  */

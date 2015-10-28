@@ -176,7 +176,7 @@ void OperatingSystem::runPhaseTwoSimulator( )
 	{
 		runSJF();
 	}
-	else if(settings.cpuScheduling.compare("SRTFN") == 0)
+	else if(settings.cpuScheduling.compare("SRTF-N") == 0)
 	{
 		runSRTFN();
 	}
@@ -455,10 +455,10 @@ void OperatingSystem::evalApplication( string operation, unsigned int numberOfCy
     			myLog.logProcess("OS: preparing all processes");
     		}
 
-    		// If we are not dealing with SRTFN (ie, FIFO or SJF),
+    		// If we are not dealing with SRTF-N (ie, FIFO or SJF),
     		// then this is where we will report that we are selecting next
     		// process and starting said process
-    		if(settings.cpuScheduling.compare("SRTFN") != 0)
+    		if(settings.cpuScheduling.compare("SRTF-N") != 0)
     		{
     			myLog.logProcess("OS: selecting next process");
     			myLog.logProcess("OS: starting process " + to_string(processes[indexOfCurProcess].processNumber));

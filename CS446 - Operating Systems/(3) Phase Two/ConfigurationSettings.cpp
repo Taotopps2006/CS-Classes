@@ -7,7 +7,7 @@ ConfigurationSettings::ConfigurationSettings( )
 		"(Start Simulator Configuration File)",
 		"Version/Phase: ([0-9]\\.0)",
 		"File Path: (.*\\.mdf)",
-		//"CPU Scheduling: (FIFO|SJF|SRTFN)" (Version 2.0 only; this is at begin()+3)
+		//"CPU Scheduling: (FIFO|SJF|SRTF-N)" (Version 2.0 only; this is at begin()+3)
 		"Processor cycle time \\(msec\\): ([1-9]+[0-9]*)",
 		"Monitor display time \\(msec\\): ([1-9]+[0-9]*)",
 		"Hard drive cycle time \\(msec\\): ([1-9]+[0-9]*)",
@@ -56,7 +56,7 @@ void ConfigurationSettings::set( unsigned int settingLine, string settingValue )
 				{
 					regexLineKeys.insert(
 						regexLineKeys.begin()+3 ,
-						"CPU Scheduling Code: (FIFO|SJF|SRTFN)" );
+						"CPU Scheduling Code: (FIFO|SJF|SRTF-N)" );
 				}
 				// Future: updateRegexKeys for version 3;
 				break;
