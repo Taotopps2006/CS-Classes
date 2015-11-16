@@ -8,6 +8,8 @@ ConfigurationSettings::ConfigurationSettings( )
 		"Version/Phase: ([0-9]\\.0)",
 		"File Path: (.*\\.mdf)",
 		//"CPU Scheduling: (FIFO|SJF|SRTF-N)" (Version 2.0 only; this is at begin()+3)
+		//"CPU Scheduling: (FIFO-P|SRTF-P)" (Version 3.0 only; this is at begin()+3)
+		//"Quantum times \\(cycles\\): ([1-9]+[0-9]*)" (Version 3.0 only; this is at begin()+4)
 		"Processor cycle time \\(msec\\): ([1-9]+[0-9]*)",
 		"Monitor display time \\(msec\\): ([1-9]+[0-9]*)",
 		"Hard drive cycle time \\(msec\\): ([1-9]+[0-9]*)",
@@ -63,7 +65,15 @@ void ConfigurationSettings::set( unsigned int settingLine, string settingValue )
 						regexLineKeys.begin()+3 ,
 						"CPU Scheduling Code: (FIFO|SJF|SRTF-N)" );
 				}
-				// Future: updateRegexKeys for version 3;
+				if(version.compare("3.0") == 0)
+				{
+					regexLineKeys.insert(
+						regexLineKeys.begin()+3 ,
+						"CPU Scheduling Code: (FIFO-P|SRTF-P)" );
+					regexLineKeys.insert(
+						regexLineKeys.begin()+4 ,
+						"Quantum times \\(cycles\\): ([1-9]+[0-9]*)" );
+				}
 				break;
 			}
 			default:
@@ -74,11 +84,11 @@ void ConfigurationSettings::set( unsigned int settingLine, string settingValue )
 				}
 				else if( version.compare( "2.0" ) == 0 )
 				{
-					setPhaseTwo( settingLine, match);
+					setPhaseTwo( settingLine, match );
 				}
 				else if( version.compare( "3.0" ) == 0 )
 				{
-					myLog.logError( "Version 3.0 Currently not implemented" );
+					setPhaseThree( settingLine, match );
 				}
 				else
 				{
@@ -237,6 +247,92 @@ void ConfigurationSettings::setPhaseTwo( unsigned int settingLine, string settin
 			break;
 		}
 		case 11:
+		{
+			break;
+		}
+		default:
+		{
+			myLog.logError( "Error, too many lines in this configuration file" + to_string( settingLine ) );
+		}
+	}
+}
+
+void ConfigurationSettings::setPhaseThree( unsigned int settingLine, string settingValue )
+{
+	switch( settingLine )
+	{
+		case 2:
+		{
+			filePath = settingValue;
+			break;
+		}
+		case 3:
+		{
+			// Somewhat redundant, as the regex will only find one of these 3
+			// anyway
+			if( 
+				settingValue.compare( "FIFO-P" ) == 0 || 
+				settingValue.compare( "SRTF-P" ) == 0 )
+			{
+				cpuScheduling = settingValue;
+			}
+			else
+			{
+				myLog.logError( "Incorrect cpu scheduling type " + settingValue );
+			}
+		}
+		case 4:
+		{
+			quantumCycles = atoi( settingValue.c_str( ) );
+		}
+		case 5:
+		{
+			processCycleTime = atoi( settingValue.c_str( ) );
+			break;
+		}
+		case 6:
+		{
+			monitorDisplayTime = atoi( settingValue.c_str( ) );
+			break;
+		}
+		case 7:
+		{
+			hardDriveCycleTime = atoi( settingValue.c_str( ) );
+			break;
+		}
+		case 8:
+		{
+			printerCycleTime = atoi( settingValue.c_str( ) );
+			break;
+		}
+		case 9:
+		{
+			keyboardCycleTime = atoi( settingValue.c_str( ) );
+			break;
+		}
+		case 10:
+		{
+			// Somewhat redundant, as the regex will only find one of these 3
+			// anyway
+			if( 
+				settingValue.compare( "Both" ) == 0 || 
+				settingValue.compare( "Monitor" ) == 0 || 
+				settingValue.compare( "File" ) == 0 )
+			{
+				logType = settingValue;
+			}
+			else
+			{
+				myLog.logError( "Incorrect myLog type " + settingValue );
+			}
+			break;
+		}
+		case 11:
+		{
+			logFilePath = settingValue;
+			break;
+		}
+		case 12:
 		{
 			break;
 		}

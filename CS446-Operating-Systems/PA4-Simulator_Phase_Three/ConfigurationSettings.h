@@ -59,6 +59,7 @@ public:
 	 */
 	void outputSettingsToConsole( );
 	
+	unsigned int quantumCycles;
 	unsigned int processCycleTime;
 	unsigned int monitorDisplayTime;
 	unsigned int hardDriveCycleTime;
@@ -116,8 +117,22 @@ private:
 	 */
 	void setPhaseTwo(
 		unsigned int settingLine, 
-		string settingValue);
-	// future method: void setPhaseThree( unsigned int settingLine, string settingValue );
+		string settingValue );
+
+	/**
+	 * Set variables and settings appropriately for phase three
+	 * Will use atoi to convert from string to unsigned int if necessary
+	 * settingLine 2 through 11 set a variable
+	 * 0 and 1 are dealt with in set.
+	 * 12 is ignored
+	 * All others crash with appropriate error message.
+	 * 
+	 * @param settingLine  Must be between 2 and 12 inclusively
+	 * @param settingValue Must be an appropriate setting value
+	 */
+	void setPhaseThree(
+		unsigned int settingLine,
+		string settingVale) ;
 
 	vector< string > regexLineKeys;
 	vector< string > configFile;
