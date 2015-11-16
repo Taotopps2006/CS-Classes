@@ -1,9 +1,27 @@
 #include "ProcessControlBlock.h"
 
-static void createThreadThatSleeps( 
+static void createNonPremptiveThread( 
 	unsigned int sleepTimeInMilliSec )
 {
-	this_thread::sleep_for(chrono::milliseconds(sleepTimeInMilliSec));;
+	this_thread::sleep_for(chrono::milliseconds(sleepTimeInMilliSec));
+}
+
+static void createPremptiveThread(
+	unsigned int sleepTimeInMilliSec,
+	unsigned int pcbID,
+	InterruptSystem &interruptQueue )
+{
+	this_thread::sleep_for(chrono::milliseconds(sleepTimeInMilliSec));
+	interruptQueue.addNewInterrupt(InterruptType::IO, pcbID);
+}
+
+ProcessControlBlock::runProcess( PcbThread currentProcess )
+{
+	bool interruptTriggered = (interruptQueue.size() != 0);
+	while(currentProcess.numCyclesRemaining != 0 && !interruptTriggered)
+	{
+		
+	}
 }
 
 ProcessControlBlock::ProcessControlBlock( )
@@ -25,6 +43,7 @@ ProcessControlBlock::ProcessControlBlock(
 	needToRecalcRT = true;
 	remainingTime = 0;
 	processNumber = pProcessNumber;
+	quantumCycles = pSettings.quantumCycles;
 	processCycleTime = pSettings.processCycleTime;
 	monitorDisplayTime = pSettings.monitorDisplayTime;
 	hardDriveCycleTime = pSettings.hardDriveCycleTime;
@@ -133,27 +152,26 @@ void ProcessControlBlock::newProcessThread(
 {
 	unsigned int processTime;
 	string startLogMessage, endLogMessage;
+	pcb_thread currentThread;
+
 	// Check for correct operation type
 	if( operation.compare( "run" ) != 0 )
 	{
 		myLog.logError( "Unknown operation for process: " + operation );
 	}
 	// Process #: start processing action
-	startLogMessage =
+	currentThread.startLogMessage =
 		string( "Process " ) + 
 		to_string( processNumber ) + 
 		": start processing action";
-	// Calculate the time thread will need to be processed
-	processTime = processCycleTime * numberOfCycles;
-	endLogMessage =
+	// Process #: end processing action
+	currentThread.endLogMessage =
 		string( "Process " ) + 
 		to_string( processNumber ) + 
 		": end processing action";
-	// Initialize the new thread
-	pcb_thread currentThread;
-	currentThread.startLogMessage = startLogMessage;
-	currentThread.endLogMessage = endLogMessage;
-	currentThread.processTime = processTime;
+	// Give the thread the means to calculate its wait times
+	currentThread.timePerCycle = processCycleTime;
+	currentThread.numCyclesRemaining = numberOfCycles;
 	// Push thread to back of ready queue
 	readyProcessThreads.push_back( currentThread );
 }
@@ -164,34 +182,31 @@ void ProcessControlBlock::newInputThread(
 {
 	unsigned int processTime;
 	string startLogMessage, endLogMessage;
-	// Calculate the time thread will need to be processed
+	pcb_thread currentThread;
+	// Process #: start <operation> input
+	currentThread.startLogMessage =
+		string( "Process " ) + 
+		to_string( processNumber ) + 
+		": start " + operation + " input";
+	// Process #: end <operation> input
+	currentThread.endLogMessage =
+		string( "Process " ) + 
+		to_string( processNumber ) + 
+		": end " + operation + " input";
+	// Give the thread the means to calculate its wait times
 	if( operation.compare( "hard drive" ) == 0 )
 	{
-		processTime = hardDriveCycleTime * numberOfCycles;
+		currentThread.timePerCycle = hardDriveCycleTime;
 	}
 	else if( operation.compare( "keyboard" ) == 0 )
 	{
-		processTime = keyboardCycleTime * numberOfCycles;
+		currentThread.timePerCycle = keyboardCycleTime;
 	}
 	else
 	{
 		myLog.logError( "Unknown operation for input: " + operation );
 	}
-	// Process #: start <operation> input
-	startLogMessage =
-		string( "Process " ) + 
-		to_string( processNumber ) + 
-		": start " + operation + " input";
-	// Process #: end <operation> input
-	endLogMessage =
-		string( "Process " ) + 
-		to_string( processNumber ) + 
-		": end " + operation + " input";
-	// Initialize the new thread
-	pcb_thread currentThread;
-	currentThread.startLogMessage = startLogMessage;
-	currentThread.endLogMessage = endLogMessage;
-	currentThread.processTime = processTime;
+	currentThread.numCyclesRemaining = numberOfCycles;
 	// Push thread to back of ready queue
 	readyProcessThreads.push_back( currentThread );
 }
@@ -202,40 +217,36 @@ void ProcessControlBlock::newOutputThread(
 {
 	unsigned int processTime;
 	string startLogMessage, endLogMessage;
-	// Calculate the time thread will need to be processed
-	if( operation.compare( "hard drive" ) == 0 )
-	{
-		processTime = hardDriveCycleTime * numberOfCycles;
-	}
-	else if( operation.compare( "monitor" ) == 0 )
-	{
-		processTime = monitorDisplayTime * numberOfCycles;
-	}
-	else if( operation.compare( "printer" ) == 0 )
-	{
-		processTime = printerCycleTime * numberOfCycles;
-	}
-	else
-	{
-		myLog.logError( "Unknown operation for output: " + operation );
-	}
+	pcb_thread currentThread;
 	// Process #: start <operation> output
-	startLogMessage =
+	currentThread.startLogMessage =
 		string( "Process " ) + 
 		to_string( processNumber ) + 
 		": start " + operation + " output";
 	// Process #: end <operation> output
-	endLogMessage =
+	currentThread.endLogMessage =
 		string( "Process " ) + 
 		to_string( processNumber ) + 
 		": end " + 
 		operation + 
 		" output";
-	// Initialize the new thread
-	pcb_thread currentThread;
-	currentThread.startLogMessage = startLogMessage;
-	currentThread.endLogMessage = endLogMessage;
-	currentThread.processTime = processTime;
+	// Give the thread the means to calculate its wait times
+	if( operation.compare( "hard drive" ) == 0 )
+	{
+		currentThread.timePerCycle = hardDriveCycleTime;
+	}
+	else if( operation.compare( "monitor" ) == 0 )
+	{
+		currentThread.timePerCycle = monitorDisplayTime;
+	}
+	else if( operation.compare( "printer" ) == 0 )
+	{
+		currentThread.timePerCycle = printerCycleTime;
+	}
+	else
+	{
+		myLog.logError( "Unknown operation for output: " + operation );
+	}
 	// Push thread to back of ready queue
 	readyProcessThreads.push_back( currentThread );
 }

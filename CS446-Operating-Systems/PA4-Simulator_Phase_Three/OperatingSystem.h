@@ -156,6 +156,20 @@ private:
 	unsigned int findSRTFN( );
 
 	/**
+	 * Looks through Operating System instructions and checks that each
+	 * start has a matching end
+	 * Then goes through each PCB and runs initial calculateRemainingTime
+	 *
+	 * Pre: Expects that readyQueue and operatingSystemInstructions have
+	 * been initialized by appropriate methods
+	 * Post: Guaranteed that each OpSys instruction has a start/end (thus
+	 * won't have to check this as we go along); each PCB will have their
+	 * initial remaining time calculated (that way the first "search for
+	 * next process" doesn't seem to take much longer than the rest)
+	 */
+	void prepareProcesses( );
+
+	/**
 	 * Looks at the current operation being performed and passes it to the
 	 * correct evaluation method. If the component is not recognized, the
 	 * program crashes. Accepted components: S, A, P, I, O
@@ -221,7 +235,8 @@ private:
 	unsigned int indexOfCurProcess; // Current PCB from this OS
 	unsigned int numberOfProcesses; // Number of current PCB's from this OS
 	vector< Process > operatingSystemInstructions; // Instructions from meta-data
-	vector< ProcessControlBlock > processes; // PCB's in use
+	vector< ProcessControlBlock > readyProcesses; // PCB's ready to use
+	vector< ProcessControlBlock > blockedProcesses; // PCB's that are blocked due to IO
 	ConfigurationSettings settings; // Instructions from config file
 	// Future: CPU Scheduling Type
 	// Future: Quantum time

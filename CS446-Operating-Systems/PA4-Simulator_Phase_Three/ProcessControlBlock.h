@@ -1,11 +1,12 @@
 #ifndef PROCESS_CONTROL_BLOCK_H
 #define PROCESS_CONTROL_BLOCK_H
 
+#include <chrono>
 #include <time.h>
 #include <thread>
-#include <chrono>
-#include "Logger.h"
 #include "ConfigurationSettings.h"
+#include "InterruptSystem.h"
+#include "Logger.h"
 #include "Structs.h"
 
 using namespace std;
@@ -91,9 +92,12 @@ public:
 	unsigned int processNumber;
 private:
 	/**
-	 * Creates a new Processor Thread
+	 * Starts a new process
 	 * Sets sleep time to processCycleTime * numberOfCycles
-	 * Creates new thread, then waits for thread to end.
+	 * Version 3.0: Checks if there are any interrupts in queue
+	 * before waiting.
+	 * If completes its own quantum, will throw a quantum interrupt
+	 * into the queue.
 	 *
 	 * Pre: processCycleTime has been set appropriately
 	 * Post: Program will create and wait for a processor thread
@@ -102,9 +106,9 @@ private:
 	 * @param operation Name of the operation, used for output
 	 * @param numberOfCycles Number of cycles to run for
 	 */
-	void newProcessThread( 
+	void newProcess( 
 		string operation, 
-		unsigned int numberOfCycles );
+		unsigned int &numberOfCycles );
 
 	/**
 	 * Creates a new Processor Thread
@@ -147,15 +151,19 @@ private:
 		string operation, 
 		unsigned int numberOfCycles );
 
+	void runIO();
+
+	void runProcess();
+
 	
 	bool needToRecalcRT; // Used to determine whether the remaining time needs to be recalculated
 	unsigned int remainingTime;
+	unsigned int quantumCycles;
 	unsigned int processCycleTime;
 	unsigned int monitorDisplayTime;
 	unsigned int hardDriveCycleTime;
 	unsigned int printerCycleTime;
 	unsigned int keyboardCycleTime;
 	vector<pcb_thread> readyProcessThreads;
-	vector<pcb_thread> finishedProcessThreads;
 };
 #endif // PROCESS_CONTROL_BLOCK_H
