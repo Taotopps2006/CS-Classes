@@ -9,6 +9,7 @@
 #include "InterruptSystem.h"
 #include "Logger.h"
 #include "Structs.h"
+#include <unistd.h>
 
 using namespace std;
 

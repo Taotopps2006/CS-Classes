@@ -13,7 +13,6 @@ enum InterruptType
 
 struct Interrupt
 {
-	InterruptType interruptType;
 	int processNumber;
 	string endLogMessage;
 	

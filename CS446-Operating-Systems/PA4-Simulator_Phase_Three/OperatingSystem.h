@@ -118,6 +118,8 @@ private:
 	*/
 	void runFIFO( );
 
+	void runFIFOP( );
+
 	/**
 	* Runs the sortSJF method, then runs runFIFO
 	*/
@@ -133,6 +135,8 @@ private:
 	* @param originalRight Right boundary of the (sub)array
 	*/
 	void sortSJF( unsigned int originalLeft, unsigned int originalRight );
+
+	void sortFIFO( unsigned int originalLeft, unsigned int originalRight );
 
 	/**
 	* Uses same algorithm as FIFO, except that, instead of incrementing
@@ -171,6 +175,8 @@ private:
 	 * next process" doesn't seem to take much longer than the rest)
 	 */
 	void prepareProcesses( );
+
+	bool resolveInterrupts( int & curNumProcesses );
 
 	/**
 	 * Looks at the current operation being performed and passes it to the

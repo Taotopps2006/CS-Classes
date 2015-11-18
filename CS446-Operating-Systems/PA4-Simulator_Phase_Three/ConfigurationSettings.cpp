@@ -347,6 +347,14 @@ void ConfigurationSettings::outputSettingsToConsole( )
 {
 	cout << "Version: " << version << endl;
 	cout << "filePath: " << filePath << endl;
+	if( version.compare( "1.0" ) != 0 )
+	{
+		cout << "CPU Scheduling Code: " << cpuScheduling << endl;
+	}
+	if( version.compare( "3.0" ) == 0 )
+	{
+		cout << "Quantum Time (cycles): " << quantumCycles << endl;
+	}
 	cout << "processCycleTime: " << processCycleTime << endl;
 	cout << "monitorDisplayTime: " << monitorDisplayTime << endl;
 	cout << "hardDriveCycleTime: " << hardDriveCycleTime << endl;

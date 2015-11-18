@@ -4,16 +4,18 @@
 #include <deque>
 #include <string>
 #include "Structs.h"
+#include "Logger.h"
 
 using namespace std;
 
+extern Logger myLog;
 class InterruptSystem
 {
 public:
 	Interrupt getCurrentInterrupt( );
-	void addNewInterruptFront( InterruptType interruptType, int processNumber, string endLogMessage );
-	void addNewInterruptBack( InterruptType interruptType, int processNumber, string endLogMessage );
-	bool resolveInterrupt( int priority );
+	void addNewInterruptFront( int processNumber, string endLogMessage );
+	void addNewInterruptBack( int processNumber, string endLogMessage );
+	int resolveInterrupt( );
 
 	int numberOfInterrupts;
 private:

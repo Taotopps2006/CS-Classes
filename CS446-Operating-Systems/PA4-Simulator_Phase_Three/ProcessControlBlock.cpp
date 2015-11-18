@@ -7,10 +7,13 @@ static void createNonPremptiveThread(
 }
 
 static void createPremptiveThread(
-	PcbThread currentThread, int processNumber )
+	int processNumber, int processTime, string endLogMessage )
 {
-	this_thread::sleep_for( chrono::milliseconds( currentThread.processTime ) );
-	interrupts.addNewInterruptBack( InterruptType::IO, processNumber, currentThread.endLogMessage );
+	int pN = processNumber;
+	int pT = processTime;
+	string eLM = endLogMessage;
+	this_thread::sleep_for( chrono::milliseconds( pT ) );
+	interrupts.addNewInterruptBack( pN, eLM );
 }
 
 ProcessControlBlock::ProcessControlBlock( )
@@ -45,6 +48,7 @@ ProcessControlBlock& ProcessControlBlock::operator=( const ProcessControlBlock &
 	needToRecalcRT = rhs.needToRecalcRT;
 	remainingTime = rhs.remainingTime;
 	processNumber = rhs.processNumber;
+	quantumCycles = rhs.quantumCycles;
 	processCycleTime = rhs.processCycleTime;
 	monitorDisplayTime = rhs.monitorDisplayTime;
 	hardDriveCycleTime = rhs.hardDriveCycleTime;
@@ -88,12 +92,18 @@ bool ProcessControlBlock::runApplicationPreemptive()
 	{
 		myLog.logError( "This ProcessControlBlock has no processes, but was asked to run its threads" );
 	}
-	PcbThread currentThread = readyProcessThreads.front( );
+	PcbThread & currentThread = readyProcessThreads.front( );
 	// Log start process
 	myLog.logProcess( currentThread.startLogMessage );
 	if( currentThread.interruptType == InterruptType::IO )
 	{
-		thread process( createPremptiveThread, currentThread, processNumber );
+		// Keep getting issues with detaching the thread
+		// Trying to use variables that don't get deleted too early
+		// to pass to the thread
+		int processTime = currentThread.processTime;
+		string endLogMessage = currentThread.endLogMessage;
+		thread process( createPremptiveThread, processNumber, processTime, endLogMessage );
+		process.detach();
 		readyProcessThreads.erase( readyProcessThreads.begin( ) );
 		currentProcessIsIO = true;
 	}
@@ -102,6 +112,7 @@ bool ProcessControlBlock::runApplicationPreemptive()
 		bool processIsFinished = runProcessPreemptive( currentThread );
 		if( processIsFinished == true )
 		{
+			interrupts.addNewInterruptFront( processNumber, currentThread.endLogMessage );
 			readyProcessThreads.erase( readyProcessThreads.begin( ) );
 		}
 	}
@@ -113,19 +124,23 @@ bool ProcessControlBlock::runProcessPreemptive( PcbThread &currentProcess )
 {
 	bool interruptTriggered = ( interrupts.numberOfInterrupts != 0 );
 	unsigned int cyclesRun = 0;
+	myLog.logProcess("Num cycles remaining: " + to_string(currentProcess.numCyclesRemaining) );
 	while( ( currentProcess.numCyclesRemaining != 0 ) && ( !interruptTriggered ) )
 	{
-		if( interrupts.numberOfInterrupts != 0 )
+		if( interrupts.numberOfInterrupts == 0 )
 		{
-			if( cyclesRun < quantumCycles )
+			// Either run for total of quantums or number of cycles left, whichever lower
+			int cyclesToRun = min( quantumCycles, currentProcess.numCyclesRemaining );
+			if( cyclesRun < cyclesToRun )
 			{
 				currentProcess.numCyclesRemaining--;
 				cyclesRun++;
-				this_thread::sleep_for( chrono::milliseconds( currentProcess.timePerCycle ) );
+				usleep( currentProcess.timePerCycle * 1000 );
 			}
 			else
 			{
-				interrupts.addNewInterruptFront( InterruptType::QUANTUM, processNumber, currentProcess.endLogMessage );
+				myLog.logProcess("Cycles left: " + to_string(currentProcess.numCyclesRemaining));
+				interrupts.addNewInterruptFront( processNumber, currentProcess.blockLogMessage );
 				// Program specifications expect a different message for processes that have already been
 				// run at least once
 				// Process #: processing action - continue
@@ -133,6 +148,7 @@ bool ProcessControlBlock::runProcessPreemptive( PcbThread &currentProcess )
 					string( "Process " ) + 
 					to_string( processNumber ) + 
 					": processing action - continue"; 
+				interruptTriggered = true;
 			}
 		}
 		else

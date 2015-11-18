@@ -15,6 +15,13 @@
  */
 // Version/Revision Information ///////////////////////////////////
 /* 
+ 0.7 ( 11/18/2015 ) - Tim Kwist
+ Finished initial design and implementation of interrupt system
+ ProcessControlBlock should need no further additions, interrupt
+ system and operating system may need additions
+ 0.6 ( 11/17/2015 ) - Tim Kwist
+ Built building blocks of interrupt system
+ Partially integrated interrupt system into process control block
  0.5 ( 11/16/2015 ) - Tim Kwist
  Copied Phase Two code to new folder
  */
@@ -29,8 +36,8 @@ this.
  */
  // Precompiler Directives //////////////////////////////////////////
 //
- #ifndef SIMO1_CPP
- #define SIM01_CPP
+ #ifndef SIMO3_CPP
+ #define SIM03_CPP
 //
 // Header Files ///////////////////////////////////////////////////
 //
@@ -39,6 +46,7 @@ this.
  #include "Logger.h"
  #include "ProcessControlBlock.h"
  #include "OperatingSystem.h"
+ #include "InterruptSystem.h"
 
  using namespace std;
 
@@ -88,6 +96,7 @@ int main( int argc, char * argv[ ] )
     }
     os.readConfigurationFile( argv[1] );
     os.readMetaDataFile( );
+    //os.outputSettingsToConsole( );
     myLog.logProcess( "Simulator program starting" );
     os.runSimulator( );
     myLog.timer.stop( );

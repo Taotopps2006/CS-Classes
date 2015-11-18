@@ -5,20 +5,18 @@ Interrupt InterruptSystem::getCurrentInterrupt( )
 	return interruptQueue.front();
 }
 
-void InterruptSystem::addNewInterruptFront( InterruptType interruptType, int processNumber, string endLogMessage )
+void InterruptSystem::addNewInterruptFront( int processNumber, string endLogMessage )
 {
 	Interrupt currentInterrupt;
-	currentInterrupt.interruptType = interruptType;
 	currentInterrupt.processNumber = processNumber;
 	currentInterrupt.endLogMessage = endLogMessage;
 	interruptQueue.push_front(currentInterrupt);
 	numberOfInterrupts++;
 }
 
-void InterruptSystem::addNewInterruptBack( InterruptType interruptType, int processNumber, string endLogMessage )
+void InterruptSystem::addNewInterruptBack( int processNumber, string endLogMessage )
 {
 	Interrupt currentInterrupt;
-	currentInterrupt.interruptType = interruptType;
 	currentInterrupt.processNumber = processNumber;
 	currentInterrupt.endLogMessage = endLogMessage;
 	interruptQueue.push_back(currentInterrupt);

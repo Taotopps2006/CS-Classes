@@ -64,6 +64,7 @@ void OperatingSystem::readMetaDataFile( )
             char component;
             string operation;
             unsigned int numberOfCycles;
+            bool preemptive = ( settings.version.compare( "3.0" ) == 0 );
 
             while( 
                 RE2::FindAndConsume( 
@@ -105,7 +106,14 @@ void OperatingSystem::readMetaDataFile( )
                 		{
                 			myLog.logError("Operation asked for before starting a process");
                 		}
-                		readyProcesses[indexOfCurProcess].addInstructionNonPreemptive(currentProcess);
+                        if( preemptive )
+                        {
+                            readyProcesses[indexOfCurProcess].addInstructionPreemptive( currentProcess );
+                        }
+                        else
+                        {
+                            readyProcesses[indexOfCurProcess].addInstructionNonPreemptive( currentProcess );
+                        }
                 		break;
                 	}
                 }
@@ -198,50 +206,66 @@ void OperatingSystem::runPhaseThreeSimulator( )
 void OperatingSystem::runFIFOP( )
 {
     int curNumProcesses = readyProcesses.size();
-    while( curNumProcesses != 0 || blockedProcesses.size != 0 )
+    while( curNumProcesses != 0 || blockedProcesses.size() != 0 )
     {
         myLog.logProcess( "OS: selecting next process" );
-        sortFIFO( );
+        sortFIFO(0, curNumProcesses-1 );
         bool processIsFinished = ( readyProcesses[0].getRemainingTime( ) == 0 );
         while( processIsFinished == true )
         {
             myLog.logProcess( 
                 "OS: Process " + 
-                to_string(currentProcess->processNumber) +
+                to_string( readyProcesses[0].processNumber ) +
                 "has been completed" );
             readyProcesses.erase( readyProcesses.begin( ) );
             curNumProcesses--;
             processIsFinished = ( readyProcesses[0].getRemainingTime( ) == 0 );
         }
-        if( curNumProcesses == 0 )
+        if( curNumProcesses != 0 )
         {
             bool putIntoBlocked = readyProcesses[0].runApplicationPreemptive( );
             if( putIntoBlocked == true )
             {
 
-                blockedProcesses.push_back( pair< int, ProcessControlBlock >( 
+                blockedProcesses.insert( pair< int, ProcessControlBlock >( 
                     readyProcesses[0].processNumber, readyProcesses[0] ) );
                 readyProcesses.erase( readyProcesses.begin( ) );
             }
 
-            resolveInterrupts( );
+            resolveInterrupts( curNumProcesses );
         }
         else
         {
             while( curNumProcesses == 0 )
             {
-                resolveInterrupts( );
+                bool idle = resolveInterrupts( curNumProcesses );
+                if( idle )
+                {
+                    myLog.logProcess( 
+                        " OS: No processes or interrupts available, idling" );
+                }
             }
         }
     }
 }
 
-void OperatingSystem::resolveInterrupts( )
+bool OperatingSystem::resolveInterrupts( int & curNumProcesses )
 {
+    bool idle = true;
     while( interrupts.numberOfInterrupts > 0 )
     {
+        idle = false; // if we got here, there's at least one interrupt
         int currentInterrupt = interrupts.resolveInterrupt( );
+        unordered_map< int, ProcessControlBlock >::iterator currentPCB =
+            blockedProcesses.find(currentInterrupt);
+        if( currentPCB != blockedProcesses.end( ) )
+        {
+            readyProcesses.push_back( currentPCB->second );
+            curNumProcesses++;
+        }
     }
+
+    return idle;
 }
 
 void OperatingSystem::runFIFO( )
