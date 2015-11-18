@@ -49,6 +49,11 @@ this.
 // store it in a class that didn't need it, or have every class
 // create a version of its methods.
 Logger myLog;
+// Defined interrupts as global because it interacts with
+// OperatingSystem and ProcessControlBlock extremely frequently
+// in version 3.0, and I didn't want to have to redundantly pass
+// it around or develop a messaging system
+InterruptSystem interrupts;
 //
 
 //

@@ -95,17 +95,17 @@ void OperatingSystem::readMetaDataFile( )
         						indexOfCurProcess++;
         					}
         					ProcessControlBlock pcb( totalNumberOfProcesses, settings );
-        					processes.push_back(pcb);
+        					readyProcesses.push_back(pcb);
                 		}
                 		break;
                 	}
                 	default:
                 	{
-                		if(processes.size() == 0)
+                		if(readyProcesses.size() == 0)
                 		{
                 			myLog.logError("Operation asked for before starting a process");
                 		}
-                		processes[indexOfCurProcess].addInstruction(currentProcess);
+                		readyProcesses[indexOfCurProcess].addInstructionNonPreemptive(currentProcess);
                 		break;
                 	}
                 }
@@ -186,7 +186,7 @@ void OperatingSystem::runFIFO()
 {
 	// Set currentIndex back to starting point
 	indexOfCurProcess = 0;
-	// Set number of remaining processes
+	// Set number of remaining readyProcesses
 	numberOfProcesses = totalNumberOfProcesses;
 
 	//Iterate through all operating system instructions
@@ -205,12 +205,11 @@ void OperatingSystem::runFIFO()
         if(applicationStarted == true)
         {
         	// Check that current index is valid
-        	if(indexOfCurProcess < processes.size( ) )
+        	if(indexOfCurProcess < readyProcesses.size( ) )
         	{
         		// Run the application, then decrement number of
-        		// remaining processes
-                myLog.logProcess("Process remaining time: " + to_string(processes[indexOfCurProcess].getRemainingTime()));
-        		processes[indexOfCurProcess].runApplication();
+        		// remaining readyProcesses
+        		readyProcesses[indexOfCurProcess].runApplicationNonPreemptive();
         		numberOfProcesses--;
         		indexOfCurProcess++;
         	}
@@ -232,8 +231,8 @@ void OperatingSystem::runFIFO()
 
 void OperatingSystem::runSJF()
 {
-	// Sort processes, then use the FIFO method to run through them
-	sortSJF(0, processes.size( ) - 1);
+	// Sort readyProcesses, then use the FIFO method to run through them
+	sortSJF(0, readyProcesses.size( ) - 1);
 	runFIFO();
 }
 
@@ -247,25 +246,25 @@ void OperatingSystem::sortSJF(unsigned int originalLeft, unsigned int originalRi
 	unsigned int currentLeft = originalLeft;
 	unsigned int currentRight = originalRight;
 	ProcessControlBlock temp;
-	unsigned int pivot = processes[(currentLeft + currentRight) / 2].getRemainingTime();
+	unsigned int pivot = readyProcesses[(currentLeft + currentRight) / 2].getRemainingTime();
 
 	while(currentLeft <= currentRight)
 	{
-		while(processes[currentLeft].getRemainingTime() < pivot)
+		while(readyProcesses[currentLeft].getRemainingTime() < pivot)
 		{
 			currentLeft++;
 		}
 
-		while(processes[currentRight].getRemainingTime() > pivot)
+		while(readyProcesses[currentRight].getRemainingTime() > pivot)
 		{
 			currentRight--;
 		}
 
 		if(currentLeft <= currentRight)
 		{
-			temp = processes[currentLeft];
-			processes[currentLeft] = processes[currentRight];
-			processes[currentRight] = temp;
+			temp = readyProcesses[currentLeft];
+			readyProcesses[currentLeft] = readyProcesses[currentRight];
+			readyProcesses[currentRight] = temp;
 			currentLeft++;
 			currentRight--;
 		}
@@ -290,7 +289,7 @@ void OperatingSystem::runSRTFN()
 	
 	// Set currentIndex back to starting point
 	indexOfCurProcess = 0;
-	// Set number of remaining processes
+	// Set number of remaining readyProcesses
 	numberOfProcesses = totalNumberOfProcesses;
 
 	//Iterate through all operating system instructions
@@ -311,9 +310,9 @@ void OperatingSystem::runSRTFN()
         	// Try to find the index of the next shortest time remaining
         	// process
         	indexOfCurProcess = findSRTFN( );
-        	if(indexOfCurProcess < processes.size( ) )
+        	if(indexOfCurProcess < readyProcesses.size( ) )
         	{
-        		processes[indexOfCurProcess].runApplication( );
+        		readyProcesses[indexOfCurProcess].runApplicationNonPreemptive( );
         	}
         	else
         	{
@@ -333,7 +332,7 @@ void OperatingSystem::runSRTFN()
 
 unsigned int OperatingSystem::findSRTFN( )
 {
-	// Iterate over all processes to find out the next shortest
+	// Iterate over all readyProcesses to find out the next shortest
 	// Assume that the getRemainingTime() method on each process will not
 	// take a significant amount of time overall. (getRemainingTime will be
 	// programmed to 'cache' the last calculated remaining time and only
@@ -341,9 +340,9 @@ unsigned int OperatingSystem::findSRTFN( )
 	unsigned int SRTFNIndex = 0;
 	unsigned int SRTFNAmount = 0;
 	myLog.logProcess("OS: selecting next process");
-	for(unsigned int indexOfCurProcess = 0; indexOfCurProcess < processes.size(); indexOfCurProcess++)
+	for(unsigned int indexOfCurProcess = 0; indexOfCurProcess < readyProcesses.size(); indexOfCurProcess++)
 	{
-		unsigned int curTimeAmount = processes[indexOfCurProcess].getRemainingTime();
+		unsigned int curTimeAmount = readyProcesses[indexOfCurProcess].getRemainingTime();
 		if(curTimeAmount != 0 && (curTimeAmount < SRTFNAmount || SRTFNAmount == 0))
 		{
 			SRTFNIndex = indexOfCurProcess;
@@ -354,10 +353,10 @@ unsigned int OperatingSystem::findSRTFN( )
 	// Check that we have found a shortest remaining time
 	if(SRTFNAmount == 0)
 	{
-		myLog.logError("No remaining processes to run");
+		myLog.logError("No remaining readyProcesses to run");
 	}
 
-	myLog.logProcess("OS: starting process " + to_string(processes[SRTFNIndex].processNumber));
+	myLog.logProcess("OS: starting process " + to_string(readyProcesses[SRTFNIndex].processNumber));
 	return SRTFNIndex;
 }
 
@@ -449,10 +448,10 @@ void OperatingSystem::evalApplication( string operation, unsigned int numberOfCy
     	else if(settings.version.compare("2.0") == 0)
     	{
     		// If this is the first process being started, report that 
-    		// we are preparing all processes
+    		// we are preparing all readyProcesses
     		if(numberOfProcesses == totalNumberOfProcesses)
     		{
-    			myLog.logProcess("OS: preparing all processes");
+    			myLog.logProcess("OS: preparing all readyProcesses");
     		}
 
     		// If we are not dealing with SRTF-N (ie, FIFO or SJF),
@@ -461,7 +460,7 @@ void OperatingSystem::evalApplication( string operation, unsigned int numberOfCy
     		if(settings.cpuScheduling.compare("SRTF-N") != 0)
     		{
     			myLog.logProcess("OS: selecting next process");
-    			myLog.logProcess("OS: starting process " + to_string(processes[indexOfCurProcess].processNumber));
+    			myLog.logProcess("OS: starting process " + to_string(readyProcesses[indexOfCurProcess].processNumber));
     		}
     	}
     }

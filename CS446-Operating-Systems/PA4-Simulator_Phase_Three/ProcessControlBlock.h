@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <time.h>
+#include <string>
 #include <thread>
 #include "ConfigurationSettings.h"
 #include "InterruptSystem.h"
@@ -12,6 +13,7 @@
 using namespace std;
 
 extern Logger myLog;
+extern InterruptSystem interrupts;
 
 /**
  * Used for creating new threads.
@@ -65,7 +67,9 @@ public:
 	* Post: readyProcessThreads will be empty and finishedProcessThreads
 	*       will be filled with all the processes from readyProcessThreads
 	*/
-	void runApplication();
+	void runApplicationNonPreemptive();
+
+	bool runApplicationPreemptive();
 
 	/**
 	* Add a new instruction to this PCB
@@ -76,7 +80,9 @@ public:
 	* @param newInstruction Either a Processor, Input, or Output action
 	* 			with a number of cycles and a specific operation
 	*/
-	void addInstruction(Process newInstruction);
+	void addInstructionNonPreemptive(Process newInstruction);
+
+	void addInstructionPreemptive(Process newInstruction);
 
 	/**
 	* Calculates the remaining time of the active processes in this PCB
@@ -91,6 +97,9 @@ public:
 	
 	unsigned int processNumber;
 private:
+
+	bool runProcessPreemptive( PcbThread &currentProcess );
+
 	/**
 	 * Starts a new process
 	 * Sets sleep time to processCycleTime * numberOfCycles
@@ -106,12 +115,12 @@ private:
 	 * @param operation Name of the operation, used for output
 	 * @param numberOfCycles Number of cycles to run for
 	 */
-	void newProcess( 
+	void newProcessThreadNonPreemptive( 
 		string operation, 
-		unsigned int &numberOfCycles );
+		unsigned int numberOfCycles );
 
 	/**
-	 * Creates a new Processor Thread
+	 * Creates a new Input Thread
 	 * Sets sleep time to 
 	 *  hardDriveCycleTime * numberOfCycles
 	 *  keyboardCycleTime * numberOfCycles
@@ -126,7 +135,7 @@ private:
 	 * @param operation Name of the operation, used for output
 	 * @param numberOfCycles Number of cycles to run for
 	 */
-	void newInputThread( 
+	void newInputThreadNonPreemptive( 
 		string operation, 
 		unsigned int numberOfCycles );
 
@@ -147,13 +156,69 @@ private:
 	 * @param operation Name of the operation, used for output
 	 * @param numberOfCycles Number of cycles to run for
 	 */
-	void newOutputThread( 
+	void newOutputThreadNonPreemptive( 
 		string operation, 
 		unsigned int numberOfCycles );
 
-	void runIO();
+	/**
+	 * Starts a new process
+	 * Sets sleep time to processCycleTime * numberOfCycles
+	 * Version 3.0: Checks if there are any interrupts in queue
+	 * before waiting.
+	 * If completes its own quantum, will throw a quantum interrupt
+	 * into the queue.
+	 *
+	 * Pre: processCycleTime has been set appropriately
+	 * Post: Program will create and wait for a processor thread
+	 * Will also log output for start/end of process
+	 * 
+	 * @param operation Name of the operation, used for output
+	 * @param numberOfCycles Number of cycles to run for
+	 */
+	void newProcessThreadPreemptive( 
+		string operation, 
+		unsigned int numberOfCycles );
 
-	void runProcess();
+	/**
+	 * Creates a new Input Thread
+	 * Sets sleep time to 
+	 *  hardDriveCycleTime * numberOfCycles
+	 *  keyboardCycleTime * numberOfCycles
+	 * based on the given operation
+	 * Creates new thread, then waits for thread to end.
+	 *
+	 * Pre: hardDriveCycleTime and keyboardCycleTime
+	 * have been set appropriately
+	 * Post: Program will create and wait for a input thread
+	 * Will also log output for start/end of process
+	 * 
+	 * @param operation Name of the operation, used for output
+	 * @param numberOfCycles Number of cycles to run for
+	 */
+	void newInputThreadPreemptive( 
+		string operation, 
+		unsigned int numberOfCycles );
+
+	/**
+	 * Creates a new Output Thread
+	 * Sets sleep time to 
+	 *  hardDriveCycleTime * numberOfCycles
+	 *  monitorDisplayTime * numberOfCycles
+	 *  printerCycleTime * numberOfCycles
+	 * based on the given operation
+	 * Creates new thread, then waits for thread to end.
+	 *
+	 * Pre: hardDriveCycleTime, monitorDisplayTime, printerCycleTime
+	 * have been set appropriately
+	 * Post: Program will create and wait for an output thread
+	 * Will also log output for start/end of process
+	 * 
+	 * @param operation Name of the operation, used for output
+	 * @param numberOfCycles Number of cycles to run for
+	 */
+	void newOutputThreadPreemptive( 
+		string operation, 
+		unsigned int numberOfCycles );
 
 	
 	bool needToRecalcRT; // Used to determine whether the remaining time needs to be recalculated
@@ -164,6 +229,6 @@ private:
 	unsigned int hardDriveCycleTime;
 	unsigned int printerCycleTime;
 	unsigned int keyboardCycleTime;
-	vector<pcb_thread> readyProcessThreads;
+	vector<PcbThread> readyProcessThreads;
 };
 #endif // PROCESS_CONTROL_BLOCK_H

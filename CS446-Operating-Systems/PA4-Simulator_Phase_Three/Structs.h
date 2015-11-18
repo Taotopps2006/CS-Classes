@@ -1,20 +1,8 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-struct Process
-{
-	char component;
-	string operation;
-	int numberOfCycles;
-};
-
-struct PcbThread
-{
-	string startLogMessage;
-	string endLogMessage;
-	int timePerCyle;
-	int numCyclesRemaining;
-};
+#include <string>
+using namespace std;
 
 enum InterruptType
 {
@@ -22,10 +10,35 @@ enum InterruptType
 	QUANTUM = 1
 };
 
+
 struct Interrupt
 {
 	InterruptType interruptType;
-	int priority; // Redundant use of memory, but used to save processing later on
-	int pcbID;
+	int processNumber;
+	string endLogMessage;
+	
 };
+
+struct PcbThread
+{
+	// Currently, some variables are unused depending on version of simulator
+	// Once all 3 versions are working, I'll refactor this to use polymorphism
+	// to dynamically figure out which type of node is currently being used
+public:
+	unsigned int processTime;
+	string startLogMessage;
+	string blockLogMessage;
+	string endLogMessage;
+	unsigned int timePerCycle;
+	unsigned int numCyclesRemaining;
+	InterruptType interruptType; // The type of interrupt this thread will trigger
+};
+
+struct Process
+{
+	char component;
+	string operation;
+	unsigned int numberOfCycles;
+};
+
 #endif // STRUCTS_H
