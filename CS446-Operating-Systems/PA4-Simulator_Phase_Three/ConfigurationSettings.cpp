@@ -37,7 +37,7 @@ void ConfigurationSettings::processConfigFile( )
 void ConfigurationSettings::set( unsigned int settingLine, string settingValue )
 {
 	// Instead of throwing an error if the config file has too many lines, we simply
-	// Ignore it
+	// Ignore it; its assumed that anything after the information we need is irrelevant
 	if( settingLine >= regexLineKeys.size( ) )
 	{
 		return;
@@ -72,7 +72,7 @@ void ConfigurationSettings::set( unsigned int settingLine, string settingValue )
 						"CPU Scheduling Code: (FIFO-P|SRTF-P)" );
 					regexLineKeys.insert(
 						regexLineKeys.begin()+4 ,
-						"Quantum times \\(cycles\\): ([1-9]+[0-9]*)" );
+						"Quantum Time \\(cycles\\): ([1-9]+[0-9]*)" );
 				}
 				break;
 			}
@@ -100,7 +100,7 @@ void ConfigurationSettings::set( unsigned int settingLine, string settingValue )
 	else
 	{
 		myLog.logError( 
-			settingValue + " is not valid for line " + to_string( settingLine )
+			settingValue + " is not valid for line " + to_string( settingLine+1 )
 			);
 	}
 

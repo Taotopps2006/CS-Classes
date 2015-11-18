@@ -151,14 +151,18 @@ void OperatingSystem::readMetaDataFile( )
 
 void OperatingSystem::runSimulator( )
 {
-	if(settings.version.compare("1.0") == 0)
+	if( settings.version.compare("1.0") == 0 )
 	{
 		runPhaseOneSimulator( );
 	}
-	else if(settings.version.compare("2.0") == 0)
+	else if( settings.version.compare("2.0") == 0 )
 	{
 		runPhaseTwoSimulator( );
 	}
+    else /*if( settings.version.compare("3.0") == 0 )*/
+    {
+        runPhaseThreeSimulator( );
+    }
 }
 
 void OperatingSystem::runPhaseOneSimulator( )
@@ -168,21 +172,79 @@ void OperatingSystem::runPhaseOneSimulator( )
 
 void OperatingSystem::runPhaseTwoSimulator( )
 {
-	if(settings.cpuScheduling.compare("FIFO") == 0)
+	if( settings.cpuScheduling.compare( "FIFO" ) == 0 )
 	{
-		runFIFO();
+		runFIFO( );
 	}
-	else if(settings.cpuScheduling.compare("SJF") == 0)
+	else if( settings.cpuScheduling.compare( "SJF" ) == 0)
 	{
-		runSJF();
+		runSJF( );
 	}
-	else if(settings.cpuScheduling.compare("SRTF-N") == 0)
+	else if( settings.cpuScheduling.compare( "SRTF-N" ) == 0 )
 	{
-		runSRTFN();
+		runSRTFN( );
 	}
 }
 
-void OperatingSystem::runFIFO()
+void OperatingSystem::runPhaseThreeSimulator( )
+{
+    prepareProcesses( );
+    if( settings.cpuScheduling.compare( "FIFO-P" ) == 0 )
+    {
+        runFIFOP( );
+    }
+}
+
+void OperatingSystem::runFIFOP( )
+{
+    int curNumProcesses = readyProcesses.size();
+    while( curNumProcesses != 0 || blockedProcesses.size != 0 )
+    {
+        myLog.logProcess( "OS: selecting next process" );
+        sortFIFO( );
+        bool processIsFinished = ( readyProcesses[0].getRemainingTime( ) == 0 );
+        while( processIsFinished == true )
+        {
+            myLog.logProcess( 
+                "OS: Process " + 
+                to_string(currentProcess->processNumber) +
+                "has been completed" );
+            readyProcesses.erase( readyProcesses.begin( ) );
+            curNumProcesses--;
+            processIsFinished = ( readyProcesses[0].getRemainingTime( ) == 0 );
+        }
+        if( curNumProcesses == 0 )
+        {
+            bool putIntoBlocked = readyProcesses[0].runApplicationPreemptive( );
+            if( putIntoBlocked == true )
+            {
+
+                blockedProcesses.push_back( pair< int, ProcessControlBlock >( 
+                    readyProcesses[0].processNumber, readyProcesses[0] ) );
+                readyProcesses.erase( readyProcesses.begin( ) );
+            }
+
+            resolveInterrupts( );
+        }
+        else
+        {
+            while( curNumProcesses == 0 )
+            {
+                resolveInterrupts( );
+            }
+        }
+    }
+}
+
+void OperatingSystem::resolveInterrupts( )
+{
+    while( interrupts.numberOfInterrupts > 0 )
+    {
+        int currentInterrupt = interrupts.resolveInterrupt( );
+    }
+}
+
+void OperatingSystem::runFIFO( )
 {
 	// Set currentIndex back to starting point
 	indexOfCurProcess = 0;
@@ -234,6 +296,51 @@ void OperatingSystem::runSJF()
 	// Sort readyProcesses, then use the FIFO method to run through them
 	sortSJF(0, readyProcesses.size( ) - 1);
 	runFIFO();
+}
+
+void OperatingSystem::sortFIFO(unsigned int originalLeft, unsigned int originalRight)
+{
+    // Use quicksort to sort
+    // Assume that the getRemainingTime() method on each process will not
+    // take a significant amount of time overall. (getRemainingTime will be
+    // programmed to 'cache' the last calculated remaining time and only
+    // recalculate if a new item is added or removed
+    unsigned int currentLeft = originalLeft;
+    unsigned int currentRight = originalRight;
+    ProcessControlBlock temp;
+    unsigned int pivot = readyProcesses[(currentLeft + currentRight) / 2].processNumber;
+
+    while(currentLeft <= currentRight)
+    {
+        while(readyProcesses[currentLeft].processNumber < pivot)
+        {
+            currentLeft++;
+        }
+
+        while(readyProcesses[currentRight].processNumber > pivot)
+        {
+            currentRight--;
+        }
+
+        if(currentLeft <= currentRight)
+        {
+            temp = readyProcesses[currentLeft];
+            readyProcesses[currentLeft] = readyProcesses[currentRight];
+            readyProcesses[currentRight] = temp;
+            currentLeft++;
+            currentRight--;
+        }
+    }
+
+    if(originalLeft < currentRight)
+    {
+        sortSJF(originalLeft, currentLeft - 1);
+    }
+
+    if(currentLeft < originalRight)
+    {
+        sortSJF(currentLeft, originalRight);
+    }
 }
 
 void OperatingSystem::sortSJF(unsigned int originalLeft, unsigned int originalRight)
@@ -360,6 +467,80 @@ unsigned int OperatingSystem::findSRTFN( )
 	return SRTFNIndex;
 }
 
+void OperatingSystem::prepareProcesses( )
+{
+    myLog.logProcess( "OS: preparing all processes" );
+    vector<Process>::iterator it;
+    bool operatingSystemStarted = false;
+    bool applicationStarted = false;
+    for( it = operatingSystemInstructions.begin( );
+        ( it != operatingSystemInstructions.end( ) );
+        it++ )
+    {
+        if( it->component == 'S' )
+        {
+            if( it->operation.compare( "start" ) == 0 )
+            {
+                if( operatingSystemStarted == true )
+                {
+                    myLog.logError( "Operating System start command issued twice" );
+                }
+                operatingSystemStarted = true;
+            }
+            else if( it->operation.compare( "end" ) == 0 )
+            {
+                if( operatingSystemStarted == false )
+                {
+                    myLog.logError( "Operating system end command issued before start" );
+                }
+                operatingSystemStarted = false;
+            }
+            else
+            {
+                myLog.logError( "Operating System issued unknown command" );
+            }
+
+            if( it->numberOfCycles != 0)
+            {
+                myLog.logError( "Operating System operation must have cycle time of 0" );
+            }
+        }
+        else if( it->component == 'A' )
+        {
+            if( it->operation.compare( "start" ) == 0)
+            {
+                if( applicationStarted == true )
+                {
+                    myLog.logError( "Multiple application start commands issued before an end" );
+                }
+                applicationStarted = true;
+            }
+            else if( it->operation.compare( "end" ) == 0)
+            {
+                if( applicationStarted == false )
+                {
+                    myLog.logError( "Application end command issued before start" );
+                }
+                applicationStarted = false;
+            }
+            else
+            {
+                myLog.logError( "Application issued unknown command" );
+            }
+
+            if( it->numberOfCycles != 0 )
+            {
+                myLog.logError( "Application operation must have cycle time of 0" );
+            }
+        }
+        else
+        {
+            myLog.logError( "Unknown system command issued" );
+        }
+
+    }
+}
+
 void OperatingSystem::processOperation( char component, string operation, unsigned int numberOfCycles )
 {
     if( simulatorRunning == false )
@@ -371,14 +552,12 @@ void OperatingSystem::processOperation( char component, string operation, unsign
                 myLog.logError( 
                     "Operating System operation must have cycle time of 0" );
             }
-
-            myLog.logProcess( "Simulator program starting" );
             simulatorRunning = true;
             return;
         }
         else
         {
-            myLog.logError( "Simulator is not running" );
+            myLog.logError( "Operating system end command issued before start" );
         }
     }
 

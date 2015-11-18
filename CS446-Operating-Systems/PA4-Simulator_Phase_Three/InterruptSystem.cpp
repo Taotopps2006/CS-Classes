@@ -25,13 +25,12 @@ void InterruptSystem::addNewInterruptBack( InterruptType interruptType, int proc
 	numberOfInterrupts++;
 }
 
-bool InterruptSystem::removeInterrupt( int priority )
-{
-	if(numberOfInterrupts == 0)
-	{
-		return false;
-	}
+int InterruptSystem::resolveInterrupt(  )
+{	
+	Interrupt currentInterrupt = interruptQueue.front( );
+	int processNumber = currentInterrupt.processNumber;
+	myLog.logProcess( "Interrupt: " + currentInterrupt.endLogMessage );
 	interruptQueue.pop_front();
 	numberOfInterrupts--;
-	return true;
+	return processNumber;
 }

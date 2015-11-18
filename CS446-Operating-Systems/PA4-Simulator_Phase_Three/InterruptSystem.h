@@ -13,7 +13,7 @@ public:
 	Interrupt getCurrentInterrupt( );
 	void addNewInterruptFront( InterruptType interruptType, int processNumber, string endLogMessage );
 	void addNewInterruptBack( InterruptType interruptType, int processNumber, string endLogMessage );
-	bool removeInterrupt( int priority );
+	bool resolveInterrupt( int priority );
 
 	int numberOfInterrupts;
 private:

@@ -50,9 +50,14 @@ this.
 // create a version of its methods.
 Logger myLog;
 // Defined interrupts as global because it interacts with
-// OperatingSystem and ProcessControlBlock extremely frequently
-// in version 3.0, and I didn't want to have to redundantly pass
-// it around or develop a messaging system
+// OperatingSystem, ProcessControlBlock, and stand alone threads
+// spawned by the ProcessControlBlock in version 3.0, and I 
+// didn't want to have to redundantly pass it around or develop 
+// a messaging system
+// To an extent, it "belongs" to the Operating System, but the
+// frequent use with the threads makes it very tricky to easily
+// pass messages between the Operating System, ProcessControlBlock,
+// and the threads themselves.
 InterruptSystem interrupts;
 //
 
@@ -83,6 +88,7 @@ int main( int argc, char * argv[ ] )
     }
     os.readConfigurationFile( argv[1] );
     os.readMetaDataFile( );
+    myLog.logProcess( "Simulator program starting" );
     os.runSimulator( );
     myLog.timer.stop( );
     myLog.outputLogFile( );

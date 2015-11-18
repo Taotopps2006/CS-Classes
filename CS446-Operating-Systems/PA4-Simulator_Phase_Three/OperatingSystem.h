@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <unordered_map>
 #include "re2-master/re2/re2.h"
 #include <cstdlib>
 #include "Logger.h"
@@ -104,6 +105,8 @@ private:
 	* configuration file, and appropriate method called for that cpu scheduling
 	*/
 	void runPhaseTwoSimulator( );
+
+	void runPhaseThreeSimulator( );
 
 	/**
 	* Iterates over all PCB's linearly, and calls their "run" method
@@ -236,7 +239,7 @@ private:
 	unsigned int numberOfProcesses; // Number of current PCB's from this OS
 	vector< Process > operatingSystemInstructions; // Instructions from meta-data
 	vector< ProcessControlBlock > readyProcesses; // PCB's ready to use
-	vector< ProcessControlBlock > blockedProcesses; // PCB's that are blocked due to IO
+	unordered_map< int, ProcessControlBlock > blockedProcesses; // PCB's that are blocked due to IO
 	ConfigurationSettings settings; // Instructions from config file
 	// Future: CPU Scheduling Type
 	// Future: Quantum time
