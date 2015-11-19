@@ -119,6 +119,7 @@ private:
 	*/
 	void runFIFO( );
 
+	void runRR( );
 	void runFIFOP( );
 
 	/**

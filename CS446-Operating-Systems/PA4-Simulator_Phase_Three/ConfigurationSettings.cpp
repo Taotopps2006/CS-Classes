@@ -271,7 +271,7 @@ void ConfigurationSettings::setPhaseThree( unsigned int settingLine, string sett
 			// Somewhat redundant, as the regex will only find one of these 3
 			// anyway
 			if( 
-				settingValue.compare( "RR" ) == 0
+				settingValue.compare( "RR" ) == 0 ||
 				settingValue.compare( "FIFO-P" ) == 0 || 
 				settingValue.compare( "SRTF-P" ) == 0 )
 			{

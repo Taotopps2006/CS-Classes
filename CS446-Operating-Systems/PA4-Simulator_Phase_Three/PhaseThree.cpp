@@ -8,14 +8,27 @@
  meta-data operations, run each program, and end the simulation. Each unique
  I/O operation must be conducted with its own unique thread.
  Additional Operations for this Phase:
- - CPU Scheduling now utilizes Round Robin with a quantum
- - FIFO: The order of the next process is determined by the order in which the processes came into the system
- - SRTF: The order of the next process is determined by which process has the shortest remaining time left
+ - CPU Scheduling now utilizes preemptive schedules:
+ - Round Robin(RR): Order is determined by the next process available (no sorting/selection)
+ - FIFO-P: The order of the next process is determined by the order in which the processes came into the system
+ - SRTF-P: The order of the next process is determined by which process has the shortest remaining time left
 
  */
 // Version/Revision Information ///////////////////////////////////
 /* 
+ 0.8 ( 11/19/2015 ) - Tim Kwist
+ Alas we have solved it! We forgot about some basic rules about
+ copy constructors and = operator overload. Coincidentally, we
+ wouldn't have run into this error if we hadn't tried to "improve"
+ the = operator overload from last time
+ FIFO-P currently works (needs to be tested on a single core machine
+ because it runs in less than half the expected time on my machine -
+ I assume its because the threads are actually taking advantage of
+ my AMD.
+ RR currently works as well
  0.7 ( 11/18/2015 ) - Tim Kwist
+ A segfault error continues to elude us. If it cannot be solved,
+ all hope is lost...
  Finished initial design and implementation of interrupt system
  ProcessControlBlock should need no further additions, interrupt
  system and operating system may need additions

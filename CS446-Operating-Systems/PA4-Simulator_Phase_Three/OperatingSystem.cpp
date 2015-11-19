@@ -147,7 +147,7 @@ void OperatingSystem::readMetaDataFile( )
                 currentProcess.operation = operation;
                 currentProcess.numberOfCycles = numberOfCycles;
                 operatingSystemInstructions.push_back( currentProcess );
-                break; // End the loop, we found the end of the os meta file
+                break; // End the loop, we found the end of theOS meta file
             }
         }
         getline( metaFile, tempString );
@@ -212,9 +212,75 @@ void OperatingSystem::runPhaseTwoSimulator( )
 void OperatingSystem::runPhaseThreeSimulator( )
 {
     prepareProcesses( );
-    if( settings.cpuScheduling.compare( "FIFO-P" ) == 0 )
+    if( settings.cpuScheduling.compare( "RR" ) == 0 )
     {
+    	myLog.logProcess( "OS: Using Round Robin CPU Scheduling" );
+    	runRR( );
+    }
+    else if( settings.cpuScheduling.compare( "FIFO-P" ) == 0 )
+    {
+    	myLog.logProcess( "OS: Using FIFO-P CPU Scheduling" );
         runFIFOP( );
+    }
+    else
+    {
+    	// runSRTFP
+    }
+
+    myLog.logProcess( "Simulator program ending" );
+}
+
+void OperatingSystem::runRR( )
+{
+	while( readyProcesses.size() != 0 || blockedProcesses.size() != 0 )
+    {
+        myLog.logProcess( "OS: selecting next process" );
+        bool processIsFinished = ( readyProcesses[0].getRemainingTime( ) == 0 );
+        while( processIsFinished == true && readyProcesses.size() != 0 )
+        {
+            myLog.logProcess( 
+                "OS: Process " + 
+                to_string( readyProcesses[0].processNumber ) +
+                " has been completed" );
+            readyProcesses.erase( readyProcesses.begin( ) );
+            processIsFinished = ( readyProcesses[0].getRemainingTime( ) == 0 );
+        }
+        if( readyProcesses.size() != 0 )
+        {
+            bool putIntoBlocked = readyProcesses[0].runApplicationPreemptive( );
+            if( putIntoBlocked == true )
+            {
+                blockedProcesses.insert( pair< int, ProcessControlBlock >( 
+                    readyProcesses[0].processNumber, readyProcesses[0] ) );
+                readyProcesses.erase( readyProcesses.begin( ) );
+                interrupts.resolveInterrupt( );
+            }
+            else
+            {
+            	readyProcesses.push_back( readyProcesses[0] );
+            	readyProcesses.erase( readyProcesses.begin( ) );
+            }
+            resolveInterrupts( );
+        }
+        else
+        {
+            bool idle = false;
+            bool notifiedIdle = false;
+            while( readyProcesses.size() == 0 && blockedProcesses.size() > 0)
+            {
+                idle = resolveInterrupts( );
+                if( idle == true && notifiedIdle == false )
+                {
+                    myLog.logProcess( 
+                        "OS: No processes or interrupts available, idling" );
+                    notifiedIdle = true;
+                }
+            }
+            if( notifiedIdle == true )
+            {
+                myLog.logProcess( "OS: No longer idling " );
+            }
+        }
     }
 }
 
@@ -256,13 +322,13 @@ void OperatingSystem::runFIFOP( )
                 if( idle == true && notifiedIdle == false )
                 {
                     myLog.logProcess( 
-                        " OS: No processes or interrupts available, idling" );
+                        "OS: No processes or interrupts available, idling" );
                     notifiedIdle = true;
                 }
             }
             if( notifiedIdle == true )
             {
-                myLog.logProcess( " OS: No longer idling " );
+                myLog.logProcess( "OS: No longer idling " );
             }
         }
     }
