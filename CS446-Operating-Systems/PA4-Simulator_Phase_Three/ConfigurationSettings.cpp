@@ -8,7 +8,7 @@ ConfigurationSettings::ConfigurationSettings( )
 		"Version/Phase: ([0-9]\\.0)",
 		"File Path: (.*\\.mdf)",
 		//"CPU Scheduling: (FIFO|SJF|SRTF-N)" (Version 2.0 only; this is at begin()+3)
-		//"CPU Scheduling: (FIFO-P|SRTF-P)" (Version 3.0 only; this is at begin()+3)
+		//"CPU Scheduling: (RR|FIFO-P|SRTF-P)" (Version 3.0 only; this is at begin()+3)
 		//"Quantum times \\(cycles\\): ([1-9]+[0-9]*)" (Version 3.0 only; this is at begin()+4)
 		"Processor cycle time \\(msec\\): ([1-9]+[0-9]*)",
 		"Monitor display time \\(msec\\): ([1-9]+[0-9]*)",
@@ -69,7 +69,7 @@ void ConfigurationSettings::set( unsigned int settingLine, string settingValue )
 				{
 					regexLineKeys.insert(
 						regexLineKeys.begin()+3 ,
-						"CPU Scheduling Code: (FIFO-P|SRTF-P)" );
+						"CPU Scheduling Code: (RR|FIFO-P|SRTF-P)" );
 					regexLineKeys.insert(
 						regexLineKeys.begin()+4 ,
 						"Quantum Time \\(cycles\\): ([1-9]+[0-9]*)" );
