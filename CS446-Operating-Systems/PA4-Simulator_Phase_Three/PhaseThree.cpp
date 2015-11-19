@@ -26,6 +26,7 @@
  I assume its because the threads are actually taking advantage of
  my AMD.
  RR currently works as well
+ SRTFP now works as well
  0.7 ( 11/18/2015 ) - Tim Kwist
  A segfault error continues to elude us. If it cannot be solved,
  all hope is lost...

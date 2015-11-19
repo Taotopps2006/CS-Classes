@@ -121,6 +121,7 @@ private:
 
 	void runRR( );
 	void runFIFOP( );
+	void runSRTFP( );
 
 	/**
 	* Runs the sortSJF method, then runs runFIFO

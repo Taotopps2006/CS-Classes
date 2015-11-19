@@ -224,7 +224,8 @@ void OperatingSystem::runPhaseThreeSimulator( )
     }
     else
     {
-    	// runSRTFP
+    	myLog.logProcess( "OS: Using SRTF-P CPU Scheduling" );
+    	runSRTFP( );
     }
 
     myLog.logProcess( "Simulator program ending" );
@@ -290,6 +291,56 @@ void OperatingSystem::runFIFOP( )
     {
         myLog.logProcess( "OS: selecting next process" );
         sort( readyProcesses.begin( ), readyProcesses.end( ), sortFIFO);
+        bool processIsFinished = ( readyProcesses[0].getRemainingTime( ) == 0 );
+        while( processIsFinished == true && readyProcesses.size() != 0 )
+        {
+            myLog.logProcess( 
+                "OS: Process " + 
+                to_string( readyProcesses[0].processNumber ) +
+                " has been completed" );
+            readyProcesses.erase( readyProcesses.begin( ) );
+            processIsFinished = ( readyProcesses[0].getRemainingTime( ) == 0 );
+        }
+        if( readyProcesses.size() != 0 )
+        {
+            bool putIntoBlocked = readyProcesses[0].runApplicationPreemptive( );
+            if( putIntoBlocked == true )
+            {
+                blockedProcesses.insert( pair< int, ProcessControlBlock >( 
+                    readyProcesses[0].processNumber, readyProcesses[0] ) );
+                readyProcesses.erase( readyProcesses.begin( ) );
+                interrupts.resolveInterrupt( );
+            }
+            resolveInterrupts( );
+        }
+        else
+        {
+            bool idle = false;
+            bool notifiedIdle = false;
+            while( readyProcesses.size() == 0 && blockedProcesses.size() > 0)
+            {
+                idle = resolveInterrupts( );
+                if( idle == true && notifiedIdle == false )
+                {
+                    myLog.logProcess( 
+                        "OS: No processes or interrupts available, idling" );
+                    notifiedIdle = true;
+                }
+            }
+            if( notifiedIdle == true )
+            {
+                myLog.logProcess( "OS: No longer idling " );
+            }
+        }
+    }
+}
+
+void OperatingSystem::runSRTFP( )
+{
+    while( readyProcesses.size() != 0 || blockedProcesses.size() != 0 )
+    {
+        myLog.logProcess( "OS: selecting next process" );
+        sort( readyProcesses.begin( ), readyProcesses.end( ), sortSJF);
         bool processIsFinished = ( readyProcesses[0].getRemainingTime( ) == 0 );
         while( processIsFinished == true && readyProcesses.size() != 0 )
         {
