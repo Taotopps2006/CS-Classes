@@ -51,7 +51,7 @@ ProcessControlBlock::ProcessControlBlock( const ProcessControlBlock & rhs )
 	hardDriveCycleTime = rhs.hardDriveCycleTime;
 	printerCycleTime = rhs.printerCycleTime;
 	keyboardCycleTime = rhs.keyboardCycleTime;
-	readyProcessThreads = rhs.readyProcessThreads;
+	readyProcessThreads = vector<PcbThread>(rhs.readyProcessThreads);
 }
 
 ProcessControlBlock& ProcessControlBlock::operator=( const ProcessControlBlock & rhs )
@@ -69,7 +69,7 @@ ProcessControlBlock& ProcessControlBlock::operator=( const ProcessControlBlock &
 	hardDriveCycleTime = rhs.hardDriveCycleTime;
 	printerCycleTime = rhs.printerCycleTime;
 	keyboardCycleTime = rhs.keyboardCycleTime;
-	readyProcessThreads = rhs.readyProcessThreads;
+	readyProcessThreads = vector<PcbThread>(rhs.readyProcessThreads);
 	return * this;
 }
 
@@ -150,7 +150,8 @@ bool ProcessControlBlock::runProcessPreemptive( PcbThread &currentProcess )
 			{
 				currentProcess.numCyclesRemaining--;
 				cyclesRun++;
-				usleep( currentProcess.timePerCycle * 1000 );
+				//usleep( currentProcess.timePerCycle * 1000 );
+				this_thread::sleep_for( chrono::milliseconds( currentProcess.timePerCycle ) );
 			}
 			else
 			{

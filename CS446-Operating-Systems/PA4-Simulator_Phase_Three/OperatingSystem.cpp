@@ -10,6 +10,11 @@ bool sortSJF( ProcessControlBlock left, ProcessControlBlock right )
     return ( left.getRemainingTime( ) < right.getRemainingTime( ) );
 }
 
+struct findID
+{
+
+};
+
 OperatingSystem::OperatingSystem( )
 {
     totalNumberOfProcesses = 0;
@@ -220,7 +225,7 @@ void OperatingSystem::runFIFOP( )
         myLog.logProcess( "OS: selecting next process" );
         sort( readyProcesses.begin( ), readyProcesses.end( ), sortFIFO);
         bool processIsFinished = ( readyProcesses[0].getRemainingTime( ) == 0 );
-        while( processIsFinished == true )
+        while( processIsFinished == true && readyProcesses.size() != 0 )
         {
             myLog.logProcess( 
                 "OS: Process " + 
@@ -245,7 +250,7 @@ void OperatingSystem::runFIFOP( )
         {
             bool idle = false;
             bool notifiedIdle = false;
-            while( readyProcesses.size() == 0 )
+            while( readyProcesses.size() == 0 && blockedProcesses.size() > 0)
             {
                 idle = resolveInterrupts( );
                 if( idle == true && notifiedIdle == false )
