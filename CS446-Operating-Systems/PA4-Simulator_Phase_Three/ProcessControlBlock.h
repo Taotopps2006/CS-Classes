@@ -37,6 +37,8 @@ public:
 	 * Should only be used for temporary PCB's
 	 */
 	ProcessControlBlock( );
+	ProcessControlBlock( const ProcessControlBlock & rhs );
+
 	/**
 	 * ProcessControlBlock constructor
 	 * Updates this PCB's processNumber and various numberOfCycles settings
@@ -71,7 +73,7 @@ public:
 	void runApplicationNonPreemptive();
 
 	bool runApplicationPreemptive();
-
+	void removeFirstInstruction();
 	/**
 	* Add a new instruction to this PCB
 	*

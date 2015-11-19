@@ -13,8 +13,7 @@ void Logger::logProcess( string processDescription )
 		logError( "Log Type or Log File Name have not been defined" );
 	}
 
-	char * timeInText;
-	timeInText = new char[15];
+	char timeInText[15];
 	timer.stop( );
 	timer.getElapsedTime( timeInText );
 	timer.start( );

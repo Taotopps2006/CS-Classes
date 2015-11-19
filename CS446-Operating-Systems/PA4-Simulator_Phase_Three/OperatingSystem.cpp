@@ -1,5 +1,15 @@
 #include "OperatingSystem.h"
 
+bool sortFIFO( ProcessControlBlock left, ProcessControlBlock right )
+{
+    return ( left.processNumber < right.processNumber );
+}
+
+bool sortSJF( ProcessControlBlock left, ProcessControlBlock right )
+{
+    return ( left.getRemainingTime( ) < right.getRemainingTime( ) );
+}
+
 OperatingSystem::OperatingSystem( )
 {
     totalNumberOfProcesses = 0;
@@ -205,51 +215,55 @@ void OperatingSystem::runPhaseThreeSimulator( )
 
 void OperatingSystem::runFIFOP( )
 {
-    int curNumProcesses = readyProcesses.size();
-    while( curNumProcesses != 0 || blockedProcesses.size() != 0 )
+    while( readyProcesses.size() != 0 || blockedProcesses.size() != 0 )
     {
         myLog.logProcess( "OS: selecting next process" );
-        sortFIFO(0, curNumProcesses-1 );
+        sort( readyProcesses.begin( ), readyProcesses.end( ), sortFIFO);
         bool processIsFinished = ( readyProcesses[0].getRemainingTime( ) == 0 );
         while( processIsFinished == true )
         {
             myLog.logProcess( 
                 "OS: Process " + 
                 to_string( readyProcesses[0].processNumber ) +
-                "has been completed" );
+                " has been completed" );
             readyProcesses.erase( readyProcesses.begin( ) );
-            curNumProcesses--;
             processIsFinished = ( readyProcesses[0].getRemainingTime( ) == 0 );
         }
-        if( curNumProcesses != 0 )
+        if( readyProcesses.size() != 0 )
         {
             bool putIntoBlocked = readyProcesses[0].runApplicationPreemptive( );
             if( putIntoBlocked == true )
             {
-
                 blockedProcesses.insert( pair< int, ProcessControlBlock >( 
                     readyProcesses[0].processNumber, readyProcesses[0] ) );
                 readyProcesses.erase( readyProcesses.begin( ) );
+                interrupts.resolveInterrupt( );
             }
-
-            resolveInterrupts( curNumProcesses );
+            resolveInterrupts( );
         }
         else
         {
-            while( curNumProcesses == 0 )
+            bool idle = false;
+            bool notifiedIdle = false;
+            while( readyProcesses.size() == 0 )
             {
-                bool idle = resolveInterrupts( curNumProcesses );
-                if( idle )
+                idle = resolveInterrupts( );
+                if( idle == true && notifiedIdle == false )
                 {
                     myLog.logProcess( 
                         " OS: No processes or interrupts available, idling" );
+                    notifiedIdle = true;
                 }
+            }
+            if( notifiedIdle == true )
+            {
+                myLog.logProcess( " OS: No longer idling " );
             }
         }
     }
 }
 
-bool OperatingSystem::resolveInterrupts( int & curNumProcesses )
+bool OperatingSystem::resolveInterrupts( )
 {
     bool idle = true;
     while( interrupts.numberOfInterrupts > 0 )
@@ -260,8 +274,19 @@ bool OperatingSystem::resolveInterrupts( int & curNumProcesses )
             blockedProcesses.find(currentInterrupt);
         if( currentPCB != blockedProcesses.end( ) )
         {
-            readyProcesses.push_back( currentPCB->second );
-            curNumProcesses++;
+            currentPCB->second.removeFirstInstruction();
+            if(currentPCB->second.getRemainingTime( ) != 0)
+            {
+                readyProcesses.push_back( currentPCB->second );
+            }
+            else
+            {
+                myLog.logProcess( 
+                "OS: Process " + 
+                to_string( currentPCB->second.processNumber ) +
+                " has been completed" );
+            }
+            blockedProcesses.erase( currentPCB );
         }
     }
 
@@ -318,98 +343,8 @@ void OperatingSystem::runFIFO( )
 void OperatingSystem::runSJF()
 {
 	// Sort readyProcesses, then use the FIFO method to run through them
-	sortSJF(0, readyProcesses.size( ) - 1);
+	sort( readyProcesses.begin( ), readyProcesses.end( ), sortSJF );
 	runFIFO();
-}
-
-void OperatingSystem::sortFIFO(unsigned int originalLeft, unsigned int originalRight)
-{
-    // Use quicksort to sort
-    // Assume that the getRemainingTime() method on each process will not
-    // take a significant amount of time overall. (getRemainingTime will be
-    // programmed to 'cache' the last calculated remaining time and only
-    // recalculate if a new item is added or removed
-    unsigned int currentLeft = originalLeft;
-    unsigned int currentRight = originalRight;
-    ProcessControlBlock temp;
-    unsigned int pivot = readyProcesses[(currentLeft + currentRight) / 2].processNumber;
-
-    while(currentLeft <= currentRight)
-    {
-        while(readyProcesses[currentLeft].processNumber < pivot)
-        {
-            currentLeft++;
-        }
-
-        while(readyProcesses[currentRight].processNumber > pivot)
-        {
-            currentRight--;
-        }
-
-        if(currentLeft <= currentRight)
-        {
-            temp = readyProcesses[currentLeft];
-            readyProcesses[currentLeft] = readyProcesses[currentRight];
-            readyProcesses[currentRight] = temp;
-            currentLeft++;
-            currentRight--;
-        }
-    }
-
-    if(originalLeft < currentRight)
-    {
-        sortSJF(originalLeft, currentLeft - 1);
-    }
-
-    if(currentLeft < originalRight)
-    {
-        sortSJF(currentLeft, originalRight);
-    }
-}
-
-void OperatingSystem::sortSJF(unsigned int originalLeft, unsigned int originalRight)
-{
-	// Use quicksort to sort
-	// Assume that the getRemainingTime() method on each process will not
-	// take a significant amount of time overall. (getRemainingTime will be
-	// programmed to 'cache' the last calculated remaining time and only
-	// recalculate if a new item is added or removed
-	unsigned int currentLeft = originalLeft;
-	unsigned int currentRight = originalRight;
-	ProcessControlBlock temp;
-	unsigned int pivot = readyProcesses[(currentLeft + currentRight) / 2].getRemainingTime();
-
-	while(currentLeft <= currentRight)
-	{
-		while(readyProcesses[currentLeft].getRemainingTime() < pivot)
-		{
-			currentLeft++;
-		}
-
-		while(readyProcesses[currentRight].getRemainingTime() > pivot)
-		{
-			currentRight--;
-		}
-
-		if(currentLeft <= currentRight)
-		{
-			temp = readyProcesses[currentLeft];
-			readyProcesses[currentLeft] = readyProcesses[currentRight];
-			readyProcesses[currentRight] = temp;
-			currentLeft++;
-			currentRight--;
-		}
-	}
-
-	if(originalLeft < currentRight)
-	{
-		sortSJF(originalLeft, currentLeft - 1);
-	}
-
-	if(currentLeft < originalRight)
-	{
-		sortSJF(currentLeft, originalRight);
-	}
 }
 
 void OperatingSystem::runSRTFN()

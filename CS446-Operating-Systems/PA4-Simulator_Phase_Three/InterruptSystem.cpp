@@ -23,7 +23,7 @@ void InterruptSystem::addNewInterruptBack( int processNumber, string endLogMessa
 	numberOfInterrupts++;
 }
 
-int InterruptSystem::resolveInterrupt(  )
+int InterruptSystem::resolveInterrupt( )
 {	
 	Interrupt currentInterrupt = interruptQueue.front( );
 	int processNumber = currentInterrupt.processNumber;

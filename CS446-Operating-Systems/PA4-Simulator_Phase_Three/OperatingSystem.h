@@ -1,5 +1,6 @@
 #ifndef OPERATING_SYSTEM_H
 #define OPERATING_SYSTEM_H
+#include <algorithm>    // std::sort
 #include <string>
 #include <fstream>
 #include <vector>
@@ -126,19 +127,6 @@ private:
 	void runSJF( );
 
 	/**
-	* Uses the quick sort algorithm to recursivey sort the PCB's
-	* by their remaining process time (since this method is called
-	* only before all PCB's have been called, the remaining time is
-	* more of their total time)
-	*
-	* @param originalLeft Left boundary of the (sub)array
-	* @param originalRight Right boundary of the (sub)array
-	*/
-	void sortSJF( unsigned int originalLeft, unsigned int originalRight );
-
-	void sortFIFO( unsigned int originalLeft, unsigned int originalRight );
-
-	/**
 	* Uses same algorithm as FIFO, except that, instead of incrementing
 	* the current index, we search for the index of the shortest
 	* remaining time PCB after each iteration
@@ -176,7 +164,7 @@ private:
 	 */
 	void prepareProcesses( );
 
-	bool resolveInterrupts( int & curNumProcesses );
+	bool resolveInterrupts( );
 
 	/**
 	 * Looks at the current operation being performed and passes it to the

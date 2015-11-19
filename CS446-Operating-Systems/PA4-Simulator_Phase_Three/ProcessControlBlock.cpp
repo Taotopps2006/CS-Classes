@@ -9,11 +9,8 @@ static void createNonPremptiveThread(
 static void createPremptiveThread(
 	int processNumber, int processTime, string endLogMessage )
 {
-	int pN = processNumber;
-	int pT = processTime;
-	string eLM = endLogMessage;
-	this_thread::sleep_for( chrono::milliseconds( pT ) );
-	interrupts.addNewInterruptBack( pN, eLM );
+	this_thread::sleep_for( chrono::milliseconds( processTime ) );
+	interrupts.addNewInterruptBack( processNumber, endLogMessage );
 }
 
 ProcessControlBlock::ProcessControlBlock( )
@@ -43,7 +40,7 @@ ProcessControlBlock::ProcessControlBlock(
 	keyboardCycleTime = pSettings.keyboardCycleTime;
 }
 
-ProcessControlBlock& ProcessControlBlock::operator=( const ProcessControlBlock & rhs )
+ProcessControlBlock::ProcessControlBlock( const ProcessControlBlock & rhs )
 {
 	needToRecalcRT = rhs.needToRecalcRT;
 	remainingTime = rhs.remainingTime;
@@ -54,9 +51,28 @@ ProcessControlBlock& ProcessControlBlock::operator=( const ProcessControlBlock &
 	hardDriveCycleTime = rhs.hardDriveCycleTime;
 	printerCycleTime = rhs.printerCycleTime;
 	keyboardCycleTime = rhs.keyboardCycleTime;
-	readyProcessThreads = vector<PcbThread>(rhs.readyProcessThreads);
+	readyProcessThreads = rhs.readyProcessThreads;
+}
+
+ProcessControlBlock& ProcessControlBlock::operator=( const ProcessControlBlock & rhs )
+{
+	if(this == &rhs)
+	{
+		return * this;
+	}
+	needToRecalcRT = rhs.needToRecalcRT;
+	remainingTime = rhs.remainingTime;
+	processNumber = rhs.processNumber;
+	quantumCycles = rhs.quantumCycles;
+	processCycleTime = rhs.processCycleTime;
+	monitorDisplayTime = rhs.monitorDisplayTime;
+	hardDriveCycleTime = rhs.hardDriveCycleTime;
+	printerCycleTime = rhs.printerCycleTime;
+	keyboardCycleTime = rhs.keyboardCycleTime;
+	readyProcessThreads = rhs.readyProcessThreads;
 	return * this;
 }
+
 
 void ProcessControlBlock::runApplicationNonPreemptive()
 {
@@ -97,15 +113,10 @@ bool ProcessControlBlock::runApplicationPreemptive()
 	myLog.logProcess( currentThread.startLogMessage );
 	if( currentThread.interruptType == InterruptType::IO )
 	{
-		// Keep getting issues with detaching the thread
-		// Trying to use variables that don't get deleted too early
-		// to pass to the thread
-		int processTime = currentThread.processTime;
-		string endLogMessage = currentThread.endLogMessage;
-		thread process( createPremptiveThread, processNumber, processTime, endLogMessage );
+		thread process( createPremptiveThread, int(processNumber), int(currentThread.processTime), string(currentThread.endLogMessage));
 		process.detach();
-		readyProcessThreads.erase( readyProcessThreads.begin( ) );
 		currentProcessIsIO = true;
+		interrupts.addNewInterruptFront( processNumber, currentThread.blockLogMessage );
 	}
 	else if( currentThread.interruptType == InterruptType::QUANTUM )
 	{
@@ -120,11 +131,15 @@ bool ProcessControlBlock::runApplicationPreemptive()
 	return currentProcessIsIO;
 }
 
+void ProcessControlBlock::removeFirstInstruction()
+{
+	readyProcessThreads.erase( readyProcessThreads.begin( ) );
+}
+
 bool ProcessControlBlock::runProcessPreemptive( PcbThread &currentProcess )
 {
 	bool interruptTriggered = ( interrupts.numberOfInterrupts != 0 );
 	unsigned int cyclesRun = 0;
-	myLog.logProcess("Num cycles remaining: " + to_string(currentProcess.numCyclesRemaining) );
 	while( ( currentProcess.numCyclesRemaining != 0 ) && ( !interruptTriggered ) )
 	{
 		if( interrupts.numberOfInterrupts == 0 )
@@ -139,7 +154,6 @@ bool ProcessControlBlock::runProcessPreemptive( PcbThread &currentProcess )
 			}
 			else
 			{
-				myLog.logProcess("Cycles left: " + to_string(currentProcess.numCyclesRemaining));
 				interrupts.addNewInterruptFront( processNumber, currentProcess.blockLogMessage );
 				// Program specifications expect a different message for processes that have already been
 				// run at least once
@@ -166,6 +180,13 @@ unsigned int ProcessControlBlock::getRemainingTime( )
 	// last calculated remainingTime
 	if( needToRecalcRT == false )
 	{
+		return remainingTime;
+	}
+
+	if(readyProcessThreads.size() == 0)
+	{
+		remainingTime = 0;
+		needToRecalcRT = false;
 		return remainingTime;
 	}
 
@@ -390,7 +411,7 @@ void ProcessControlBlock::newInputThreadPreemptive(
 	currentThread.blockLogMessage =
 		string( "Process " ) +
 		to_string( processNumber ) +
-		": block for " + operation + "input";
+		": block for " + operation + " input";
 	// Process # - <operation> input completed
 	currentThread.endLogMessage =
 		string( "Process " ) + 
@@ -431,7 +452,7 @@ void ProcessControlBlock::newOutputThreadPreemptive(
 	currentThread.blockLogMessage =
 		string( "Process " ) +
 		to_string( processNumber ) +
-		": block for " + operation + "output";
+		": block for " + operation + " output";
 	// Process # - <operation> output completed
 	currentThread.endLogMessage =
 		string( "Process " ) + 
