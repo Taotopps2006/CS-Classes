@@ -16,7 +16,7 @@
  */
 // Version/Revision Information ///////////////////////////////////
 /* 
- 0.8 ( 11/19/2015 ) - Tim Kwist
+ 1.0 ( 11/19/2015 ) - Tim Kwist
  Alas we have solved it! We forgot about some basic rules about
  copy constructors and = operator overload. Coincidentally, we
  wouldn't have run into this error if we hadn't tried to "improve"
