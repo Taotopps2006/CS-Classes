@@ -1,33 +1,19 @@
 #ifndef PROCESS_CONTROL_BLOCK_H
 #define PROCESS_CONTROL_BLOCK_H
 
-#include <chrono>
-#include <time.h>
-#include <string>
-#include <thread>
+#include <chrono>					// milliseconds
+#include <string>					// string, to_string
+#include <thread>					// thread, this_thread::sleep_for
+#include <vector>					// vector
 #include "ConfigurationSettings.h"
 #include "InterruptSystem.h"
 #include "Logger.h"
 #include "Structs.h"
-#include <unistd.h>
 
 using namespace std;
 
 extern Logger myLog;
 extern InterruptSystem interrupts;
-
-/**
- * Used for creating new threads.
- * Converts given parameter to microseconds
- * Then calls usleep
- *
- * Pre: None
- * Post: Program will wait sleepTime milliseconds
- * 
- * @param sleepTimeInMilliSec Sleep time given in milliseconds
- */
-//static void createThreadThatSleeps(
-//	unsigned int sleepTimeInMilliSec );
 
 class ProcessControlBlock
 {
@@ -37,6 +23,11 @@ public:
 	 * Should only be used for temporary PCB's
 	 */
 	ProcessControlBlock( );
+
+	/**
+	 * Copy constructor
+	 * Creates a deep copy of the rhs PCB
+	 */
 	ProcessControlBlock( const ProcessControlBlock & rhs );
 
 	/**
@@ -57,6 +48,7 @@ public:
 		const ConfigurationSettings &pSettings );
 	/**
 	 * = Operator overload
+	 * Creates a deep copy of the rhs PCB
 	 */
 	ProcessControlBlock& operator=(const ProcessControlBlock& rhs);
 
@@ -72,8 +64,29 @@ public:
 	*/
 	void runApplicationNonPreemptive();
 
+	/**
+	 * Preemptive application runs essentially the same as nonPreemptive,
+	 * but doesn't wait for IO threads (detaches instead of joins), and it
+	 * removes process threads from the ready queue if they report back that they
+	 * are finished
+	 *
+	 * Pre: Processes will have been fully loaded into the
+	 * 		readyPrcessThreads vector
+	 * Post: readyProcessThreads will be updated appropriately based on the
+	 * 		type of thread that was run and the status of that thread
+	 * 	
+	 * @return Returns whether or not the thread run was IO or process
+	 *                 If IO, return true; if process, return false
+	 */
 	bool runApplicationPreemptive();
+
+	/**
+	 * Removes the first instruction from the readyQueue
+	 * This will only be used for removing IO threads after they have
+	 * returned
+	 */
 	void removeFirstInstruction();
+
 	/**
 	* Add a new instruction to this PCB
 	*
@@ -85,6 +98,16 @@ public:
 	*/
 	void addInstructionNonPreemptive(Process newInstruction);
 
+	/**
+	 * Adds a new instruction to this PCB with preemptive related information
+	 * (Type of thread, blocked message)
+	 *
+	 * Pre: The new instruction parameter was initialized correctly
+	* Post: This PCB will have one more instruction in it
+	*
+	* @param newInstruction Either a Processor, Input, or Output action
+	* 			with a number of cycles and a specific operation
+	*/
 	void addInstructionPreemptive(Process newInstruction);
 
 	/**
@@ -101,19 +124,30 @@ public:
 	unsigned int processNumber;
 private:
 
+	/**
+	 * Preemptive process will run for the min of:
+	 * - The number of quantums specified in ConfigurationSettings
+	 * - The number of cycles it has left
+	 * - The number of cycles before an interrupt occurs
+	 * It will then report back whether or not it is finished
+	 * (ie, no more cycles)
+	 * 
+	 * @param  currentProcess A copy of the current process
+	 *                        that is to be run. Its
+	 *                        number of cycles and total
+	 *                        time left wil be updated
+	 * @return                True if number of cycles left
+	 *                        is 0. False otherwise.
+	 */
 	bool runProcessPreemptive( PcbThread &currentProcess );
 
 	/**
-	 * Starts a new process
+	 * Initialize a new process
 	 * Sets sleep time to processCycleTime * numberOfCycles
-	 * Version 3.0: Checks if there are any interrupts in queue
-	 * before waiting.
-	 * If completes its own quantum, will throw a quantum interrupt
-	 * into the queue.
 	 *
 	 * Pre: processCycleTime has been set appropriately
-	 * Post: Program will create and wait for a processor thread
-	 * Will also log output for start/end of process
+	 * Post: Program will initialize a new thread, that will be
+	 * completely ready to run and report on its activities
 	 * 
 	 * @param operation Name of the operation, used for output
 	 * @param numberOfCycles Number of cycles to run for
@@ -123,17 +157,16 @@ private:
 		unsigned int numberOfCycles );
 
 	/**
-	 * Creates a new Input Thread
+	 * Initialize a new input thread
 	 * Sets sleep time to 
 	 *  hardDriveCycleTime * numberOfCycles
 	 *  keyboardCycleTime * numberOfCycles
 	 * based on the given operation
-	 * Creates new thread, then waits for thread to end.
 	 *
 	 * Pre: hardDriveCycleTime and keyboardCycleTime
 	 * have been set appropriately
-	 * Post: Program will create and wait for a input thread
-	 * Will also log output for start/end of process
+	 * Post: Program will initialize a new thread, that will be
+	 * completely ready to run and report on its activities
 	 * 
 	 * @param operation Name of the operation, used for output
 	 * @param numberOfCycles Number of cycles to run for
@@ -143,18 +176,17 @@ private:
 		unsigned int numberOfCycles );
 
 	/**
-	 * Creates a new Output Thread
+	 * Initialize a new output thread
 	 * Sets sleep time to 
 	 *  hardDriveCycleTime * numberOfCycles
 	 *  monitorDisplayTime * numberOfCycles
 	 *  printerCycleTime * numberOfCycles
 	 * based on the given operation
-	 * Creates new thread, then waits for thread to end.
 	 *
 	 * Pre: hardDriveCycleTime, monitorDisplayTime, printerCycleTime
 	 * have been set appropriately
-	 * Post: Program will create and wait for an output thread
-	 * Will also log output for start/end of process
+	 * Post: Program will initialize a new thread, that will be
+	 * completely ready to run and report on its activities
 	 * 
 	 * @param operation Name of the operation, used for output
 	 * @param numberOfCycles Number of cycles to run for
@@ -164,16 +196,12 @@ private:
 		unsigned int numberOfCycles );
 
 	/**
-	 * Starts a new process
+	 * Initialize a new process
 	 * Sets sleep time to processCycleTime * numberOfCycles
-	 * Version 3.0: Checks if there are any interrupts in queue
-	 * before waiting.
-	 * If completes its own quantum, will throw a quantum interrupt
-	 * into the queue.
 	 *
 	 * Pre: processCycleTime has been set appropriately
-	 * Post: Program will create and wait for a processor thread
-	 * Will also log output for start/end of process
+	 * Post: Program will initialize a new thread, that will be
+	 * completely ready to run and report on its activities
 	 * 
 	 * @param operation Name of the operation, used for output
 	 * @param numberOfCycles Number of cycles to run for
@@ -183,17 +211,16 @@ private:
 		unsigned int numberOfCycles );
 
 	/**
-	 * Creates a new Input Thread
+	 * Initialize a new input thread
 	 * Sets sleep time to 
 	 *  hardDriveCycleTime * numberOfCycles
 	 *  keyboardCycleTime * numberOfCycles
 	 * based on the given operation
-	 * Creates new thread, then waits for thread to end.
 	 *
 	 * Pre: hardDriveCycleTime and keyboardCycleTime
 	 * have been set appropriately
-	 * Post: Program will create and wait for a input thread
-	 * Will also log output for start/end of process
+	 * Post: Program will initialize a new thread, that will be
+	 * completely ready to run and report on its activities
 	 * 
 	 * @param operation Name of the operation, used for output
 	 * @param numberOfCycles Number of cycles to run for
@@ -203,18 +230,17 @@ private:
 		unsigned int numberOfCycles );
 
 	/**
-	 * Creates a new Output Thread
+	 * Initialize a new output thread
 	 * Sets sleep time to 
 	 *  hardDriveCycleTime * numberOfCycles
 	 *  monitorDisplayTime * numberOfCycles
 	 *  printerCycleTime * numberOfCycles
 	 * based on the given operation
-	 * Creates new thread, then waits for thread to end.
 	 *
 	 * Pre: hardDriveCycleTime, monitorDisplayTime, printerCycleTime
 	 * have been set appropriately
-	 * Post: Program will create and wait for an output thread
-	 * Will also log output for start/end of process
+	 * Post: Program will initialize a new thread, that will be
+	 * completely ready to run and report on its activities
 	 * 
 	 * @param operation Name of the operation, used for output
 	 * @param numberOfCycles Number of cycles to run for
