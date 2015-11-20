@@ -1,10 +1,5 @@
 #include "InterruptSystem.h"
 
-Interrupt InterruptSystem::getCurrentInterrupt( )
-{
-	return interruptQueue.front();
-}
-
 void InterruptSystem::addNewInterruptFront( int processNumber, string endLogMessage )
 {
 	Interrupt currentInterrupt;

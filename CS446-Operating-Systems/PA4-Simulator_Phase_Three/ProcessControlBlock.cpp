@@ -89,29 +89,154 @@ ProcessControlBlock& ProcessControlBlock::operator=( const ProcessControlBlock &
 	return * this;
 }
 
-
-void ProcessControlBlock::runApplicationNonPreemptive()
+void ProcessControlBlock::newProcessThreadPreemptive( 
+	string operation, 
+	unsigned int numberOfCycles )
 {
-	needToRecalcRT = true;
-	// Check that there are threads to run
-	if( readyProcessThreads.size( ) == 0 )
+	PcbThread currentThread;
+	currentThread.interruptType = InterruptType::QUANTUM;
+	// Check for correct operation type
+	if( operation.compare( "run" ) != 0 )
 	{
-		myLog.logError( "This ProcessControlBlock has no processes, but was asked to run its threads" );
+		myLog.logError( "Unknown operation for process: " + operation );
 	}
-	// Iterate through each thread
-	// Process thread, then dump from ready queue
-	while( readyProcessThreads.size( ) != 0 )
+	// Process #: processing action - start
+	currentThread.startLogMessage =
+		string( "Process " ) + 
+		to_string( processNumber ) + 
+		": processing action - start";
+	// Process # - quantum time out
+	currentThread.blockLogMessage = 
+		string( "Process " ) +
+		to_string( processNumber ) +
+		" - quantum time out";
+	// Process #: processing action - completed
+	currentThread.endLogMessage =
+		string( "Process " ) + 
+		to_string( processNumber ) + 
+		": processing action - completed";
+	// Give the thread the means to calculate its wait times
+	currentThread.timePerCycle = processCycleTime;
+	currentThread.numCyclesRemaining = numberOfCycles;
+	currentThread.processTime = processCycleTime * numberOfCycles;
+	// Push thread to back of ready queue
+	readyProcessThreads.push_back( currentThread );
+}
+
+void ProcessControlBlock::newInputThreadPreemptive( 
+	string operation, 
+	unsigned int numberOfCycles )
+{
+	PcbThread currentThread;
+	currentThread.interruptType = InterruptType::IO;
+	// Process #: <operation> input - start
+	currentThread.startLogMessage =
+		string( "Process " ) + 
+		to_string( processNumber ) + 
+		": " + operation + " input - start";
+	// Process #: block for <operation> input
+	currentThread.blockLogMessage =
+		string( "Process " ) +
+		to_string( processNumber ) +
+		": block for " + operation + " input";
+	// Process # - <operation> input completed
+	currentThread.endLogMessage =
+		string( "Process " ) + 
+		to_string( processNumber ) + 
+		": " + operation + " input - completed";
+	// Give the thread the means to calculate its wait times
+	if( operation.compare( "hard drive" ) == 0 )
 	{
-		PcbThread currentThread = readyProcessThreads.front( );
-		// Log start process
-		myLog.logProcess( currentThread.startLogMessage );
-		// Sleep
-		thread process( createNonPremptiveThread, currentThread );
-		process.join( );
-		// Log end process
-		myLog.logProcess( currentThread.endLogMessage );
-		// Take it out of the vector
-		readyProcessThreads.erase( readyProcessThreads.begin( ) );
+		currentThread.timePerCycle = hardDriveCycleTime;
+		currentThread.processTime = hardDriveCycleTime * numberOfCycles;
+	}
+	else if( operation.compare( "keyboard" ) == 0 )
+	{
+		currentThread.timePerCycle = keyboardCycleTime;
+		currentThread.processTime = keyboardCycleTime * numberOfCycles;
+	}
+	else
+	{
+		myLog.logError( "Unknown operation for input: " + operation );
+	}
+	currentThread.numCyclesRemaining = numberOfCycles;
+	// Push thread to back of ready queue
+	readyProcessThreads.push_back( currentThread );
+}
+
+void ProcessControlBlock::newOutputThreadPreemptive( 
+	string operation, 
+	unsigned int numberOfCycles )
+{
+	PcbThread currentThread;
+	currentThread.interruptType = InterruptType::IO;
+	// Process #: <operation> output - start
+	currentThread.startLogMessage =
+		string( "Process " ) + 
+		to_string( processNumber ) + 
+		": " + operation + " output - start";
+	// Process #: block for <operation> output
+	currentThread.blockLogMessage =
+		string( "Process " ) +
+		to_string( processNumber ) +
+		": block for " + operation + " output";
+	// Process # - <operation> output completed
+	currentThread.endLogMessage =
+		string( "Process " ) + 
+		to_string( processNumber ) + 
+		": " + operation + " output - completed";
+	// Give the thread the means to calculate its wait times
+	if( operation.compare( "hard drive" ) == 0 )
+	{
+		currentThread.timePerCycle = hardDriveCycleTime;
+		currentThread.processTime = hardDriveCycleTime * numberOfCycles;
+	}
+	else if( operation.compare( "monitor" ) == 0 )
+	{
+		currentThread.timePerCycle = monitorDisplayTime;
+		currentThread.processTime = monitorDisplayTime * numberOfCycles;
+	}
+	else if( operation.compare( "printer" ) == 0 )
+	{
+		currentThread.timePerCycle = printerCycleTime;
+		currentThread.processTime = printerCycleTime * numberOfCycles;
+	}
+	else
+	{
+		myLog.logError( "Unknown operation for output: " + operation );
+	}
+	currentThread.numCyclesRemaining = numberOfCycles;
+	// Push thread to back of ready queue
+	readyProcessThreads.push_back( currentThread );
+}
+
+void ProcessControlBlock::addInstructionPreemptive( Process newInstruction )
+{
+	// Set recalc flag to true since we now have a new instruction
+	// Then outsource the work to the appropriate thread creation
+	// method
+	needToRecalcRT = true;
+	switch( newInstruction.component )
+	{
+		case 'P':
+		{
+			newProcessThreadPreemptive( newInstruction.operation, newInstruction.numberOfCycles );
+			break;
+		}
+		case 'I':
+		{
+			newInputThreadPreemptive( newInstruction.operation, newInstruction.numberOfCycles );
+			break;
+		}
+		case 'O':
+		{
+			newOutputThreadPreemptive( newInstruction.operation, newInstruction.numberOfCycles );
+			break;
+		}
+		default:
+		{
+			myLog.logError( "Unknown component: " + newInstruction.component );
+		}
 	}
 }
 
@@ -253,36 +378,6 @@ void ProcessControlBlock::addInstructionNonPreemptive( Process newInstruction )
 	}
 }
 
-void ProcessControlBlock::addInstructionPreemptive( Process newInstruction )
-{
-	// Set recalc flag to true since we now have a new instruction
-	// Then outsource the work to the appropriate thread creation
-	// method
-	needToRecalcRT = true;
-	switch( newInstruction.component )
-	{
-		case 'P':
-		{
-			newProcessThreadPreemptive( newInstruction.operation, newInstruction.numberOfCycles );
-			break;
-		}
-		case 'I':
-		{
-			newInputThreadPreemptive( newInstruction.operation, newInstruction.numberOfCycles );
-			break;
-		}
-		case 'O':
-		{
-			newOutputThreadPreemptive( newInstruction.operation, newInstruction.numberOfCycles );
-			break;
-		}
-		default:
-		{
-			myLog.logError( "Unknown component: " + newInstruction.component );
-		}
-	}
-}
-
 void ProcessControlBlock::newProcessThreadNonPreemptive( 
 	string operation, 
 	unsigned int numberOfCycles )
@@ -379,123 +474,27 @@ void ProcessControlBlock::newOutputThreadNonPreemptive(
 	readyProcessThreads.push_back( currentThread );
 }
 
-void ProcessControlBlock::newProcessThreadPreemptive( 
-	string operation, 
-	unsigned int numberOfCycles )
+void ProcessControlBlock::runApplicationNonPreemptive()
 {
-	PcbThread currentThread;
-	currentThread.interruptType = InterruptType::QUANTUM;
-	// Check for correct operation type
-	if( operation.compare( "run" ) != 0 )
+	needToRecalcRT = true;
+	// Check that there are threads to run
+	if( readyProcessThreads.size( ) == 0 )
 	{
-		myLog.logError( "Unknown operation for process: " + operation );
+		myLog.logError( "This ProcessControlBlock has no processes, but was asked to run its threads" );
 	}
-	// Process #: processing action - start
-	currentThread.startLogMessage =
-		string( "Process " ) + 
-		to_string( processNumber ) + 
-		": processing action - start";
-	// Process # - quantum time out
-	currentThread.blockLogMessage = 
-		string( "Process " ) +
-		to_string( processNumber ) +
-		" - quantum time out";
-	// Process #: processing action - completed
-	currentThread.endLogMessage =
-		string( "Process " ) + 
-		to_string( processNumber ) + 
-		": processing action - completed";
-	// Give the thread the means to calculate its wait times
-	currentThread.timePerCycle = processCycleTime;
-	currentThread.numCyclesRemaining = numberOfCycles;
-	currentThread.processTime = processCycleTime * numberOfCycles;
-	// Push thread to back of ready queue
-	readyProcessThreads.push_back( currentThread );
-}
-
-void ProcessControlBlock::newInputThreadPreemptive( 
-	string operation, 
-	unsigned int numberOfCycles )
-{
-	PcbThread currentThread;
-	currentThread.interruptType = InterruptType::IO;
-	// Process #: <operation> input - start
-	currentThread.startLogMessage =
-		string( "Process " ) + 
-		to_string( processNumber ) + 
-		": " + operation + " input - start";
-	// Process #: block for <operation> input
-	currentThread.blockLogMessage =
-		string( "Process " ) +
-		to_string( processNumber ) +
-		": block for " + operation + " input";
-	// Process # - <operation> input completed
-	currentThread.endLogMessage =
-		string( "Process " ) + 
-		to_string( processNumber ) + 
-		": " + operation + " input - completed";
-	// Give the thread the means to calculate its wait times
-	if( operation.compare( "hard drive" ) == 0 )
+	// Iterate through each thread
+	// Process thread, then dump from ready queue
+	while( readyProcessThreads.size( ) != 0 )
 	{
-		currentThread.timePerCycle = hardDriveCycleTime;
-		currentThread.processTime = hardDriveCycleTime * numberOfCycles;
+		PcbThread currentThread = readyProcessThreads.front( );
+		// Log start process
+		myLog.logProcess( currentThread.startLogMessage );
+		// Sleep
+		thread process( createNonPremptiveThread, currentThread );
+		process.join( );
+		// Log end process
+		myLog.logProcess( currentThread.endLogMessage );
+		// Take it out of the vector
+		readyProcessThreads.erase( readyProcessThreads.begin( ) );
 	}
-	else if( operation.compare( "keyboard" ) == 0 )
-	{
-		currentThread.timePerCycle = keyboardCycleTime;
-		currentThread.processTime = keyboardCycleTime * numberOfCycles;
-	}
-	else
-	{
-		myLog.logError( "Unknown operation for input: " + operation );
-	}
-	currentThread.numCyclesRemaining = numberOfCycles;
-	// Push thread to back of ready queue
-	readyProcessThreads.push_back( currentThread );
-}
-
-void ProcessControlBlock::newOutputThreadPreemptive( 
-	string operation, 
-	unsigned int numberOfCycles )
-{
-	PcbThread currentThread;
-	currentThread.interruptType = InterruptType::IO;
-	// Process #: <operation> output - start
-	currentThread.startLogMessage =
-		string( "Process " ) + 
-		to_string( processNumber ) + 
-		": " + operation + " output - start";
-	// Process #: block for <operation> output
-	currentThread.blockLogMessage =
-		string( "Process " ) +
-		to_string( processNumber ) +
-		": block for " + operation + " output";
-	// Process # - <operation> output completed
-	currentThread.endLogMessage =
-		string( "Process " ) + 
-		to_string( processNumber ) + 
-		": " + operation + " output - completed";
-	// Give the thread the means to calculate its wait times
-	if( operation.compare( "hard drive" ) == 0 )
-	{
-		currentThread.timePerCycle = hardDriveCycleTime;
-		currentThread.processTime = hardDriveCycleTime * numberOfCycles;
-	}
-	else if( operation.compare( "monitor" ) == 0 )
-	{
-		currentThread.timePerCycle = monitorDisplayTime;
-		currentThread.processTime = monitorDisplayTime * numberOfCycles;
-	}
-	else if( operation.compare( "printer" ) == 0 )
-	{
-		currentThread.timePerCycle = printerCycleTime;
-		currentThread.processTime = printerCycleTime * numberOfCycles;
-	}
-	else
-	{
-		myLog.logError( "Unknown operation for output: " + operation );
-	}
-	currentThread.numCyclesRemaining = numberOfCycles;
-	// Push thread to back of ready queue
-	readyProcessThreads.push_back( currentThread );
 }

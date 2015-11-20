@@ -53,16 +53,16 @@ public:
 	ProcessControlBlock& operator=(const ProcessControlBlock& rhs);
 
 	/**
-	* Iterates through each process in the PCB,
-	* logs the process, waits, then logs the end of the
-	* process.
+	 * Adds a new instruction to this PCB with preemptive related information
+	 * (Type of thread, blocked message)
+	 *
+	 * Pre: The new instruction parameter was initialized correctly
+	* Post: This PCB will have one more instruction in it
 	*
-	* Pre: Processes will have been fully loaded into the
-	*      readyProcessThreads vector
-	* Post: readyProcessThreads will be empty and finishedProcessThreads
-	*       will be filled with all the processes from readyProcessThreads
+	* @param newInstruction Either a Processor, Input, or Output action
+	* 			with a number of cycles and a specific operation
 	*/
-	void runApplicationNonPreemptive();
+	void addInstructionPreemptive(Process newInstruction);
 
 	/**
 	 * Preemptive application runs essentially the same as nonPreemptive,
@@ -81,13 +81,6 @@ public:
 	bool runApplicationPreemptive();
 
 	/**
-	 * Removes the first instruction from the readyQueue
-	 * This will only be used for removing IO threads after they have
-	 * returned
-	 */
-	void removeFirstInstruction();
-
-	/**
 	* Add a new instruction to this PCB
 	*
 	* Pre: The new instruction was initialized correctly
@@ -99,16 +92,23 @@ public:
 	void addInstructionNonPreemptive(Process newInstruction);
 
 	/**
-	 * Adds a new instruction to this PCB with preemptive related information
-	 * (Type of thread, blocked message)
-	 *
-	 * Pre: The new instruction parameter was initialized correctly
-	* Post: This PCB will have one more instruction in it
+	* Iterates through each process in the PCB,
+	* logs the process, waits, then logs the end of the
+	* process.
 	*
-	* @param newInstruction Either a Processor, Input, or Output action
-	* 			with a number of cycles and a specific operation
+	* Pre: Processes will have been fully loaded into the
+	*      readyProcessThreads vector
+	* Post: readyProcessThreads will be empty and finishedProcessThreads
+	*       will be filled with all the processes from readyProcessThreads
 	*/
-	void addInstructionPreemptive(Process newInstruction);
+	void runApplicationNonPreemptive();
+
+	/**
+	 * Removes the first instruction from the readyQueue
+	 * This will only be used for removing IO threads after they have
+	 * returned
+	 */
+	void removeFirstInstruction();
 
 	/**
 	* Calculates the remaining time of the active processes in this PCB
@@ -140,60 +140,6 @@ private:
 	 *                        is 0. False otherwise.
 	 */
 	bool runProcessPreemptive( PcbThread &currentProcess );
-
-	/**
-	 * Initialize a new process
-	 * Sets sleep time to processCycleTime * numberOfCycles
-	 *
-	 * Pre: processCycleTime has been set appropriately
-	 * Post: Program will initialize a new thread, that will be
-	 * completely ready to run and report on its activities
-	 * 
-	 * @param operation Name of the operation, used for output
-	 * @param numberOfCycles Number of cycles to run for
-	 */
-	void newProcessThreadNonPreemptive( 
-		string operation, 
-		unsigned int numberOfCycles );
-
-	/**
-	 * Initialize a new input thread
-	 * Sets sleep time to 
-	 *  hardDriveCycleTime * numberOfCycles
-	 *  keyboardCycleTime * numberOfCycles
-	 * based on the given operation
-	 *
-	 * Pre: hardDriveCycleTime and keyboardCycleTime
-	 * have been set appropriately
-	 * Post: Program will initialize a new thread, that will be
-	 * completely ready to run and report on its activities
-	 * 
-	 * @param operation Name of the operation, used for output
-	 * @param numberOfCycles Number of cycles to run for
-	 */
-	void newInputThreadNonPreemptive( 
-		string operation, 
-		unsigned int numberOfCycles );
-
-	/**
-	 * Initialize a new output thread
-	 * Sets sleep time to 
-	 *  hardDriveCycleTime * numberOfCycles
-	 *  monitorDisplayTime * numberOfCycles
-	 *  printerCycleTime * numberOfCycles
-	 * based on the given operation
-	 *
-	 * Pre: hardDriveCycleTime, monitorDisplayTime, printerCycleTime
-	 * have been set appropriately
-	 * Post: Program will initialize a new thread, that will be
-	 * completely ready to run and report on its activities
-	 * 
-	 * @param operation Name of the operation, used for output
-	 * @param numberOfCycles Number of cycles to run for
-	 */
-	void newOutputThreadNonPreemptive( 
-		string operation, 
-		unsigned int numberOfCycles );
 
 	/**
 	 * Initialize a new process
@@ -246,6 +192,60 @@ private:
 	 * @param numberOfCycles Number of cycles to run for
 	 */
 	void newOutputThreadPreemptive( 
+		string operation, 
+		unsigned int numberOfCycles );
+
+	/**
+	 * Initialize a new process
+	 * Sets sleep time to processCycleTime * numberOfCycles
+	 *
+	 * Pre: processCycleTime has been set appropriately
+	 * Post: Program will initialize a new thread, that will be
+	 * completely ready to run and report on its activities
+	 * 
+	 * @param operation Name of the operation, used for output
+	 * @param numberOfCycles Number of cycles to run for
+	 */
+	void newProcessThreadNonPreemptive( 
+		string operation, 
+		unsigned int numberOfCycles );
+
+	/**
+	 * Initialize a new input thread
+	 * Sets sleep time to 
+	 *  hardDriveCycleTime * numberOfCycles
+	 *  keyboardCycleTime * numberOfCycles
+	 * based on the given operation
+	 *
+	 * Pre: hardDriveCycleTime and keyboardCycleTime
+	 * have been set appropriately
+	 * Post: Program will initialize a new thread, that will be
+	 * completely ready to run and report on its activities
+	 * 
+	 * @param operation Name of the operation, used for output
+	 * @param numberOfCycles Number of cycles to run for
+	 */
+	void newInputThreadNonPreemptive( 
+		string operation, 
+		unsigned int numberOfCycles );
+
+	/**
+	 * Initialize a new output thread
+	 * Sets sleep time to 
+	 *  hardDriveCycleTime * numberOfCycles
+	 *  monitorDisplayTime * numberOfCycles
+	 *  printerCycleTime * numberOfCycles
+	 * based on the given operation
+	 *
+	 * Pre: hardDriveCycleTime, monitorDisplayTime, printerCycleTime
+	 * have been set appropriately
+	 * Post: Program will initialize a new thread, that will be
+	 * completely ready to run and report on its activities
+	 * 
+	 * @param operation Name of the operation, used for output
+	 * @param numberOfCycles Number of cycles to run for
+	 */
+	void newOutputThreadNonPreemptive( 
 		string operation, 
 		unsigned int numberOfCycles );
 
