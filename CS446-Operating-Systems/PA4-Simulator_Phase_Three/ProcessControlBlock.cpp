@@ -89,6 +89,36 @@ ProcessControlBlock& ProcessControlBlock::operator=( const ProcessControlBlock &
 	return * this;
 }
 
+void ProcessControlBlock::addInstructionPreemptive( Process newInstruction )
+{
+	// Set recalc flag to true since we now have a new instruction
+	// Then outsource the work to the appropriate thread creation
+	// method
+	needToRecalcRT = true;
+	switch( newInstruction.component )
+	{
+		case 'P':
+		{
+			newProcessThreadPreemptive( newInstruction.operation, newInstruction.numberOfCycles );
+			break;
+		}
+		case 'I':
+		{
+			newInputThreadPreemptive( newInstruction.operation, newInstruction.numberOfCycles );
+			break;
+		}
+		case 'O':
+		{
+			newOutputThreadPreemptive( newInstruction.operation, newInstruction.numberOfCycles );
+			break;
+		}
+		default:
+		{
+			myLog.logError( "Unknown component: " + newInstruction.component );
+		}
+	}
+}
+
 void ProcessControlBlock::newProcessThreadPreemptive( 
 	string operation, 
 	unsigned int numberOfCycles )
@@ -208,36 +238,6 @@ void ProcessControlBlock::newOutputThreadPreemptive(
 	currentThread.numCyclesRemaining = numberOfCycles;
 	// Push thread to back of ready queue
 	readyProcessThreads.push_back( currentThread );
-}
-
-void ProcessControlBlock::addInstructionPreemptive( Process newInstruction )
-{
-	// Set recalc flag to true since we now have a new instruction
-	// Then outsource the work to the appropriate thread creation
-	// method
-	needToRecalcRT = true;
-	switch( newInstruction.component )
-	{
-		case 'P':
-		{
-			newProcessThreadPreemptive( newInstruction.operation, newInstruction.numberOfCycles );
-			break;
-		}
-		case 'I':
-		{
-			newInputThreadPreemptive( newInstruction.operation, newInstruction.numberOfCycles );
-			break;
-		}
-		case 'O':
-		{
-			newOutputThreadPreemptive( newInstruction.operation, newInstruction.numberOfCycles );
-			break;
-		}
-		default:
-		{
-			myLog.logError( "Unknown component: " + newInstruction.component );
-		}
-	}
 }
 
 bool ProcessControlBlock::runApplicationPreemptive()
