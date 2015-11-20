@@ -21,10 +21,7 @@
  copy constructors and = operator overload. Coincidentally, we
  wouldn't have run into this error if we hadn't tried to "improve"
  the = operator overload from last time
- FIFO-P currently works (needs to be tested on a single core machine
- because it runs in less than half the expected time on my machine -
- I assume its because the threads are actually taking advantage of
- my AMD.
+ FIFO-P works
  RR currently works as well
  SRTFP now works as well
  0.7 ( 11/18/2015 ) - Tim Kwist
