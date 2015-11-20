@@ -1,15 +1,15 @@
 #ifndef OPERATING_SYSTEM_H
 #define OPERATING_SYSTEM_H
-#include <algorithm>    // std::sort
-#include <string>
-#include <fstream>
-#include <vector>
-#include <unordered_map>
-#include "re2-master/re2/re2.h"
-#include <cstdlib>
+#include <algorithm>    			// std::sort
+#include <fstream>					// std::ifstream
+#include <string>					// std::string, std::getline
+#include <unordered_map> 			// std::unordered_map
+#include <vector>					// std::vector
+#include "re2-master/re2/re2.h"		// RE2, re2::StringPiece, re2::FindAndConsume
 #include "Logger.h"
 #include "ProcessControlBlock.h"
 #include "Structs.h"
+
 using namespace std;
 
 extern Logger myLog;
@@ -94,22 +94,6 @@ private:
 	void runPhaseOneSimulator( );
 
 	/**
-	* If cpu scheduling = SJF:
-	* - Run SJF
-	* If cpu scheduling = SRTFN:
-	* - Run SRTFN
-	*
-	* Pre: This method will only be called from runSimulator, and thus
-	* the preconditions of that method will satisfy the pre conditions
-	* for this one
-	* Post: The appropriate cpu scheduling method will be used based on
-	* configuration file, and appropriate method called for that cpu scheduling
-	*/
-	void runPhaseTwoSimulator( );
-
-	void runPhaseThreeSimulator( );
-
-	/**
 	* Iterates over all PCB's linearly, and calls their "run" method
 	*
 	* Pre: This method will only be called from runPhaseOneSimulator or
@@ -118,55 +102,6 @@ private:
 	* Post: All PCB's will have run all of their processes
 	*/
 	void runFIFO( );
-
-	void runRR( );
-	void runFIFOP( );
-	void runSRTFP( );
-
-	/**
-	* Runs the sortSJF method, then runs runFIFO
-	*/
-	void runSJF( );
-
-	/**
-	* Uses same algorithm as FIFO, except that, instead of incrementing
-	* the current index, we search for the index of the shortest
-	* remaining time PCB after each iteration
-	*
-	* Pre: This method will only be called from runPhaseTwoSimulator
-	* Post: All PCB's will be iterated through, in order of least to greatest
-	* remaining time
-	*/
-	void runSRTFN( );
-
-	/**
-	* Finds the shortest remaining time PCB by looping through PCB's
-	* and (essentially) performing a min(currentShortest, currentPCB)
-	*
-	* Pre: This method will only be called from runSRTFN when there are still
-	* active/unrun PCB's
-	* Post: No PCB's will be changed in this method, except for potentially 
-	* their remaining time variable
-	*
-	* @return index of the shortest remaining time PCB
-	*/
-	unsigned int findSRTFN( );
-
-	/**
-	 * Looks through Operating System instructions and checks that each
-	 * start has a matching end
-	 * Then goes through each PCB and runs initial calculateRemainingTime
-	 *
-	 * Pre: Expects that readyQueue and operatingSystemInstructions have
-	 * been initialized by appropriate methods
-	 * Post: Guaranteed that each OpSys instruction has a start/end (thus
-	 * won't have to check this as we go along); each PCB will have their
-	 * initial remaining time calculated (that way the first "search for
-	 * next process" doesn't seem to take much longer than the rest)
-	 */
-	void prepareProcesses( );
-
-	bool resolveInterrupts( );
 
 	/**
 	 * Looks at the current operation being performed and passes it to the
@@ -227,7 +162,123 @@ private:
 	void evalApplication( 
 		string operation, 
 		unsigned int numberOfCycles );
-	
+
+	/**
+	* If cpu scheduling = SJF:
+	* - Run SJF
+	* If cpu scheduling = SRTFN:
+	* - Run SRTFN
+	*
+	* Pre: This method will only be called from runSimulator, and thus
+	* the preconditions of that method will satisfy the pre conditions
+	* for this one
+	* Post: The appropriate CPU Scheduling method will be used based on
+	* configuration file, and appropriate method called for that CPU Scheduling
+	*/
+	void runPhaseTwoSimulator( );
+
+	/**
+	* Runs the sortSJF method, then runs runFIFO
+	*/
+	void runSJF( );
+
+	/**
+	* Uses same algorithm as FIFO, except that, instead of incrementing
+	* the current index, we search for the index of the shortest
+	* remaining time PCB after each iteration
+	*
+	* Pre: This method will only be called from runPhaseTwoSimulator
+	* Post: All PCB's will be iterated through, in order of least to greatest
+	* remaining time
+	*/
+	void runSRTFN( );
+
+	/**
+	* Finds the shortest remaining time PCB by looping through PCB's
+	* and (essentially) performing a min(currentShortest, currentPCB)
+	*
+	* Pre: This method will only be called from runSRTFN when there are still
+	* active/unrun PCB's
+	* Post: No PCB's will be changed in this method, except for potentially 
+	* their remaining time variable
+	*
+	* @return index of the shortest remaining time PCB
+	*/
+	unsigned int findSRTFN( );
+
+	/**
+	 * Chooses the appropriate CPU Scheduling method to call, based on the 
+	 * version in the configuration settings
+	 *
+	 * Pre: This method will only be called from runSimulator
+	 * Post: The appropriate CPU Scheduling method will be used based on
+	 * configuration file, and appropriate method called for that CPU Scheduling
+	 */
+	void runPhaseThreeSimulator( );
+
+	/**
+	 * Looks through Operating System instructions and checks that each
+	 * start has a matching end
+	 * Then goes through each PCB and runs initial calculateRemainingTime
+	 *
+	 * Pre: Expects that readyQueue and operatingSystemInstructions have
+	 * been initialized by appropriate methods
+	 * Post: Guaranteed that each OpSys instruction has a start/end (thus
+	 * won't have to check this as we go along); each PCB will have their
+	 * initial remaining time calculated (that way the first "search for
+	 * next process" doesn't seem to take much longer than the rest)
+	 */
+	void prepareProcesses( );
+
+	/**
+	 * Iterates through readyProcesses and runs their application for
+	 * given quantum. Does not do any sorting. After each application is run,
+	 * the application is either put into blocked or moved to the end of the
+	 * vector.
+	 * Utilizes the resolveInterrupts method frequently (after each process is run)
+	 *
+	 * Pre: This method will only be called from the runPhaseThreeSimulator method
+	 * Post: readyProcesses and blockedProcesses will have a size of 0
+	 */
+	void runRR( );
+
+	/**
+	 * Iterates through readyProcesses and runs their application for
+	 * given quantum. Sorts and prioritizes by process number (IE, when the process
+	 * came into the os). After each process is run, it is put in the blocked queue
+	 * if the last process run was IO. Otherwise, it is not affected
+	 * Utilizes the resolveInterrupts method frequently (after each process is run)
+	 *
+	 * Pre: This method will only be called from the runPhaseThreeSimulator method
+	 * Post: readyProcesses and blockedProcesses will have a size of 0
+	 */
+	void runFIFOP( );
+
+	/**
+	 * Iterates through readyProcesses and runs their application for
+	 * given quantum. Sorts and prioritizes by remaining time.
+	 * After each process is run, it is put in the blocked queue
+	 * if the last process run was IO. Otherwise, it is not affected
+	 * Utilizes the resolveInterrupts method frequently (after each process is run)
+	 *
+	 * Pre: This method will only be called from the runPhaseThreeSimulator method
+	 * Post: readyProcesses and blockedProcesses will have a size of 0
+	 */
+	void runSRTFP( );
+
+	/**
+	 * Continually calls the interrupt system's resolveInterrupt method until
+	 * the interrupt system has no more processes. If the process that created
+	 * the interrupt is in the blocked queue, the process is removed from the
+	 * blocked queue and put back into the ready queue IF AND ONLY IF its
+	 * remaining time is not 0.
+	 * This method will report back whether it was idle or not.
+	 * 
+	 * @return If at least one interrupt is resolved, returns false
+	 *            otherwise, returns true
+	 */
+	bool resolveInterrupts( );
+
 	bool simulatorRunning; // True if yes, false if no
 	bool applicationStarted; // True if yes, false if no
 	unsigned int totalNumberOfProcesses; // Number of unique PCB's from this OS
@@ -237,7 +288,5 @@ private:
 	vector< ProcessControlBlock > readyProcesses; // PCB's ready to use
 	unordered_map< int, ProcessControlBlock > blockedProcesses; // PCB's that are blocked due to IO
 	ConfigurationSettings settings; // Instructions from config file
-	// Future: CPU Scheduling Type
-	// Future: Quantum time
 };
 #endif // OPERATING_SYSTEM_H

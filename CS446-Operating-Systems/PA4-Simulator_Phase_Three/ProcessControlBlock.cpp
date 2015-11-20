@@ -145,7 +145,7 @@ bool ProcessControlBlock::runProcessPreemptive( PcbThread &currentProcess )
 		if( interrupts.numberOfInterrupts == 0 )
 		{
 			// Either run for total of quantums or number of cycles left, whichever lower
-			int cyclesToRun = min( quantumCycles, currentProcess.numCyclesRemaining );
+			unsigned int cyclesToRun = min( quantumCycles, currentProcess.numCyclesRemaining );
 			if( cyclesRun < cyclesToRun )
 			{
 				currentProcess.numCyclesRemaining--;

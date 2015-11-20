@@ -2,7 +2,6 @@
 #define CONFIGURATION_SETTINGS_H
 #include <iostream>
 #include <string>
-#include <cstdlib>
 #include "re2-master/re2/re2.h"
 #include <vector>
 #include "Logger.h"

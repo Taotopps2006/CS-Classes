@@ -55,7 +55,7 @@ this.
 //
 // Header Files ///////////////////////////////////////////////////
 //
- #include <iostream>
+ #include <iostream>                    // std::cout
  #include "ConfigurationSettings.h"
  #include "Logger.h"
  #include "ProcessControlBlock.h"
