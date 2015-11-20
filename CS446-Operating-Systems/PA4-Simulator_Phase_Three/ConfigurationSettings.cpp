@@ -100,7 +100,8 @@ void ConfigurationSettings::set( unsigned int settingLine, string settingValue )
 	else
 	{
 		myLog.logError( 
-			settingValue + " is not valid for line " + to_string( settingLine+1 )
+			settingValue + " is not valid for line " + to_string( settingLine+1 ) +
+			" \nExpected: " + regexLineKeys[settingLine] + "\nFor version: " + version
 			);
 	}
 
@@ -143,19 +144,7 @@ void ConfigurationSettings::setPhaseOne( unsigned int settingLine, string settin
 		}
 		case 8:
 		{
-			// Somewhat redundant, as the regex will only find one of these 3
-			// anyway
-			if( 
-				settingValue.compare( "Both" ) == 0 || 
-				settingValue.compare( "Monitor" ) == 0 || 
-				settingValue.compare( "File" ) == 0 )
-			{
-				logType = settingValue;
-			}
-			else
-			{
-				myLog.logError( "Incorrect myLog type " + settingValue );
-			}
+			logType = settingValue;
 			break;
 		}
 		case 9:
@@ -185,19 +174,8 @@ void ConfigurationSettings::setPhaseTwo( unsigned int settingLine, string settin
 		}
 		case 3:
 		{
-			// Somewhat redundant, as the regex will only find one of these 3
-			// anyway
-			if( 
-				settingValue.compare( "FIFO" ) == 0 || 
-				settingValue.compare( "SJF" ) == 0 || 
-				settingValue.compare( "SRTF-N" ) == 0 )
-			{
-				cpuScheduling = settingValue;
-			}
-			else
-			{
-				myLog.logError( "Incorrect cpu scheduling type " + settingValue );
-			}
+			cpuScheduling = settingValue;
+			break;
 		}
 		case 4:
 		{
@@ -226,19 +204,7 @@ void ConfigurationSettings::setPhaseTwo( unsigned int settingLine, string settin
 		}
 		case 9:
 		{
-			// Somewhat redundant, as the regex will only find one of these 3
-			// anyway
-			if( 
-				settingValue.compare( "Both" ) == 0 || 
-				settingValue.compare( "Monitor" ) == 0 || 
-				settingValue.compare( "File" ) == 0 )
-			{
-				logType = settingValue;
-			}
-			else
-			{
-				myLog.logError( "Incorrect myLog type " + settingValue );
-			}
+			logType = settingValue;
 			break;
 		}
 		case 10:
@@ -268,19 +234,8 @@ void ConfigurationSettings::setPhaseThree( unsigned int settingLine, string sett
 		}
 		case 3:
 		{
-			// Somewhat redundant, as the regex will only find one of these 3
-			// anyway
-			if( 
-				settingValue.compare( "RR" ) == 0 ||
-				settingValue.compare( "FIFO-P" ) == 0 || 
-				settingValue.compare( "SRTF-P" ) == 0 )
-			{
-				cpuScheduling = settingValue;
-			}
-			else
-			{
-				myLog.logError( "Incorrect cpu scheduling type " + settingValue );
-			}
+			cpuScheduling = settingValue;
+			break;
 		}
 		case 4:
 		{
@@ -313,19 +268,7 @@ void ConfigurationSettings::setPhaseThree( unsigned int settingLine, string sett
 		}
 		case 10:
 		{
-			// Somewhat redundant, as the regex will only find one of these 3
-			// anyway
-			if( 
-				settingValue.compare( "Both" ) == 0 || 
-				settingValue.compare( "Monitor" ) == 0 || 
-				settingValue.compare( "File" ) == 0 )
-			{
-				logType = settingValue;
-			}
-			else
-			{
-				myLog.logError( "Incorrect myLog type " + settingValue );
-			}
+			logType = settingValue;
 			break;
 		}
 		case 11:
