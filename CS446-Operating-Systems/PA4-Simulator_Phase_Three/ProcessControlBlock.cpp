@@ -1,11 +1,27 @@
 #include "ProcessControlBlock.h"
 
+/**
+ * Nonpreemptive thread just sleeps for the parameter thread's
+ * processTime
+ * @param currentThread CurrentThread to be waited on
+ */
 static void createNonPremptiveThread( 
 	PcbThread currentThread )
 {
 	this_thread::sleep_for( chrono::milliseconds( currentThread.processTime ) );
 }
 
+/**
+ * Preemptive thread waits for a given process time, then creates
+ * and triggers a new interrupt with a given processNumber and
+ * endLogMessage
+ * 
+ * @param processNumber processNumber of the process that spawned this
+ *                      thread
+ * @param processTime   Amount of time to wait for
+ * @param endLogMessage The message that this thread will report once
+ *                      the interrupt it resolved
+ */
 static void createPremptiveThread(
 	int processNumber, int processTime, string endLogMessage )
 {

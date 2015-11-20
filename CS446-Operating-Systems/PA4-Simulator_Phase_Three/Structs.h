@@ -21,7 +21,7 @@ struct Interrupt
 struct PcbThread
 {
 	// Currently, some variables are unused depending on version of simulator
-	// Once all 3 versions are working, I'll refactor this to use polymorphism
+	// Once all 3 versions are working, I'll try to refactor this to use polymorphism
 	// to dynamically figure out which type of node is currently being used
 public:
 	unsigned int processTime;

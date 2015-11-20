@@ -1,8 +1,8 @@
 #ifndef INTERRUPT_SYSTEM_H
 #define INTERRUPT_SYSTEM_H
 
-#include <deque>
-#include <string>
+#include <deque>				// deque
+#include <string>				// string
 #include "Structs.h"
 #include "Logger.h"
 
@@ -12,18 +12,42 @@ extern Logger myLog;
 class InterruptSystem
 {
 public:
-	Interrupt getCurrentInterrupt( );
+	/**
+	 * Adds a new interrupt to the front of the queue, giving it immediate
+	 * priority for once interrupts are resolved
+	 * 
+	 * @param processNumber The number of the process that this interrupt
+	 *                      came from
+	 * @param endLogMessage The end log message that this interrupt should
+	 *                      report once resolved
+	 */
 	void addNewInterruptFront( int processNumber, string endLogMessage );
+
+	/**
+	 * Adds a new interrupt to the back of the queue
+	 * 
+	 * @param processNumber The number of the process that this interrupt
+	 *                      came from
+	 * @param endLogMessage The end log message that this interrupt should
+	 *                      report once resolved
+	 */
 	void addNewInterruptBack( int processNumber, string endLogMessage );
+
+	/**
+	 * Resolves the current interrupt, which involves taking it out of the
+	 * queue, reporting its end message, then returning the process number
+	 * it came from
+	 *
+	 * @pre This will only be called if there is an interrupt in the queue
+	 * @post One less interrupt will be in the queue
+	 * 
+	 * @return the process number that the most recent interrupt came from
+	 */
 	int resolveInterrupt( );
 
-	int numberOfInterrupts;
+	int numberOfInterrupts; // Keep track of our interrupts so that a size method does
+							// not need to be called
 private:
-	// dequeue allows me to push IO interrupts to the back, while simultaneously pushing
-	// quantum interrupts to the front; uses a bit more memory, but will be made up by
-	// the fact that we could have a very large number of interrupts. Added benefits:
-	// cost of reallocation decreased, and don't have to allocate everything in a
-	// contiguous block
 	deque< Interrupt > interruptQueue;
 };
 
