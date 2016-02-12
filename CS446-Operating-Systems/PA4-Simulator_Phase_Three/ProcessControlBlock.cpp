@@ -23,8 +23,9 @@ static void createNonPremptiveThread(
  *                      the interrupt it resolved
  */
 static void createPremptiveThread(
-	int processNumber, int processTime, string endLogMessage )
+	int processNumber, int processTime, string _endLogMessage )
 {
+	string endLogMessage(_endLogMessage);
 	this_thread::sleep_for( chrono::milliseconds( processTime ) );
 	interrupts.addNewInterruptBack( processNumber, endLogMessage );
 }
@@ -39,6 +40,7 @@ ProcessControlBlock::ProcessControlBlock( )
 	hardDriveCycleTime = 0;
 	printerCycleTime = 0;
 	keyboardCycleTime = 0;
+	readyProcessThreads = vector<PcbThread>();
 }
 
 ProcessControlBlock::ProcessControlBlock( 
